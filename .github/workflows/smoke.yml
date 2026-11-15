@@ -1,0 +1,92 @@
+name: smoke
+
+# 目的：只验证“GitHub Runner 能否访问数据源 + 主流程能否跑通”，不做全量计算。
+# 手动触发，预计 2-5 分钟；失败时看日志里的 PROBE 段落定位是哪个接口不可达。
+
+on:
+  workflow_dispatch:
+    inputs:
+      years:
+        description: "回看年数"
+        required: false
+        default: "3"
+
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Probe data sources
+        shell: bash
+        run: |
+          python - <<'PY'
+          import sys, time, traceback
+          import akshare as ak
+
+          checks = []
+
+          def probe(name, fn):
+              t0 = time.time()
+              try:
+                  val = fn()
+                  checks.append((name, True, f"{val} ({time.time()-t0:.1f}s)"))
+              except Exception as exc:
+                  checks.append((name, False, f"{type(exc).__name__}: {str(exc)[:120]}"))
+
+          probe("全市场最新净值", lambda: f"{len(ak.fund_open_fund_daily_em())} 行")
+          probe("基金净值序列", lambda: f"{len(ak.fund_open_fund_info_em(symbol='000001', indicator='累计净值走势'))} 点")
+          probe("指数日线(沪深300)",
+                lambda: f"{len(ak.stock_zh_index_daily(symbol='sh000300'))} 点")
+          probe("基金基础信息", lambda: f"{len(ak.fund_individual_basic_info_xq(symbol='000001'))} 项"
+                if hasattr(ak, "fund_individual_basic_info_xq") else "接口不存在，跳过")
+
+          print("\n===== PROBE =====")
+          for name, ok, detail in checks:
+              print(f"[{'PASS' if ok else 'FAIL'}] {name}: {detail}")
+          failed = [c for c in checks if not c[1]]
+          print(f"===== {len(checks)-len(failed)}/{len(checks)} 可用 =====\n")
+
+          # 只要求“净值序列”可用，其余失败仅警告：主流程依赖净值，其余有降级路径
+          if not checks[1][1]:
+              sys.exit("关键数据源不可用：基金净值序列")
+          PY
+
+      - name: Run small pipeline
+        shell: bash
+        run: |
+          python fund_mvp.py \
+            --codes "000001,110011,004685,005576,000893" \
+            --years "${{ github.event.inputs.years || '3' }}" \
+            --outdir output_smoke
+
+      - name: Show summary
+        if: always()
+        shell: bash
+        run: |
+          if [ -f output_smoke/summary.txt ]; then
+            cat output_smoke/summary.txt
+          else
+            echo "summary.txt 未生成，检查上一步日志"
+          fi
+
+      - name: Upload artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: smoke-output
+          path: output_smoke/
+          if-no-files-found: warn
+          retention-days: 7

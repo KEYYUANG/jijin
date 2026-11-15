@@ -1,0 +1,307 @@
+{
+  "006158": {
+    "reason": "净值序列不足(470)",
+    "last_try": "2026-11-14",
+    "attempts": 1
+  },
+  "009411": {
+    "reason": "净值序列不足(372)",
+    "last_try": "2026-11-14",
+    "attempts": 1
+  },
+  "010201": {
+    "reason": "净值序列不足(343)",
+    "last_try": "2026-11-14",
+    "attempts": 1
+  },
+  "016810": {
+    "reason": "净值序列不足(214)",
+    "last_try": "2026-11-14",
+    "attempts": 1
+  },
+  "019360": {
+    "reason": "净值序列不足(161)",
+    "last_try": "2026-11-14",
+    "attempts": 1
+  },
+  "019401": {
+    "reason": "净值序列不足(175)",
+    "last_try": "2026-11-14",
+    "attempts": 1
+  },
+  "024031": {
+    "reason": "KeyError: \"None of [Index(['date', 'nav'], dtype='str')] are in the [c",
+    "last_try": "2026-11-14",
+    "attempts": 1
+  },
+  "025864": {
+    "reason": "KeyError: \"None of [Index(['date', 'nav'], dtype='str')] are in the [c",
+    "last_try": "2026-11-14",
+    "attempts": 1
+  },
+  "026966": {
+    "reason": "KeyError: \"None of [Index(['date', 'nav'], dtype='str')] are in the [c",
+    "last_try": "2026-11-14",
+    "attempts": 1
+  },
+  "027227": {
+    "reason": "KeyError: \"None of [Index(['date', 'nav'], dtype='str')] are in the [c",
+    "last_try": "2026-11-14",
+    "attempts": 1
+  },
+  "027269": {
+    "reason": "KeyError: \"None of [Index(['date', 'nav'], dtype='str')] are in the [c",
+    "last_try": "2026-11-14",
+    "attempts": 1
+  },
+  "027426": {
+    "reason": "KeyError: \"None of [Index(['date', 'nav'], dtype='str')] are in the [c",
+    "last_try": "2026-11-14",
+    "attempts": 1
+  },
+  "027584": {
+    "reason": "KeyError: \"None of [Index(['date', 'nav'], dtype='str')] are in the [c",
+    "last_try": "2026-11-14",
+    "attempts": 1
+  },
+  "027690": {
+    "reason": "KeyError: \"None of [Index(['date', 'nav'], dtype='str')] are in the [c",
+    "last_try": "2026-11-14",
+    "attempts": 1
+  },
+  "027696": {
+    "reason": "KeyError: \"None of [Index(['date', 'nav'], dtype='str')] are in the [c",
+    "last_try": "2026-11-14",
+    "attempts": 1
+  },
+  "027727": {
+    "reason": "KeyError: \"None of [Index(['date', 'nav'], dtype='str')] are in the [c",
+    "last_try": "2026-11-14",
+    "attempts": 1
+  },
+  "027892": {
+    "reason": "KeyError: \"None of [Index(['date', 'nav'], dtype='str')] are in the [c",
+    "last_try": "2026-11-14",
+    "attempts": 1
+  },
+  "028263": {
+    "reason": "KeyError: \"None of [Index(['date', 'nav'], dtype='str')] are in the [c",
+    "last_try": "2026-11-14",
+    "attempts": 1
+  },
+  "028317": {
+    "reason": "KeyError: \"None of [Index(['date', 'nav'], dtype='str')] are in the [c",
+    "last_try": "2026-11-14",
+    "attempts": 1
+  },
+  "028416": {
+    "reason": "KeyError: \"None of [Index(['date', 'nav'], dtype='str')] are in the [c",
+    "last_try": "2026-11-14",
+    "attempts": 1
+  },
+  "028441": {
+    "reason": "KeyError: \"None of [Index(['date', 'nav'], dtype='str')] are in the [c",
+    "last_try": "2026-11-14",
+    "attempts": 1
+  },
+  "028447": {
+    "reason": "KeyError: \"None of [Index(['date', 'nav'], dtype='str')] are in the [c",
+    "last_try": "2026-11-14",
+    "attempts": 1
+  },
+  "028617": {
+    "reason": "KeyError: \"None of [Index(['date', 'nav'], dtype='str')] are in the [c",
+    "last_try": "2026-11-14",
+    "attempts": 1
+  },
+  "028736": {
+    "reason": "KeyError: \"None of [Index(['date', 'nav'], dtype='str')] are in the [c",
+    "last_try": "2026-11-14",
+    "attempts": 1
+  },
+  "028883": {
+    "reason": "KeyError: \"None of [Index(['date', 'nav'], dtype='str')] are in the [c",
+    "last_try": "2026-11-14",
+    "attempts": 1
+  },
+  "028918": {
+    "reason": "KeyError: \"None of [Index(['date', 'nav'], dtype='str')] are in the [c",
+    "last_try": "2026-11-14",
+    "attempts": 1
+  },
+  "028990": {
+    "reason": "KeyError: \"None of [Index(['date', 'nav'], dtype='str')] are in the [c",
+    "last_try": "2026-11-14",
+    "attempts": 1
+  },
+  "028994": {
+    "reason": "KeyError: \"None of [Index(['date', 'nav'], dtype='str')] are in the [c",
+    "last_try": "2026-11-14",
+    "attempts": 1
+  },
+  "028998": {
+    "reason": "KeyError: \"None of [Index(['date', 'nav'], dtype='str')] are in the [c",
+    "last_try": "2026-11-14",
+    "attempts": 1
+  },
+  "029004": {
+    "reason": "KeyError: \"None of [Index(['date', 'nav'], dtype='str')] are in the [c",
+    "last_try": "2026-11-14",
+    "attempts": 1
+  },
+  "029041": {
+    "reason": "KeyError: \"None of [Index(['date', 'nav'], dtype='str')] are in the [c",
+    "last_try": "2026-11-14",
+    "attempts": 1
+  },
+  "029053": {
+    "reason": "KeyError: \"None of [Index(['date', 'nav'], dtype='str')] are in the [c",
+    "last_try": "2026-11-14",
+    "attempts": 1
+  },
+  "029129": {
+    "reason": "KeyError: \"None of [Index(['date', 'nav'], dtype='str')] are in the [c",
+    "last_try": "2026-11-14",
+    "attempts": 1
+  },
+  "029133": {
+    "reason": "KeyError: \"None of [Index(['date', 'nav'], dtype='str')] are in the [c",
+    "last_try": "2026-11-14",
+    "attempts": 1
+  },
+  "029135": {
+    "reason": "KeyError: \"None of [Index(['date', 'nav'], dtype='str')] are in the [c",
+    "last_try": "2026-11-14",
+    "attempts": 1
+  },
+  "029139": {
+    "reason": "KeyError: \"None of [Index(['date', 'nav'], dtype='str')] are in the [c",
+    "last_try": "2026-11-14",
+    "attempts": 1
+  },
+  "029154": {
+    "reason": "KeyError: \"None of [Index(['date', 'nav'], dtype='str')] are in the [c",
+    "last_try": "2026-11-14",
+    "attempts": 1
+  },
+  "029160": {
+    "reason": "KeyError: \"None of [Index(['date', 'nav'], dtype='str')] are in the [c",
+    "last_try": "2026-11-14",
+    "attempts": 1
+  },
+  "029202": {
+    "reason": "KeyError: \"None of [Index(['date', 'nav'], dtype='str')] are in the [c",
+    "last_try": "2026-11-14",
+    "attempts": 1
+  },
+  "029243": {
+    "reason": "KeyError: \"None of [Index(['date', 'nav'], dtype='str')] are in the [c",
+    "last_try": "2026-11-14",
+    "attempts": 1
+  },
+  "029299": {
+    "reason": "KeyError: \"None of [Index(['date', 'nav'], dtype='str')] are in the [c",
+    "last_try": "2026-11-14",
+    "attempts": 1
+  },
+  "029307": {
+    "reason": "KeyError: \"None of [Index(['date', 'nav'], dtype='str')] are in the [c",
+    "last_try": "2026-11-14",
+    "attempts": 1
+  },
+  "029333": {
+    "reason": "KeyError: \"None of [Index(['date', 'nav'], dtype='str')] are in the [c",
+    "last_try": "2026-11-14",
+    "attempts": 1
+  },
+  "029400": {
+    "reason": "KeyError: \"None of [Index(['date', 'nav'], dtype='str')] are in the [c",
+    "last_try": "2026-11-14",
+    "attempts": 1
+  },
+  "029438": {
+    "reason": "KeyError: \"None of [Index(['date', 'nav'], dtype='str')] are in the [c",
+    "last_try": "2026-11-14",
+    "attempts": 1
+  },
+  "029461": {
+    "reason": "KeyError: \"None of [Index(['date', 'nav'], dtype='str')] are in the [c",
+    "last_try": "2026-11-14",
+    "attempts": 1
+  },
+  "029512": {
+    "reason": "KeyError: \"None of [Index(['date', 'nav'], dtype='str')] are in the [c",
+    "last_try": "2026-11-14",
+    "attempts": 1
+  },
+  "029528": {
+    "reason": "KeyError: \"None of [Index(['date', 'nav'], dtype='str')] are in the [c",
+    "last_try": "2026-11-14",
+    "attempts": 1
+  },
+  "029543": {
+    "reason": "KeyError: \"None of [Index(['date', 'nav'], dtype='str')] are in the [c",
+    "last_try": "2026-11-14",
+    "attempts": 1
+  },
+  "029568": {
+    "reason": "KeyError: \"None of [Index(['date', 'nav'], dtype='str')] are in the [c",
+    "last_try": "2026-11-14",
+    "attempts": 1
+  },
+  "029570": {
+    "reason": "KeyError: \"None of [Index(['date', 'nav'], dtype='str')] are in the [c",
+    "last_try": "2026-11-14",
+    "attempts": 1
+  },
+  "029596": {
+    "reason": "KeyError: \"None of [Index(['date', 'nav'], dtype='str')] are in the [c",
+    "last_try": "2026-11-14",
+    "attempts": 1
+  },
+  "029848": {
+    "reason": "KeyError: \"None of [Index(['date', 'nav'], dtype='str')] are in the [c",
+    "last_try": "2026-11-14",
+    "attempts": 1
+  },
+  "160425": {
+    "reason": "净值序列不足(358)",
+    "last_try": "2026-11-14",
+    "attempts": 1
+  },
+  "960015": {
+    "reason": "KeyError: \"None of [Index(['date', 'nav'], dtype='str')] are in the [c",
+    "last_try": "2026-11-14",
+    "attempts": 1
+  },
+  "960019": {
+    "reason": "KeyError: \"None of [Index(['date', 'nav'], dtype='str')] are in the [c",
+    "last_try": "2026-11-14",
+    "attempts": 1
+  },
+  "960033": {
+    "reason": "净值序列不足(489)",
+    "last_try": "2026-11-14",
+    "attempts": 1
+  },
+  "960035": {
+    "reason": "KeyError: \"None of [Index(['date', 'nav'], dtype='str')] are in the [c",
+    "last_try": "2026-11-14",
+    "attempts": 1
+  },
+  "027866": {
+    "reason": "KeyError: \"None of [Index(['date', 'nav'], dtype='str')] are in the [c",
+    "last_try": "2026-11-15",
+    "attempts": 1
+  },
+  "029273": {
+    "reason": "KeyError: \"None of [Index(['date', 'nav'], dtype='str')] are in the [c",
+    "last_try": "2026-11-15",
+    "attempts": 1
+  },
+  "029563": {
+    "reason": "KeyError: \"None of [Index(['date', 'nav'], dtype='str')] are in the [c",
+    "last_try": "2026-11-15",
+    "attempts": 1
+  }
+}
