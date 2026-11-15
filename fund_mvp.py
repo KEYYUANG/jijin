@@ -147,6 +147,14 @@ def _cached_csv(path: str, refresh: bool, loader) -> pd.DataFrame:
 _INDEX_MEM: dict[str, pd.Series] = {}
 
 
+def _ak(new_name: str, old_name: str):
+    """兼容 akshare 接口改名：新版用 new_name，旧版回退 old_name。"""
+    for name in (new_name, old_name):
+        if hasattr(ak, name):
+            return getattr(ak, name)
+    raise AttributeError(f"akshare 缺少接口：{new_name} / {old_name}")
+
+
 def fetch_index(symbol: str, cfg: Config) -> pd.Series:
     """指数日线：新浪为主，东财为备（同进程内只读一次）。"""
     if not cfg.refresh and symbol in _INDEX_MEM:
@@ -155,12 +163,13 @@ def fetch_index(symbol: str, cfg: Config) -> pd.Series:
 
     def load() -> pd.DataFrame:
         try:
-            df = _retry(ak.stock_zh_index_daily, symbol=symbol,
-                        retries=cfg.retries, sleep=2.0)
+            df = _retry(_ak("index_zh_daily_sina", "stock_zh_index_daily"),
+                        symbol=symbol, retries=cfg.retries, sleep=2.0)
         except Exception:
             # 备用源：东财（push2，可能限流）
             em_symbol = symbol[2:]
-            df = _retry(ak.index_zh_a_hist, symbol=em_symbol, period="daily",
+            df = _retry(_ak("index_zh_hist_em", "index_zh_a_hist"),
+                        symbol=em_symbol, period="daily",
                         retries=cfg.retries, sleep=3.0)
             df = df.rename(columns={"日期": "date", "收盘": "close"})[["date", "close"]]
         return df[["date", "close"]]
