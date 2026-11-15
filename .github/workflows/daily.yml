@@ -1,0 +1,88 @@
+name: daily
+
+# 每个交易日（北京时间 18:00）跑一次全量筛选，并把看板发布到 GitHub Pages。
+# 前提：
+#   1. 仓库 Settings → Pages → Source 选择 "GitHub Actions"
+#   2. 私有仓库的 Pages 需要 Pro/Team 计划，否则请把仓库设为公开
+#   3. 首次运行没有缓存，约 45-60 分钟；之后命中缓存约 5-15 分钟
+
+on:
+  schedule:
+    - cron: "0 10 * * 1-5"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Restore data cache
+        uses: actions/cache@v4
+        with:
+          path: cache
+          key: nav-${{ github.run_id }}
+          restore-keys: nav-
+
+      - name: Run screening
+        run: python fund_mvp.py --limit 0 --total-value 100000
+
+      - name: Build dashboard
+        run: python make_dashboard.py
+
+      - name: Persist state
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if git diff --quiet -- state; then
+            echo "state 无变化"
+          else
+            git add state
+            git commit -m "chore(state): 更新 $(date -u +%F) 运行结果"
+            git push
+          fi
+
+      - name: Assemble site
+        run: |
+          mkdir -p site
+          cp output/tier_dashboard.html site/index.html
+          cp output/tiers.csv site/
+          cp output/summary.txt site/
+          printf '' > site/.nojekyll
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
