@@ -1032,15 +1032,15 @@
     "date": "2026-11-15",
     "calmar": 0.6324890029654893,
     "quadrant": "小盘价值",
-    "manager_changes": 0.0,
-    "manager_tenure": 4.342231348391513
+    "manager_changes": null,
+    "manager_tenure": null
   },
   "015368": {
     "date": "2026-11-15",
     "calmar": 0.6871873204874541,
     "quadrant": "大盘成长",
-    "manager_changes": 0.0,
-    "manager_tenure": 3.7125256673511293
+    "manager_changes": null,
+    "manager_tenure": null
   },
   "015564": {
     "date": "2026-11-15",
