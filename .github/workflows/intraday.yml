@@ -6,7 +6,8 @@ name: intraday
 
 on:
   schedule:
-    - cron: "30 6 * * 1-5"
+    - cron: "30 6 * * 1-5"   # 北京 14:30 主抓
+    - cron: "50 6 * * 1-5"   # 北京 14:50 补抓（仅当今日快照缺失）
   workflow_dispatch:
 
 permissions:
@@ -37,8 +38,13 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Take 14:30 snapshot
-        run: python intraday.py
+      - name: Take snapshot
+        run: |
+          if [ "${{ github.event.schedule }}" = "50 6 * * 1-5" ]; then
+            python intraday.py --if-missing
+          else
+            python intraday.py
+          fi
 
       - name: Persist snapshot
         id: commit

@@ -5,6 +5,7 @@
 输出 state/intraday.json，由 make_dashboard.py 读取生成“当日走势预测 + 价格分位 + 建议”。
 只做一次东财请求，避免触发 push2 限流。
 """
+import argparse
 import json
 import os
 import time
@@ -181,7 +182,23 @@ def tier_codes() -> list:
 
 
 def main():
+    ap = argparse.ArgumentParser(description="记录交易日盘中快照")
+    ap.add_argument("--if-missing", action="store_true",
+                    help="当日已有快照时直接跳过（用于 14:50 补抓）")
+    args = ap.parse_args()
+
     now = datetime.now(BJ)
+    today = now.strftime("%Y-%m-%d")
+    if args.if_missing:
+        try:
+            with open(DST, encoding="utf-8") as f:
+                old = json.load(f)
+        except Exception:  # noqa: BLE001
+            old = {}
+        if old.get("date") == today:
+            print(f"      今日快照已存在（{old.get('time')}），补抓跳过")
+            return
+
     codes = tier_codes()
     print(f"      覆盖基金 {len(codes)} 只（S/A/B/C）")
 
@@ -193,7 +210,6 @@ def main():
         print("      指数数据不可用，仅记录估值快照")
 
     trend, trend_day = index_trend()
-    today = now.strftime("%Y-%m-%d")
     if trend_day and trend_day != today:
         print(f"      分时日期 {trend_day} 非今日 {today}，疑似休市，不覆盖快照")
         return
