@@ -95,6 +95,21 @@ def price_range(s: pd.Series, days: int) -> list | None:
             round(cur / hi - 1, 4), round(cur / lo - 1, 4)]
 
 
+def trend_series(s: pd.Series, n: int = 120) -> dict | None:
+    """近 N 个交易日净值走势（首日=100），附 3 个时间刻度。"""
+    seg = s.iloc[-n:]
+    if len(seg) < 20:
+        return None
+    base = float(seg.iloc[0])
+    if base <= 0:
+        return None
+    vals = [round(float(v) / base * 100, 1) for v in seg.values]
+    idx = seg.index
+    return {"v": vals,
+            "d": [str(idx[0].date()), str(idx[len(idx) // 2].date()),
+                  str(idx[-1].date())]}
+
+
 def windows_for(nav: dict, codes: list[str]) -> dict:
     out = {}
     for code in codes:
@@ -278,6 +293,7 @@ def build_records():
     t = add_peer_percentiles(t)
 
     pool = t[t["tier"].isin(["S", "A", "B", "C"])]["fund_code"].tolist()
+    pool_set = set(pool)
     industry = load_industry(pool)
     valuations = load_valuation(set(pool))
 
@@ -304,6 +320,7 @@ def build_records():
                    num(r.get("p_vol1"), 1)],
             "ind": industry.get(code),
             "val": valuations.get(code),
+            "trend": (trend_series(nav[code]) if code in pool_set and code in nav else None),
         }
         recs.append(item)
     recs.sort(key=lambda x: (TIERS.index(x["tier"]), -x["score"]))

@@ -88,7 +88,8 @@
   .rt-price{font-size:19px;font-weight:600;font-variant-numeric:tabular-nums;letter-spacing:.3px}
   .rt-chg{font-size:11.5px;font-weight:600;font-variant-numeric:tabular-nums}
   .rt-note{font-size:9.5px;color:var(--dim2);margin-top:4px;line-height:1.5}
-  .rt-chart{margin-top:4px;display:none;width:100%;height:60px}
+  .rt-chart{margin-top:4px;display:none;width:100%;height:58px}
+  .rt-axis{display:none;justify-content:space-between;font-size:9px;color:var(--dim2);margin-top:2px}
   .rt-tag{font-size:9px;padding:0 5px;border-radius:3px;border:1px solid var(--line);
     color:var(--dim2);vertical-align:middle}
 
@@ -351,6 +352,7 @@ function select(code){
           <span class="rt-chg" id="rtChg">–</span></div>
         <div class="rt-note" id="rtNote">正在识别是否为场内 ETF/LOF…</div>
         <svg class="rt-chart" id="rtChart" viewBox="0 0 300 78" preserveAspectRatio="none"></svg>
+        <div class="rt-axis" id="rtAxis"></div>
       </div>
     </div>
 
@@ -376,7 +378,7 @@ function select(code){
   `;
 
   if(isListedCandidate(f.code)) loadLive(f);
-  else renderValuation(f);
+  else { renderValuation(f); drawTrend(f); }
 }
 
 /* 场外：盘中估算 */
@@ -397,6 +399,38 @@ function renderValuation(f){
     $("#rtChg").className = "rt-chg " + (chg>0?"pos":(chg<0?"neg":""));
   }
   $("#rtNote").innerHTML = `盘中估算 ${esc(day||"")} · 公布净值 ${numOr(nav,4)} <span class="rt-tag">估算·非实时</span>`;
+}
+
+/* 时间轴 */
+function setAxis(labels){
+  const el = $("#rtAxis");
+  el.innerHTML = labels.map(x=>`<span>${esc(x)}</span>`).join("");
+  el.style.display = "flex";
+}
+/* 场外：近半年净值走势（首日=100） */
+function drawTrend(f){
+  const t = f.trend;
+  if(!t || !t.v || t.v.length < 2) return;
+  const pts = t.v;
+  const lo = Math.min(...pts), hi = Math.max(...pts);
+  const W=300, H=78, pad=5;
+  const x = i => pad + i*(W-pad*2)/(pts.length-1);
+  const y = v => H-pad - (v-lo)/((hi-lo)||1)*(H-pad*2);
+  const line = pts.map((v,i)=>`${x(i).toFixed(1)},${y(v).toFixed(1)}`).join(" ");
+  const up = pts[pts.length-1] >= pts[0];
+  const color = up ? "#ff7b72" : "#67d391";
+  const area = `${pad},${H-pad} ${line} ${(W-pad).toFixed(1)},${H-pad}`;
+  const last = pts.length-1;
+  $("#rtChart").style.display = "block";
+  $("#rtChart").innerHTML = `
+    <line x1="${pad}" y1="${y(100).toFixed(1)}" x2="${W-pad}" y2="${y(100).toFixed(1)}"
+      stroke="#39414f" stroke-width="1" stroke-dasharray="3 3"/>
+    <polygon points="${area}" fill="${color}" fill-opacity=".10"/>
+    <polyline points="${line}" fill="none" stroke="${color}" stroke-width="1.4" stroke-linejoin="round"/>
+    <circle cx="${x(last).toFixed(1)}" cy="${y(pts[last]).toFixed(1)}" r="2.2" fill="${color}"/>`;
+  setAxis(t.d);
+  $("#rtNote").innerHTML += ` <span class="rt-tag">近半年走势</span>`;
+  $("#rtTime").textContent = t.d[2];
 }
 
 /* 场内：东财 push2 JSONP */
@@ -443,6 +477,7 @@ async function loadLive(f){
     $("#rtNote").innerHTML = netErr >= mkts.length
       ? `行情接口暂不可用（可能被限流）· 最新净值 ${esc(f.last||"–")} <span class="rt-tag">非实时</span>`
       : `未识别为场内品种 · 最新净值 ${esc(f.last||"–")} <span class="rt-tag">非实时</span>`;
+    drawTrend(f);
     return;
   }
   const dec = Number(q.f59 || 2);
@@ -495,6 +530,8 @@ async function drawIntraday(secid, preClose){
       stroke="#39414f" stroke-width="1" stroke-dasharray="3 3"/>
     <polygon points="${area}" fill="${color}" fill-opacity=".10"/>
     <polyline points="${line}" fill="none" stroke="${color}" stroke-width="1.4" stroke-linejoin="round"/>`;
+  const hm = s => s.split(",")[0].slice(11, 16);
+  setAxis([hm(trends[0]), hm(trends[Math.floor(trends.length/2)]), hm(trends[trends.length-1])]);
 }
 
 function chips(){
