@@ -1,0 +1,53 @@
+name: intraday
+
+# 每个交易日北京时间 14:30 记录当日快照（沪深300 点位/分时、指数基金估值广度、覆盖基金估值），
+# 写入 state/intraday.json，供 daily 构建看板时生成“当日预测 + 价格分位 + 建议”。
+# 只读公开行情接口，不依赖缓存，单次约 1-2 分钟。
+
+on:
+  schedule:
+    - cron: "30 6 * * 1-5"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: intraday
+  cancel-in-progress: false
+
+jobs:
+  snapshot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Take 14:30 snapshot
+        run: python intraday.py
+
+      - name: Persist snapshot
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add state/intraday.json
+          if git diff --cached --quiet; then
+            echo "快照无变化"
+          else
+            git commit -m "chore(intraday): 记录 $(TZ=Asia/Shanghai date +%F' '%H:%M) 快照"
+            git pull --rebase --autostash
+            git push
+          fi

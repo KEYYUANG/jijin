@@ -37,6 +37,8 @@ DIM_KEYS = ["ret_power", "dd_power", "calmar_power", "stab_power",
 DIM_NAMES = ["收益", "抗跌", "性价比", "稳定", "风格", "经理", "规模"]
 RF = 0.02
 INDUSTRY_CACHE = os.path.join(CACHE, "industry.json")
+INTRADAY = os.path.join(BASE, "state", "intraday.json")
+IDX_CACHE = os.path.join(CACHE, "idx300.json")
 
 
 def read(name, **kw):
@@ -260,7 +262,216 @@ def load_valuation(codes: set[str]) -> dict:
     return out
 
 
-# ---------------------------------------------------------------- 组装
+# ---------------------------------------------------------------- 当日预测
+
+def load_intraday() -> dict | None:
+    if not os.path.exists(INTRADAY):
+        return None
+    try:
+        with open(INTRADAY, encoding="utf-8") as f:
+            return json.load(f)
+    except Exception as exc:  # noqa: BLE001
+        print(f"      14:30 快照读取失败：{exc}")
+        return None
+
+
+def load_index_daily() -> pd.Series | None:
+    """沪深300 日线收盘（东财 kline），缓存 12 小时；失败时退回旧缓存。"""
+    data = None
+    fresh = (os.path.exists(IDX_CACHE)
+             and time.time() - os.path.getmtime(IDX_CACHE) < 12 * 3600)
+    if fresh:
+        try:
+            with open(IDX_CACHE, encoding="utf-8") as f:
+                data = json.load(f)
+        except Exception:  # noqa: BLE001
+            data = None
+    if data is None:
+        try:
+            import requests
+            r = requests.get(
+                "https://push2his.eastmoney.com/api/qt/stock/kline/get",
+                params={"secid": "1.000300", "fields1": "f1,f2,f3,f4,f5,f6",
+                        "fields2": "f51,f53", "klt": 101, "fqt": 0,
+                        "end": "20500101", "lmt": 700,
+                        "ut": "fa5fd1943c7b386f172d6893dbfba10b"},
+                headers={"User-Agent": "Mozilla/5.0", "Referer": "https://quote.eastmoney.com/"},
+                timeout=12)
+            klines = ((r.json() or {}).get("data") or {}).get("klines") or []
+            rows = []
+            for k in klines:
+                p = str(k).split(",")
+                if len(p) >= 2:
+                    rows.append([p[0], float(p[1])])
+            if rows:
+                data = rows
+                os.makedirs(CACHE, exist_ok=True)
+                with open(IDX_CACHE, "w", encoding="utf-8") as f:
+                    json.dump(rows, f, ensure_ascii=False)
+        except Exception as exc:  # noqa: BLE001
+            print(f"      沪深300 日线获取失败：{exc}")
+        if data is None and os.path.exists(IDX_CACHE):
+            try:
+                with open(IDX_CACHE, encoding="utf-8") as f:
+                    data = json.load(f)
+            except Exception:  # noqa: BLE001
+                data = None
+    if not data:
+        return None
+    s = pd.Series({pd.Timestamp(d): float(v) for d, v in data}).sort_index()
+    return s
+
+
+def betas_for(nav: dict, codes: list[str], idx: pd.Series | None) -> dict:
+    """相对沪深300 的日收益 β（近 250 日），用于缺失盘中估值时的近似。"""
+    if idx is None or idx.empty:
+        return {}
+    ir = idx.pct_change().dropna()
+    out = {}
+    for code in codes:
+        s = nav.get(code)
+        if s is None or len(s) < 120:
+            continue
+        j = pd.concat([s.pct_change().rename("f"), ir.rename("m")],
+                      axis=1, join="inner").dropna().iloc[-250:]
+        if len(j) < 60:
+            continue
+        var = float(j["m"].var())
+        if not np.isfinite(var) or var <= 0:
+            continue
+        beta = float(j["f"].cov(j["m"]) / var)
+        if np.isfinite(beta):
+            out[code] = round(max(0.2, min(1.8, beta)), 2)
+    return out
+
+
+def market_pred(intraday: dict) -> dict | None:
+    """大盘方向打分：指数涨跌 + 估值广度 + 近 30 分钟斜率。"""
+    idx = intraday.get("index") or {}
+    br = intraday.get("breadth") or {}
+    chg = idx.get("chg")
+    upr = br.get("upRatio")
+    trend = idx.get("trend") or []
+    tail = None
+    if len(trend) >= 8:
+        seg = [p[1] for p in trend[-7:]]
+        if seg[0]:
+            tail = (seg[-1] / seg[0] - 1) * 100
+
+    score, reasons = 0.0, []
+    if chg is not None:
+        score += 0.45 * np.tanh(chg / 1.2)
+        reasons.append(f"沪深300 {chg:+.2f}%，日内{'偏强' if chg > 0 else '偏弱'}")
+    if upr is not None:
+        score += 0.25 * np.tanh((upr - 50) / 25)
+        reasons.append(f"指数基金估值上涨 {br.get('up')} 只 / 下跌 {br.get('down')} 只"
+                       f"（上涨占比 {upr:.0f}%）")
+    if tail is not None:
+        score += 0.30 * np.tanh(tail / 0.35)
+        reasons.append(f"最近 30 分钟指数{'回升' if tail >= 0 else '回落'} {tail:+.2f}%")
+    if not reasons:
+        return None
+
+    score = float(np.clip(score, -1, 1))
+    if score >= 0.1:
+        direction = "偏涨"
+    elif score <= -0.1:
+        direction = "偏跌"
+    else:
+        direction = "震荡"
+    conf = int(round(min(85, 50 + abs(score) * 45)))
+    return {"dir": direction, "score": round(score, 2), "conf": conf,
+            "reasons": reasons, "tail": None if tail is None else round(tail, 2)}
+
+
+def fund_pred(mkt: dict, chg: float | None, mom5: float | None,
+              approx: bool) -> dict | None:
+    if not mkt:
+        return None
+    score = 0.5 * mkt["score"]
+    reasons = []
+    if chg is not None:
+        score += 0.3 * np.tanh(chg / 1.2)
+        reasons.append(f"14:30 估值 {chg:+.2f}%" + ("（β近似）" if approx else "（实时/估算）"))
+    if mom5 is not None:
+        score += 0.2 * np.tanh(mom5 / 2.5)
+        reasons.append(f"近 5 日 {mom5:+.2f}%")
+    reasons.extend(mkt["reasons"][:2])
+    score = float(np.clip(score, -1, 1))
+    if score >= 0.1:
+        direction = "偏涨"
+    elif score <= -0.1:
+        direction = "偏跌"
+    else:
+        direction = "震荡"
+    conf = int(round(min(85, 50 + abs(score) * 45)))
+    return {"dir": direction, "score": round(score, 2), "conf": conf,
+            "reasons": reasons[:4], "chg": chg, "approx": approx}
+
+
+def price_position(s: pd.Series | None, chg: float | None) -> dict | None:
+    """把 14:30 估值涨跌套到最新净值上，算近 N 日区间分位。"""
+    if s is None or len(s) < 30:
+        return None
+    adj = float(s.iloc[-1]) * (1 + (chg or 0) / 100)
+    windows = {}
+    for w in (20, 60, 120, 250):
+        seg = s.iloc[-w:]
+        if len(seg) < max(20, int(w * 0.6)):
+            continue
+        lo, hi = float(seg.min()), float(seg.max())
+        p = (adj - lo) / (hi - lo) * 100 if hi > lo else 50.0
+        windows[str(w)] = [round(p, 1), round(lo, 4), round(hi, 4)]
+    if not windows:
+        return None
+    return {"adj": round(adj, 4), "w": windows}
+
+
+def make_advice(pos: dict | None, pdir: str | None, approx: bool) -> dict | None:
+    if not pos:
+        return None
+    days = "120" if "120" in pos["w"] else max(pos["w"], key=int)
+    p, lo, hi = pos["w"][days]
+    low = p <= 15
+    high = p >= 85
+
+    if pdir == "偏涨":
+        if low:
+            bucket, text = "分批买入", "处于区间低位且当日偏强，可小额分批建仓；不追高。"
+        elif high:
+            bucket, text = "分批止盈", "位置偏高且当日偏强，建议分批止盈而非加仓。"
+        elif p <= 40:
+            bucket, text = "回调分批", "中低位、当日偏强，可逢回调分批，单次仓位不宜大。"
+        else:
+            bucket, text = "持有", "中位偏强，已有仓位可持有，暂不追涨。"
+    elif pdir == "偏跌":
+        if high:
+            bucket, text = "减仓止盈", "位置偏高且当日偏弱，优先减仓/止盈。"
+        elif low:
+            bucket, text = "等待企稳", "已在区间低位，但当日偏弱，等企稳信号再分批。"
+        elif p <= 40:
+            bucket, text = "暂缓买入", "中低位但当日偏弱，暂缓加仓，观察次日是否止跌。"
+        else:
+            bucket, text = "控制仓位", "中位偏弱，控制仓位，等方向明确。"
+    else:
+        if low:
+            bucket, text = "小仓试买", "区间低位、方向不明，可极小额试仓，留足余量。"
+        elif high:
+            bucket, text = "逢高减仓", "区间高位、方向不明，逢高减仓更稳。"
+        elif p <= 40:
+            bucket, text = "小额分批", "中低位震荡，可小额分批，关注大盘方向。"
+        else:
+            bucket, text = "观望", "中位震荡，观望为主，等回踩或突破。"
+
+    note = f"14:30 价约 {pos['adj']:.4f}，处于近 {days} 日区间 {p:.0f}% 分位（低 {lo:.4f} / 高 {hi:.4f}）"
+    if p <= 10:
+        note += f"，接近近 {days} 日最低"
+    if approx:
+        note += "；该基金无盘中估值，当日涨跌按 β 近似"
+    return {"bucket": bucket, "text": text, "note": note, "p": p,
+            "days": int(days), "lo": lo, "hi": hi, "adj": pos["adj"]}
+
+
 
 def build_records():
     t = read("tiers.csv")
@@ -297,10 +508,34 @@ def build_records():
     industry = load_industry(pool)
     valuations = load_valuation(set(pool))
 
+    intraday = load_intraday()
+    mkt = market_pred(intraday) if intraday else None
+    betas = {}
+    if intraday and (intraday.get("index") or {}).get("chg") is not None:
+        betas = betas_for(nav, pool, load_index_daily())
+        print(f"      当日预测：快照 {intraday.get('date')} {intraday.get('time')}，"
+              f"β 覆盖 {len(betas)} 只" + (f"，大盘{mkt['dir']}" if mkt else ""))
+    intra_funds = (intraday or {}).get("funds") or {}
+    idx_chg = ((intraday or {}).get("index") or {}).get("chg")
+
     recs = []
     for _, r in t.iterrows():
         code = r["fund_code"]
         w = win.get(code, {})
+        s = nav.get(code)
+        chg, approx = None, False
+        if code in intra_funds:
+            chg = intra_funds[code]
+        elif valuations.get(code) and valuations[code][1] is not None:
+            chg = valuations[code][1]
+        elif idx_chg is not None and code in betas:
+            chg, approx = round(betas[code] * idx_chg, 2), True
+        mom5 = None
+        if s is not None and len(s) >= 6:
+            mom5 = round(float(s.iloc[-1] / s.iloc[-6] - 1) * 100, 2)
+        pred = fund_pred(mkt, chg, mom5, approx) if (mkt and code in pool_set) else None
+        pos = price_position(s, chg) if code in pool_set else None
+        advice = make_advice(pos, pred["dir"] if pred else None, approx)
         item = {
             "code": code, "name": str(r.get("fund_name") or ""),
             "tier": r["tier"], "score": num(r.get("score"), 1) or 0,
@@ -320,21 +555,33 @@ def build_records():
                    num(r.get("p_vol1"), 1)],
             "ind": industry.get(code),
             "val": valuations.get(code),
-            "trend": (trend_series(nav[code]) if code in pool_set and code in nav else None),
+            "trend": (trend_series(s) if code in pool_set and s is not None else None),
+            "pred": pred, "advice": advice,
         }
         recs.append(item)
     recs.sort(key=lambda x: (TIERS.index(x["tier"]), -x["score"]))
-    return recs
+    return recs, intraday, mkt
 
 
 def main():
-    recs = build_records()
+    recs, intraday, mkt = build_records()
     counts = {k: sum(1 for r in recs if r["tier"] == k) for k in TIERS}
     gaps = [r["ann"] - r["excess"] / 100 for r in recs
             if r["ann"] is not None and r["excess"] is not None]
     ref = round(sum(gaps) / len(gaps), 4) if gaps else 0.0
+    snap = None
+    if intraday:
+        snap = {
+            "date": intraday.get("date"), "time": intraday.get("time"),
+            "stamp": intraday.get("stamp"),
+            "index": intraday.get("index") or {},
+            "breadth": intraday.get("breadth") or {},
+            "pred": mkt,
+            "covered": sum(1 for r in recs if r.get("pred")),
+        }
     payload = {"funds": recs, "counts": counts, "tiers": TIERS, "ref": ref,
                "tierDesc": TIER_DESC, "dims": DIM_NAMES,
+               "intraday": snap,
                "builtAt": datetime.now().strftime("%Y-%m-%d %H:%M")}
 
     tpl = open(os.path.join(BASE, "dashboard_template.html"), encoding="utf-8").read()
