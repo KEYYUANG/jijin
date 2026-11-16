@@ -10220,7 +10220,7 @@
   "320003": {
     "tier": "D",
     "pending": null,
-    "force_refresh": true,
+    "force_refresh": false,
     "updated": "2026-11-16"
   },
   "320005": {
