@@ -80,6 +80,29 @@ def index_trend() -> tuple[list, str]:
     return out, day
 
 
+def index_from_kline() -> dict | None:
+    """兜底：用日线最后两根算点位与涨跌幅（盘中最后一根为实时值）。"""
+    d = fetch_json("https://push2his.eastmoney.com/api/qt/stock/kline/get",
+                   {"secid": INDEX_SECID,
+                    "fields1": "f1,f2,f3,f4,f5,f6", "fields2": "f51,f53",
+                    "klt": 101, "fqt": 0, "end": "20500101", "lmt": 3,
+                    "ut": "fa5fd1943c7b386f172d6893dbfba10b"})
+    klines = ((d or {}).get("data") or {}).get("klines") or []
+    closes = []
+    for row in klines:
+        parts = str(row).split(",")
+        if len(parts) >= 2:
+            try:
+                closes.append(float(parts[1]))
+            except ValueError:
+                continue
+    if len(closes) < 2 or not closes[-2]:
+        return None
+    price, pre = closes[-1], closes[-2]
+    return {"name": "沪深300", "price": round(price, 2), "preClose": round(pre, 2),
+            "chg": round((price / pre - 1) * 100, 2), "high": None, "low": None}
+
+
 def valuation_snapshot(codes: set) -> tuple[dict, dict]:
     """东财全市场估算：返回 (覆盖基金估值涨跌, 广度统计)。"""
     try:
@@ -164,9 +187,16 @@ def main():
 
     idx = index_snapshot()
     if not idx:
-        print("      指数实时数据不可用，仍写入估值快照")
+        print("      ulist 实时接口不可用，改用日线兜底")
+        idx = index_from_kline()
+    if not idx:
+        print("      指数数据不可用，仅记录估值快照")
 
     trend, trend_day = index_trend()
+    today = now.strftime("%Y-%m-%d")
+    if trend_day and trend_day != today:
+        print(f"      分时日期 {trend_day} 非今日 {today}，疑似休市，不覆盖快照")
+        return
 
     funds, breadth = valuation_snapshot(set(codes))
     listed = [c for c in codes if c.startswith("5") or c.startswith(("159", "15", "16", "18"))]

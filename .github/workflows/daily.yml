@@ -47,6 +47,26 @@ jobs:
           key: nav-${{ github.run_id }}
           restore-keys: nav-
 
+      - name: Ensure today's intraday snapshot
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json, os, subprocess
+          from datetime import datetime, timedelta, timezone
+
+          today = datetime.now(timezone(timedelta(hours=8))).strftime("%Y-%m-%d")
+          try:
+              with open("state/intraday.json", encoding="utf-8") as f:
+                  snap = json.load(f)
+          except Exception:
+              snap = {}
+          if snap.get("date") == today:
+              print(f"已有今日快照 {snap.get('time')}，跳过补抓")
+          else:
+              print(f"缺少今日快照（现有 {snap.get('date')}），14:30 任务可能未运行，补抓一次")
+              subprocess.run(["python", "intraday.py"], check=False)
+          PY
+
       - name: Run screening
         run: python fund_mvp.py --limit 0 --total-value 100000
 
@@ -62,6 +82,7 @@ jobs:
           else
             git add state
             git commit -m "chore(state): 更新 $(date -u +%F) 运行结果"
+            git pull --rebase --autostash
             git push
           fi
 
