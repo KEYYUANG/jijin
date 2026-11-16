@@ -90,6 +90,12 @@
   .rt-note{font-size:9.5px;color:var(--dim2);margin-top:4px;line-height:1.5}
   .rt-chart{margin-top:4px;display:none;width:100%;height:58px}
   .rt-axis{display:none;justify-content:space-between;font-size:9px;color:var(--dim2);margin-top:2px}
+  .rt-legend{display:none;flex-wrap:wrap;gap:7px;font-size:9px;color:var(--dim2);margin-top:4px}
+  .rt-legend .lg{display:inline-flex;align-items:center;gap:3px}
+  .rt-legend i{display:inline-block;width:9px;height:2px;border-radius:1px;background:var(--dim2)}
+  .rt-legend i.dash{background:repeating-linear-gradient(90deg,#39414f 0 2px,transparent 2px 4px)}
+  .rt-legend b{font-weight:600;color:var(--txt);font-variant-numeric:tabular-nums}
+  .rt-legend .up{color:#ff7b72}.rt-legend .dn{color:#67d391}
   .rt-tag{font-size:9px;padding:0 5px;border-radius:3px;border:1px solid var(--line);
     color:var(--dim2);vertical-align:middle}
 
@@ -353,6 +359,7 @@ function select(code){
         <div class="rt-note" id="rtNote">正在识别是否为场内 ETF/LOF…</div>
         <svg class="rt-chart" id="rtChart" viewBox="0 0 300 78" preserveAspectRatio="none"></svg>
         <div class="rt-axis" id="rtAxis"></div>
+        <div class="rt-legend" id="rtLegend"></div>
       </div>
     </div>
 
@@ -401,6 +408,26 @@ function renderValuation(f){
   $("#rtNote").innerHTML = `盘中估算 ${esc(day||"")} · 公布净值 ${numOr(nav,4)} <span class="rt-tag">估算·非实时</span>`;
 }
 
+/* 图例：曲线含义 + 今日涨跌 + 近 1/2 年涨跌幅 */
+function setLegend(kind, todayPct, f){
+  const el = $("#rtLegend");
+  const w1 = f.w1 || [null,null,null], w2 = f.w2 || [null,null,null];
+  const fmt = v => (v===null||v===undefined||isNaN(v)) ? "–"
+    : (v>0?"+":"") + Number(v).toFixed(2) + "%";
+  const cls = v => (v===null||v===undefined||isNaN(v)) ? "" : (v>0?"up":(v<0?"dn":""));
+  const curve = kind === "intra"
+    ? `<span class="lg" title="今日分时曲线"><i></i>分时</span>`
+    : `<span class="lg" title="近半年净值走势，首日归一为 100"><i></i>近半年</span>`;
+  const base = kind === "intra"
+    ? `<span class="lg"><i class="dash"></i>昨收</span>`
+    : `<span class="lg"><i class="dash"></i>基准</span>`;
+  el.innerHTML = curve + base
+    + `<span class="lg">今 <b class="${cls(todayPct)}">${fmt(todayPct)}</b></span>`
+    + `<span class="lg">1年 <b class="${cls(w1[0]*100)}">${fmt(w1[0]*100)}</b></span>`
+    + `<span class="lg">2年 <b class="${cls(w2[0]*100)}">${fmt(w2[0]*100)}</b></span>`;
+  el.style.display = "flex";
+}
+
 /* 时间轴 */
 function setAxis(labels){
   const el = $("#rtAxis");
@@ -431,6 +458,10 @@ function drawTrend(f){
   setAxis(t.d);
   $("#rtNote").innerHTML += ` <span class="rt-tag">近半年走势</span>`;
   $("#rtTime").textContent = t.d[2];
+  let today = (f.val && f.val[1] !== null && f.val[1] !== undefined) ? f.val[1] : null;
+  if(today === null && pts.length >= 2)
+    today = (pts[pts.length-1] / pts[pts.length-2] - 1) * 100;
+  setLegend("trend", today, f);
 }
 
 /* 场内：东财 push2 JSONP */
@@ -490,6 +521,7 @@ async function loadLive(f){
   }
   $("#rtNote").innerHTML = `${esc(q.f58||"")} · 实时价 <span class="rt-tag">盘中</span>`;
   $("#rtTime").textContent = new Date().toLocaleTimeString("zh-CN", {hour12:false});
+  setLegend("intra", chg === null ? null : chg * 100, f);
   await drawIntraday(secid, q.f60 / Math.pow(10, dec));
   liveTimer = setInterval(async ()=>{
     if(document.hidden) return;
