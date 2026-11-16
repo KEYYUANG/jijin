@@ -9,28 +9,29 @@
     --bg:#0b0d12; --panel:#12151d; --panel2:#171b25; --line:#242a37;
     --txt:#e8ecf4; --dim:#8b95a7; --dim2:#5d6678;
     --s:#f2c14e; --a:#57c7d4; --b:#8b9bb4; --c:#ff8b6b; --d:#5f6b7a; --e:#e05555;
+    --pos:#67d391; --neg:#ff7b72;
   }
   *{box-sizing:border-box}
   body{margin:0;background:var(--bg);color:var(--txt);
     font-family:-apple-system,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
     -webkit-font-smoothing:antialiased}
   a{color:inherit}
-  .wrap{max-width:1400px;margin:0 auto;padding:28px 24px 64px}
-  header{display:flex;flex-wrap:wrap;align-items:flex-end;gap:20px;margin-bottom:20px}
-  h1{font-size:22px;margin:0;letter-spacing:.5px;font-weight:600}
-  .sub{color:var(--dim);font-size:12.5px;margin-top:6px;line-height:1.6}
-  .kpis{margin-left:auto;display:flex;gap:26px;flex-wrap:wrap}
+  .wrap{max-width:1680px;margin:0 auto;padding:12px 14px 26px}
+  header{display:flex;flex-wrap:wrap;align-items:flex-end;gap:12px;margin-bottom:8px}
+  h1{font-size:17px;margin:0;letter-spacing:.4px;font-weight:600}
+  .sub{color:var(--dim);font-size:11px;margin-top:3px;line-height:1.55}
+  .kpis{margin-left:auto;display:flex;gap:18px;flex-wrap:wrap}
   .kpi{text-align:right}
-  .kpi b{display:block;font-size:20px;font-weight:600;letter-spacing:.5px}
-  .kpi span{font-size:11px;color:var(--dim2);letter-spacing:1px}
-  .bar{display:flex;height:6px;border-radius:4px;overflow:hidden;background:#1a1f2a;margin:18px 0 22px}
+  .kpi b{display:block;font-size:15px;font-weight:600;letter-spacing:.4px}
+  .kpi span{font-size:10px;color:var(--dim2);letter-spacing:1px}
+  .bar{display:flex;height:4px;border-radius:4px;overflow:hidden;background:#1a1f2a;margin:8px 0 10px}
   .bar div{height:100%}
-  .toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:18px}
-  .chips{display:flex;gap:8px;flex-wrap:wrap}
-  .chip{display:flex;align-items:center;gap:7px;padding:7px 13px;border-radius:999px;
+  .toolbar{display:flex;flex-wrap:wrap;gap:7px;align-items:center;margin-bottom:8px}
+  .chips{display:flex;gap:5px;flex-wrap:wrap}
+  .chip{display:flex;align-items:center;gap:5px;padding:3px 9px;border-radius:999px;
     border:1px solid var(--line);background:var(--panel);color:var(--dim);
-    font-size:12.5px;cursor:pointer;user-select:none;transition:.15s}
-  .chip .dot{width:8px;height:8px;border-radius:50%;background:currentColor;opacity:.45}
+    font-size:11px;cursor:pointer;user-select:none;transition:.15s}
+  .chip .dot{width:7px;height:7px;border-radius:50%;background:currentColor;opacity:.45}
   .chip.on{color:var(--txt);border-color:#39414f;background:var(--panel2)}
   .chip.on .dot{opacity:1}
   .chip .n{color:var(--dim2);font-variant-numeric:tabular-nums}
@@ -42,30 +43,91 @@
   .chip[data-t="E"].on{border-color:var(--e)}
   .grow{flex:1}
   input[type=search],select{background:var(--panel);border:1px solid var(--line);color:var(--txt);
-    padding:8px 12px;border-radius:8px;font-size:13px;outline:none}
-  input[type=search]{width:210px}
+    padding:5px 9px;border-radius:6px;font-size:11.5px;outline:none}
+  input[type=search]{width:168px}
   input[type=search]:focus,select:focus{border-color:#3c4557}
-  .hint{color:var(--dim2);font-size:12px;margin:-6px 0 16px}
-  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(296px,1fr));gap:16px}
-  .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;
-    padding:16px 16px 12px;position:relative;overflow:hidden}
+  .hint{color:var(--dim2);font-size:10.5px;margin:-2px 0 8px}
+
+  .layout{display:grid;grid-template-columns:minmax(0,1fr) 318px;gap:10px;align-items:start}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(168px,1fr));gap:7px}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:9px;
+    padding:7px 8px 5px;position:relative;overflow:hidden;cursor:pointer;transition:.15s}
+  .card:hover{border-color:#39414f;background:var(--panel2)}
+  .card.sel{border-color:#4a566b;background:var(--panel2);box-shadow:0 0 0 1px #4a566b inset}
   .card::before{content:"";position:absolute;inset:0 auto 0 0;width:2px;background:var(--ac)}
-  .chead{display:flex;align-items:flex-start;gap:10px}
-  .badge{width:26px;height:26px;border-radius:8px;display:grid;place-items:center;
-    font-weight:700;font-size:13px;color:#0b0d12;background:var(--ac);flex:none}
-  .name{font-size:13.5px;font-weight:600;line-height:1.35;word-break:break-all}
-  .meta{font-size:11px;color:var(--dim2);margin-top:3px;letter-spacing:.3px}
+  .chead{display:flex;align-items:flex-start;gap:6px}
+  .badge{width:19px;height:19px;border-radius:5px;display:grid;place-items:center;
+    font-weight:700;font-size:11px;color:#0b0d12;background:var(--ac);flex:none}
+  .name{font-size:11.5px;font-weight:600;line-height:1.28;word-break:break-all}
+  .meta{font-size:9.5px;color:var(--dim2);margin-top:1px;letter-spacing:.2px;
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .score{margin-left:auto;text-align:right;flex:none}
-  .score b{font-size:20px;font-weight:600;font-variant-numeric:tabular-nums;color:var(--ac)}
-  .score span{display:block;font-size:10px;color:var(--dim2);letter-spacing:1px}
-  .radar{display:block;margin:2px auto -2px}
-  .stats{display:grid;grid-template-columns:1fr 1fr;gap:4px 10px;font-size:11.5px;
-    color:var(--dim);border-top:1px solid var(--line);padding-top:9px;margin-top:4px}
+  .score b{font-size:15px;font-weight:600;font-variant-numeric:tabular-nums;color:var(--ac)}
+  .score span{display:block;font-size:8.5px;color:var(--dim2);letter-spacing:.8px}
+  .radar{display:block;margin:0 auto -5px}
+  .stats{display:grid;grid-template-columns:1fr 1fr;gap:0 7px;font-size:10px;
+    color:var(--dim);border-top:1px solid var(--line);padding-top:5px;margin-top:2px}
   .stats b{color:var(--txt);font-weight:600;font-variant-numeric:tabular-nums}
-  .pos{color:#67d391}.neg{color:#ff7b72}
-  .foot{color:var(--dim2);font-size:11.5px;line-height:1.9;margin-top:30px;
-    border-top:1px solid var(--line);padding-top:16px}
-  .empty{color:var(--dim2);padding:60px 0;text-align:center;grid-column:1/-1}
+  .pos{color:var(--pos)}.neg{color:var(--neg)}
+
+  /* 右栏 */
+  .side{position:sticky;top:8px;background:var(--panel);border:1px solid var(--line);
+    border-radius:11px;padding:10px 11px;max-height:calc(100vh - 16px);overflow-y:auto}
+  .side::-webkit-scrollbar{width:5px}
+  .side::-webkit-scrollbar-thumb{background:#2a3141;border-radius:3px}
+  .shead{display:flex;align-items:flex-start;gap:7px;padding-bottom:7px;border-bottom:1px solid var(--line)}
+  .shead .badge{width:21px;height:21px;font-size:11.5px}
+  .sname{font-size:12.5px;font-weight:600;line-height:1.3;word-break:break-all}
+  .smeta{font-size:10px;color:var(--dim2);margin-top:2px}
+  .sect{margin-top:9px}
+  .sect h4{margin:0 0 5px;font-size:10.5px;color:var(--dim);letter-spacing:1px;font-weight:600}
+  .sect h4 em{font-style:normal;color:var(--dim2);letter-spacing:0;font-size:9.5px;margin-left:5px}
+
+  .rt{background:#0e1118;border:1px solid var(--line);border-radius:8px;padding:6px 8px}
+  .rt-top{display:flex;align-items:baseline;gap:7px}
+  .rt-price{font-size:19px;font-weight:600;font-variant-numeric:tabular-nums;letter-spacing:.3px}
+  .rt-chg{font-size:11.5px;font-weight:600;font-variant-numeric:tabular-nums}
+  .rt-note{font-size:9.5px;color:var(--dim2);margin-top:4px;line-height:1.5}
+  .rt-chart{margin-top:4px;display:none;width:100%;height:60px}
+  .rt-tag{font-size:9px;padding:0 5px;border-radius:3px;border:1px solid var(--line);
+    color:var(--dim2);vertical-align:middle}
+
+  .range{margin-top:2px}
+  .range-row{margin-bottom:6px}
+  .range-hd{display:flex;justify-content:space-between;font-size:10px;color:var(--dim);
+    margin-bottom:3px}
+  .rbar{position:relative;height:5px;border-radius:3px;
+    background:linear-gradient(90deg,#3d4a5c,#2a3141 50%,#3d4a5c)}
+  .rbar i{position:absolute;top:-2px;width:2px;height:9px;background:#e8ecf4;border-radius:1px}
+  .rbar b{position:absolute;top:-3px;width:7px;height:7px;border-radius:50%;
+    background:var(--txt);transform:translateX(-3.5px)}
+  .range-foot{display:flex;justify-content:space-between;font-size:9.5px;color:var(--dim2);margin-top:2px}
+
+  .mrow{display:grid;grid-template-columns:68px 1fr 30px;gap:6px;align-items:center;
+    font-size:10.5px;color:var(--dim);padding:1.5px 0}
+  .mrow .v{color:var(--txt);font-variant-numeric:tabular-nums;font-weight:600}
+  .pbar{position:relative;flex:1;min-width:0;height:4px;border-radius:2px;background:#1a1f2a;overflow:hidden}
+  .pbar i{position:absolute;left:0;top:0;bottom:0;border-radius:2px;background:#4a566b}
+  .pbar i.hi{background:var(--pos)}
+  .pbar i.lo{background:var(--neg)}
+  .tag{font-size:9.5px;text-align:right;color:var(--dim2)}
+  .tag.hi{color:var(--pos)}.tag.lo{color:var(--neg)}
+
+  .ind-row{display:grid;grid-template-columns:1fr 40px;gap:5px;align-items:center;
+    font-size:10px;color:var(--dim);padding:1px 0}
+  .ind-row .n{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .ind-row .v{text-align:right;color:var(--txt);font-variant-numeric:tabular-nums}
+  .ind-bar{height:3px;border-radius:2px;background:#1a1f2a;margin:-1px 0 3px}
+  .ind-bar i{display:block;height:100%;border-radius:2px;background:#57c7d4}
+  .ind-note{font-size:9.5px;color:var(--dim2);margin-top:4px}
+
+  .foot{color:var(--dim2);font-size:10.5px;line-height:1.8;margin-top:18px;
+    border-top:1px solid var(--line);padding-top:10px}
+  .empty{color:var(--dim2);padding:50px 0;text-align:center;grid-column:1/-1;font-size:12px}
+  @media(max-width:860px){
+    .layout{grid-template-columns:1fr}
+    .side{position:relative;top:0;max-height:none;order:-1}
+  }
   @media(max-width:640px){.kpis{width:100%;margin-left:0}.kpi{text-align:left}}
 </style>
 </head>
@@ -74,7 +136,7 @@
   <header>
     <div>
       <h1>基金六力图看板</h1>
-      <div class="sub">六维分位打分 · 级别 S/A/B/C/D/E · 对标红利低波 ETF</div>
+      <div class="sub">六维分位打分 · 级别 S/A/B/C/D/E · 对标红利低波 ETF · 右侧为选中基金的实时与同业对比</div>
     </div>
     <div class="kpis">
       <div class="kpi"><b id="kRef">–</b><span>基准年化</span></div>
@@ -93,41 +155,53 @@
       <option value="score">按总分</option>
       <option value="ann">按年化收益</option>
       <option value="excess">按对标超额</option>
+      <option value="sharpe">按夏普</option>
       <option value="aum">按规模</option>
     </select>
   </div>
   <div class="hint" id="hint"></div>
 
-  <div class="grid" id="grid"></div>
+  <div class="layout">
+    <div class="grid" id="grid"></div>
+    <aside class="side" id="side"></aside>
+  </div>
 
   <div class="foot">
-    七维展示：收益、抗跌、性价比、稳定、风格、经理、规模。<br>
-    总分只计“第一道门未覆盖”的四项：稳定 40% + 风格 25% + 经理 20% + 规模 15%，
-    收益/回撤/Calmar 已用于准入，仅作图示，不重复计分。<br>
-    级别规则：S = 总分≥80 且回撤优于同类 75% 且风格稳定且二道门通过；A = ≥70 且 Calmar&gt;0；
-    B = ≥50；C = ≥30；D = 未通过第一道门；E = 规模&lt;0.5 亿或数据不足。<br>
-    角色映射：S=核心，A/B=卫星，C 以下不入池。升级需连续两期确认，降级立即生效并触发一次强制刷新。
+    七维展示：收益、抗跌、性价比、稳定、风格、经理、规模。总分只计“第一道门未覆盖”的四项：
+    稳定 40% + 风格 25% + 经理 20% + 规模 15%。<br>
+    右栏口径：近 1/2 年指标由累计净值现算；同类分位按投资类型分组（组内不足 20 只时退回全池）；
+    区间高低取近 1 年与近 3 年，标注最高/最低点距今天数；行业为东财披露的行业配置（季报口径）。<br>
+    场内 ETF/LOF 的价格与当日分时为打开页面时通过东财接口拉取（约 30 秒刷新）；场外基金无实时价，
+    展示盘中估算净值，仅供参考。<br>
+    数据构建时间：<span id="builtAt">–</span>
   </div>
 </div>
 
 <script>
 const D = __DATA__;
 const COLORS = {S:"#f2c14e",A:"#57c7d4",B:"#8b9bb4",C:"#ff8b6b",D:"#5f6b7a",E:"#e05555"};
-const state = {tiers:new Set(["S","A","B"]), q:"", sort:"score"};
+const state = {tiers:new Set(["S","A","B"]), q:"", sort:"score", sel:null};
 const $ = s => document.querySelector(s);
 const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const byCode = {};
+D.funds.forEach(f => { byCode[f.code] = f; });
 
 function pct(v, nd=1){
   if(v===null||v===undefined||isNaN(v)) return "–";
   return (v*100).toFixed(nd)+"%";
 }
-function signed(v){
+function signed(v, suffix="pp"){
   if(v===null||v===undefined||isNaN(v)) return "–";
-  return (v>0?"+":"")+v.toFixed(1)+"pp";
+  return (v>0?"+":"")+v.toFixed(1)+suffix;
+}
+function numOr(v, nd=2, suffix=""){
+  if(v===null||v===undefined||isNaN(v)) return "–";
+  return Number(v).toFixed(nd)+suffix;
 }
 
+/* ---------- 雷达图（缩小版） ---------- */
 function radar(powers, color){
-  const cx=112, cy=96, R=62, N=D.dims.length;
+  const cx=78, cy=64, R=40, N=D.dims.length;
   const pt=(i,r)=>{const a=-Math.PI/2+i*2*Math.PI/N; return [cx+Math.cos(a)*r, cy+Math.sin(a)*r];};
   let g="";
   [0.25,0.5,0.75,1].forEach(k=>{
@@ -140,15 +214,39 @@ function radar(powers, color){
   }
   const vals=powers.map(v=>Math.max(4,Math.min(100,v||0))/100);
   const poly=vals.map((v,i)=>pt(i,R*v).map(n=>n.toFixed(1)).join(",")).join(" ");
-  g+=`<polygon points="${poly}" fill="${color}" fill-opacity=".22" stroke="${color}" stroke-width="1.6"/>`;
-  vals.forEach((v,i)=>{const [x,y]=pt(i,R*v); g+=`<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="2.4" fill="${color}"/>`;});
+  g+=`<polygon points="${poly}" fill="${color}" fill-opacity=".22" stroke="${color}" stroke-width="1.4"/>`;
+  vals.forEach((v,i)=>{const [x,y]=pt(i,R*v); g+=`<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="1.8" fill="${color}"/>`;});
   D.dims.forEach((name,i)=>{
-    const [x,y]=pt(i,R+17);
+    const [x,y]=pt(i,R+11);
     const anchor = Math.abs(x-cx)<6 ? "middle" : (x>cx ? "start" : "end");
-    g+=`<text x="${x.toFixed(1)}" y="${(y+3.5).toFixed(1)}" fill="#8b95a7" font-size="10"
+    g+=`<text x="${x.toFixed(1)}" y="${(y+2.8).toFixed(1)}" fill="#8b95a7" font-size="8"
         text-anchor="${anchor}">${name}</text>`;
   });
-  return `<svg class="radar" width="224" height="188" viewBox="0 0 224 188">${g}</svg>`;
+  return `<svg class="radar" width="156" height="128" viewBox="0 0 156 128">${g}</svg>`;
+}
+
+/* ---------- 卡片 ---------- */
+function card(f){
+  const c = COLORS[f.tier] || "#8b9bb4";
+  const ex = f.excess===null ? "–" : signed(f.excess);
+  const exCls = f.excess>0 ? "pos" : (f.excess<0 ? "neg" : "");
+  const sel = state.sel===f.code ? " sel" : "";
+  return `<div class="card${sel}" data-code="${f.code}" style="--ac:${c}">
+    <div class="chead">
+      <div class="badge">${f.tier}</div>
+      <div style="min-width:0"><div class="name">${esc(f.name)}</div>
+        <div class="meta">${f.code}${f.quad?" · "+esc(f.quad):""}</div>
+      </div>
+      <div class="score"><b>${f.score.toFixed(1)}</b><span>SCORE</span></div>
+    </div>
+    ${radar(f.powers, c)}
+    <div class="stats">
+      <div>年化 <b>${pct(f.ann)}</b></div>
+      <div>超额 <b class="${exCls}">${ex}</b></div>
+      <div>回撤 <b>${pct(f.mdd)}</b></div>
+      <div>规模 <b>${f.aum===null?"–":f.aum.toFixed(1)+"亿"}</b></div>
+    </div>
+  </div>`;
 }
 
 function render(){
@@ -164,30 +262,239 @@ function render(){
   const sorted = shown.slice().sort((a,b)=>
     (ord[a.tier]-ord[b.tier]) || ((b[state.sort]??-1e9)-(a[state.sort]??-1e9)));
 
-  $("#grid").innerHTML = sorted.length ? sorted.map(f=>{
-    const c = COLORS[f.tier] || "#8b9bb4";
-    const ex = f.excess===null ? "–" : signed(f.excess);
-    const exCls = f.excess>0 ? "pos" : (f.excess<0 ? "neg" : "");
-    return `<div class="card" style="--ac:${c}">
-      <div class="chead">
-        <div class="badge">${f.tier}</div>
-        <div><div class="name">${esc(f.name)}</div>
-          <div class="meta">${f.code}${f.company?" · "+esc(f.company):""}${f.quad?" · "+esc(f.quad):""}</div>
-        </div>
-        <div class="score"><b>${f.score.toFixed(1)}</b><span>SCORE</span></div>
-      </div>
-      ${radar(f.powers, c)}
-      <div class="stats">
-        <div>年化 <b>${pct(f.ann)}</b></div>
-        <div>超额 <b class="${exCls}">${ex}</b></div>
-        <div>回撤 <b>${pct(f.mdd)}</b></div>
-        <div>规模 <b>${f.aum===null?"–":f.aum.toFixed(1)+"亿"}</b></div>
-      </div>
-    </div>`;
-  }).join("") : `<div class="empty">当前筛选没有基金</div>`;
+  $("#grid").innerHTML = sorted.length ? sorted.map(card).join("")
+    : `<div class="empty">当前筛选没有基金</div>`;
+
+  $("#grid").querySelectorAll(".card").forEach(el=>{
+    el.onclick = ()=>select(el.dataset.code);
+  });
 
   const nm = state.tiers.has("D") ? `（D 级仅展示前 ${Math.min(300,list.length)} 只）` : "";
-  $("#hint").textContent = `共 ${list.length} 只${nm} · 点击上方级别切换`;
+  $("#hint").textContent = `共 ${list.length} 只${nm} · 点击卡片在右栏查看实时与同业对比`;
+  if(!state.sel && sorted.length) select(sorted[0].code);
+}
+
+/* ---------- 右栏 ---------- */
+function tagOf(p){
+  if(p===null||p===undefined||isNaN(p)) return ["–",""];
+  if(p>=75) return ["优","hi"];
+  if(p<=25) return ["弱","lo"];
+  return ["中",""];
+}
+function pbar(p){
+  const v = (p===null||p===undefined||isNaN(p)) ? 0 : Math.max(0, Math.min(100, p));
+  const cls = v>=75 ? "hi" : (v<=25 ? "lo" : "");
+  return `<div class="pbar"><i class="${cls}" style="width:${v}%"></i></div>`;
+}
+function metricRow(label, value, p){
+  const [t, cls] = tagOf(p);
+  return `<div class="mrow"><div>${label}</div>
+    <div style="display:flex;align-items:center;gap:6px">
+      <span class="v" style="min-width:52px">${value}</span>${pbar(p)}
+    </div><div class="tag ${cls}">${t}</div></div>`;
+}
+function rangeBlock(title, r, navNow){
+  if(!r) return `<div class="range-row"><div class="range-hd"><span>${title}</span><span>无数据</span></div></div>`;
+  const [hi,dHi,lo,dLo,vsHi,vsLo] = r;
+  const cur = navNow || (lo*(1+vsLo));
+  const pos = Math.max(0, Math.min(1, (cur-lo)/(hi-lo || 1)))*100;
+  return `<div class="range-row">
+    <div class="range-hd"><span>${title}</span>
+      <span>当前位置 ${pos.toFixed(0)}%</span></div>
+    <div class="rbar"><b style="left:${pos}%"></b></div>
+    <div class="range-foot">
+      <span>低 ${numOr(lo,4)} · ${dLo} 天前</span>
+      <span>高 ${numOr(hi,4)} · ${dHi} 天前</span>
+    </div>
+  </div>`;
+}
+function industryBlock(ind){
+  if(!ind || !ind.top || !ind.top.length)
+    return `<div class="ind-note">未获取到行业配置（可能为新建基金或未披露）</div>`;
+  const max = Math.max(...ind.top.map(x=>x[1])) || 1;
+  const rows = ind.top.map(([n,p])=>`<div class="ind-row">
+      <div class="n" title="${esc(n)}">${esc(n)}</div><div class="v">${p.toFixed(1)}%</div></div>
+    <div class="ind-bar"><i style="width:${(p/max*100).toFixed(0)}%"></i></div>`).join("");
+  return rows + `<div class="ind-note">前三大合计 ${numOr(ind.conc,1,"%")} · 报告期 ${esc(ind.date)}</div>`;
+}
+
+let liveTimer = null;
+function clearLive(){ if(liveTimer){ clearInterval(liveTimer); liveTimer = null; } }
+
+function select(code){
+  const f = byCode[code];
+  if(!f) return;
+  state.sel = code;
+  document.querySelectorAll(".card").forEach(el=>{
+    el.classList.toggle("sel", el.dataset.code === code);
+  });
+  clearLive();
+
+  const c = COLORS[f.tier] || "#8b9bb4";
+  const pr = f.pr || [];
+  const w1 = f.w1 || [null,null,null];
+  const w2 = f.w2 || [null,null,null];
+
+  $("#side").innerHTML = `
+    <div class="shead" style="--ac:${c}">
+      <div class="badge">${f.tier}</div>
+      <div style="min-width:0">
+        <div class="sname">${esc(f.name)}</div>
+        <div class="smeta">${f.code} · ${esc(f.type||"未分类")}${f.company?" · "+esc(f.company):""}</div>
+      </div>
+      <div class="score" style="margin-left:auto"><b>${f.score.toFixed(1)}</b><span>SCORE</span></div>
+    </div>
+
+    <div class="sect"><h4>实时 <em id="rtTime"></em></h4>
+      <div class="rt" id="rt">
+        <div class="rt-top"><span class="rt-price" id="rtPrice">–</span>
+          <span class="rt-chg" id="rtChg">–</span></div>
+        <div class="rt-note" id="rtNote">正在识别是否为场内 ETF/LOF…</div>
+        <svg class="rt-chart" id="rtChart" viewBox="0 0 300 78" preserveAspectRatio="none"></svg>
+      </div>
+    </div>
+
+    <div class="sect"><h4>区间高低 <em>近 1 年 / 近 3 年</em></h4>
+      ${rangeBlock("近 1 年", f.r1, f.nav)}
+      ${rangeBlock("近 3 年", f.r3, f.nav)}
+      <div class="ind-note">最新净值 ${numOr(f.nav,4)} · ${esc(f.last||"–")}；高/低后数字为该点距今天数</div>
+    </div>
+
+    <div class="sect"><h4>同业对比度 <em>${esc(f.type||"")} 内分位</em></h4>
+      ${metricRow("夏普(5年)", numOr(f.sharpe,2), pr[0])}
+      ${metricRow("夏普(1年)", numOr(w1[2],2), pr[1])}
+      ${metricRow("近1年收益", pct(w1[0]), pr[2])}
+      ${metricRow("近2年收益", pct(w2[0]), pr[3])}
+      ${metricRow("稳定性(1年)", pct(w1[1]), pr[4])}
+      ${metricRow("最大回撤", pct(f.mdd), null)}
+      <div class="ind-note">分位条越靠右越优；稳定性按波动率反向计分</div>
+    </div>
+
+    <div class="sect"><h4>行业配置 <em>东财季报口径</em></h4>
+      ${industryBlock(f.ind)}
+    </div>
+  `;
+
+  if(isListedCandidate(f.code)) loadLive(f);
+  else renderValuation(f);
+}
+
+/* 场外：盘中估算 */
+function renderValuation(f){
+  if(!f.val){
+    if(!isListedCandidate(f.code)){
+      $("#rtPrice").textContent = numOr(f.nav, 4);
+      $("#rtChg").textContent = "净值";
+      $("#rtChg").className = "rt-chg";
+      $("#rtNote").innerHTML = `场外基金无实时价 · 最新净值 ${esc(f.last||"–")} <span class="rt-tag">非实时</span>`;
+    }
+    return;
+  }
+  const [est, chg, nav, day] = f.val;
+  $("#rtPrice").textContent = numOr(est ?? nav, 4);
+  if(chg!==null && chg!==undefined && !isNaN(chg)){
+    $("#rtChg").textContent = (chg>0?"+":"")+Number(chg).toFixed(2)+"%";
+    $("#rtChg").className = "rt-chg " + (chg>0?"pos":(chg<0?"neg":""));
+  }
+  $("#rtNote").innerHTML = `盘中估算 ${esc(day||"")} · 公布净值 ${numOr(nav,4)} <span class="rt-tag">估算·非实时</span>`;
+}
+
+/* 场内：东财 push2 JSONP */
+const marketGuess = code => {
+  if(/^(5|6|9)/.test(code)) return "1";      // 沪市
+  return "0";                                 // 深市
+};
+function isListedCandidate(code){
+  // 场内代码常见前缀：51/56/58/50（沪 ETF/LOF）、159/15/16/18（深 ETF/LOF）
+  return /^(5[0-9]|159|15|16|18)/.test(code);
+}
+function jsonp(url){
+  return new Promise((resolve, reject)=>{
+    const name = "__cb" + Math.random().toString(36).slice(2);
+    const s = document.createElement("script");
+    const done = ok => { delete window[name]; s.remove(); };
+    window[name] = data => { done(); resolve(data); };
+    s.onerror = () => { done(); reject(new Error("network")); };
+    s.src = url + "&cb=" + name;
+    document.head.appendChild(s);
+    setTimeout(()=>{ if(window[name]){ done(); reject(new Error("timeout")); } }, 8000);
+  });
+}
+function fmtPrice(v, dec){
+  if(v===null||v===undefined) return "–";
+  return (v / Math.pow(10, dec||2)).toFixed(dec||2);
+}
+async function loadLive(f){
+  const code = f.code;
+  const mkts = marketGuess(code) === "1" ? ["1","0"] : ["0","1"];
+  let q = null, secid = null, netErr = 0;
+  for(const m of mkts){
+    try{
+      const d = await jsonp(`https://push2.eastmoney.com/api/qt/stock/get?secid=${m}.${code}&fields=f43,f57,f58,f59,f60,f170,f46&_=${Date.now()}`);
+      if(d && d.data && d.data.f43 !== undefined && d.data.f43 !== "-"){
+        q = d.data; secid = m + "." + code; break;
+      }
+    }catch(e){ netErr++; }
+  }
+  if(!q){
+    $("#rtPrice").textContent = numOr(f.nav, 4);
+    $("#rtChg").textContent = "净值";
+    $("#rtChg").className = "rt-chg";
+    $("#rtNote").innerHTML = netErr >= mkts.length
+      ? `行情接口暂不可用（可能被限流）· 最新净值 ${esc(f.last||"–")} <span class="rt-tag">非实时</span>`
+      : `未识别为场内品种 · 最新净值 ${esc(f.last||"–")} <span class="rt-tag">非实时</span>`;
+    return;
+  }
+  const dec = Number(q.f59 || 2);
+  const price = q.f43 / Math.pow(10, dec);
+  const chg = (q.f170 === null || q.f170 === undefined) ? null : q.f170 / 100;
+  $("#rtPrice").textContent = price.toFixed(dec);
+  if(chg!==null){
+    $("#rtChg").textContent = (chg>0?"+":"")+chg.toFixed(2)+"%";
+    $("#rtChg").className = "rt-chg " + (chg>0?"pos":(chg<0?"neg":""));
+  }
+  $("#rtNote").innerHTML = `${esc(q.f58||"")} · 实时价 <span class="rt-tag">盘中</span>`;
+  $("#rtTime").textContent = new Date().toLocaleTimeString("zh-CN", {hour12:false});
+  await drawIntraday(secid, q.f60 / Math.pow(10, dec));
+  liveTimer = setInterval(async ()=>{
+    if(document.hidden) return;
+    try{
+      const d = await jsonp(`https://push2.eastmoney.com/api/qt/stock/get?secid=${secid}&fields=f43,f59,f60,f170,f58&_=${Date.now()}`);
+      if(d && d.data && d.data.f43 !== undefined){
+        const p2 = d.data.f43 / Math.pow(10, Number(d.data.f59||2));
+        $("#rtPrice").textContent = p2.toFixed(Number(d.data.f59||2));
+        const c2 = d.data.f170 / 100;
+        $("#rtChg").textContent = (c2>0?"+":"")+c2.toFixed(2)+"%";
+        $("#rtChg").className = "rt-chg " + (c2>0?"pos":(c2<0?"neg":""));
+        $("#rtTime").textContent = new Date().toLocaleTimeString("zh-CN", {hour12:false});
+        await drawIntraday(secid, d.data.f60 / Math.pow(10, Number(d.data.f59||2)));
+      }
+    }catch(e){}
+  }, 30000);
+}
+async function drawIntraday(secid, preClose){
+  let d = null;
+  try{
+    d = await jsonp(`https://push2his.eastmoney.com/api/qt/stock/trends2/get?secid=${secid}&fields1=f1,f2,f3,f4,f5,f6,f7,f8&fields2=f51,f53&iscr=0&ndays=1&_=${Date.now()}`);
+  }catch(e){ return; }
+  const trends = d && d.data && d.data.trends;
+  if(!trends || trends.length < 2) return;
+  const pts = trends.map(t => { const p = t.split(","); return Number(p[1]); }).filter(v => !isNaN(v));
+  if(pts.length < 2) return;
+  const lo = Math.min(...pts, preClose), hi = Math.max(...pts, preClose);
+  const W = 300, H = 78, pad = 4;
+  const x = i => pad + i * (W - pad*2) / (pts.length - 1);
+  const y = v => H - pad - (v - lo) / ((hi - lo) || 1) * (H - pad*2);
+  const line = pts.map((v,i)=>`${x(i).toFixed(1)},${y(v).toFixed(1)}`).join(" ");
+  const up = pts[pts.length-1] >= preClose;
+  const color = up ? "#ff7b72" : "#67d391";
+  const area = `${pad},${H-pad} ${line} ${(W-pad).toFixed(1)},${H-pad}`;
+  $("#rtChart").style.display = "block";
+  $("#rtChart").innerHTML = `
+    <line x1="${pad}" y1="${y(preClose).toFixed(1)}" x2="${W-pad}" y2="${y(preClose).toFixed(1)}"
+      stroke="#39414f" stroke-width="1" stroke-dasharray="3 3"/>
+    <polygon points="${area}" fill="${color}" fill-opacity=".10"/>
+    <polyline points="${line}" fill="none" stroke="${color}" stroke-width="1.4" stroke-linejoin="round"/>`;
 }
 
 function chips(){
@@ -205,6 +512,7 @@ function init(){
   $("#kTotal").textContent = D.funds.length;
   $("#kPass").textContent = D.funds.filter(f=>f.tier!=="D"&&f.tier!=="E").length;
   $("#kRef").textContent = pct(D.ref);
+  $("#builtAt").textContent = D.builtAt || "–";
   const total = D.funds.length || 1;
   $("#distBar").innerHTML = D.tiers.map(t=>{
     const w = D.counts[t]/total*100;
