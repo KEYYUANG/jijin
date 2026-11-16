@@ -38,7 +38,6 @@ DIM_NAMES = ["收益", "抗跌", "性价比", "稳定", "风格", "经理", "规
 RF = 0.02
 INDUSTRY_CACHE = os.path.join(CACHE, "industry.json")
 INTRADAY = os.path.join(BASE, "state", "intraday.json")
-IDX_CACHE = os.path.join(CACHE, "idx300.json")
 
 
 def read(name, **kw):
@@ -275,14 +274,16 @@ def load_intraday() -> dict | None:
         return None
 
 
-def load_index_daily() -> pd.Series | None:
-    """沪深300 日线收盘（东财 kline），缓存 12 小时；失败时退回旧缓存。"""
+def load_index_daily(secid: str = "1.000300",
+                     cache_name: str = "idx300.json") -> pd.Series | None:
+    """指数日线收盘（东财 kline），缓存 12 小时；失败时退回旧缓存。"""
+    cache_path = os.path.join(CACHE, cache_name)
     data = None
-    fresh = (os.path.exists(IDX_CACHE)
-             and time.time() - os.path.getmtime(IDX_CACHE) < 12 * 3600)
+    fresh = (os.path.exists(cache_path)
+             and time.time() - os.path.getmtime(cache_path) < 12 * 3600)
     if fresh:
         try:
-            with open(IDX_CACHE, encoding="utf-8") as f:
+            with open(cache_path, encoding="utf-8") as f:
                 data = json.load(f)
         except Exception:  # noqa: BLE001
             data = None
@@ -291,7 +292,7 @@ def load_index_daily() -> pd.Series | None:
             import requests
             r = requests.get(
                 "https://push2his.eastmoney.com/api/qt/stock/kline/get",
-                params={"secid": "1.000300", "fields1": "f1,f2,f3,f4,f5,f6",
+                params={"secid": secid, "fields1": "f1,f2,f3,f4,f5,f6",
                         "fields2": "f51,f53", "klt": 101, "fqt": 0,
                         "end": "20500101", "lmt": 700,
                         "ut": "fa5fd1943c7b386f172d6893dbfba10b"},
@@ -306,13 +307,13 @@ def load_index_daily() -> pd.Series | None:
             if rows:
                 data = rows
                 os.makedirs(CACHE, exist_ok=True)
-                with open(IDX_CACHE, "w", encoding="utf-8") as f:
+                with open(cache_path, "w", encoding="utf-8") as f:
                     json.dump(rows, f, ensure_ascii=False)
         except Exception as exc:  # noqa: BLE001
-            print(f"      沪深300 日线获取失败：{exc}")
-        if data is None and os.path.exists(IDX_CACHE):
+            print(f"      {cache_name} 日线获取失败：{exc}")
+        if data is None and os.path.exists(cache_path):
             try:
-                with open(IDX_CACHE, encoding="utf-8") as f:
+                with open(cache_path, encoding="utf-8") as f:
                     data = json.load(f)
             except Exception:  # noqa: BLE001
                 data = None
@@ -323,7 +324,7 @@ def load_index_daily() -> pd.Series | None:
 
 
 def betas_for(nav: dict, codes: list[str], idx: pd.Series | None) -> dict:
-    """相对沪深300 的日收益 β（近 250 日），用于缺失盘中估值时的近似。"""
+    """相对上证指数的日收益 β（近 250 日），用于缺失盘中估值时的近似。"""
     if idx is None or idx.empty:
         return {}
     ir = idx.pct_change().dropna()
@@ -346,10 +347,13 @@ def betas_for(nav: dict, codes: list[str], idx: pd.Series | None) -> dict:
 
 
 def market_pred(intraday: dict) -> dict | None:
-    """大盘方向打分：指数涨跌 + 估值广度 + 近 30 分钟斜率。"""
+    """大盘方向打分：上证 + 沪深300 平均涨跌 + 估值广度 + 近 30 分钟斜率。"""
     idx = intraday.get("index") or {}
+    idx2 = intraday.get("index2") or {}
+    chg1, chg2 = idx.get("chg"), idx2.get("chg")
+    chgs = [c for c in (chg1, chg2) if c is not None]
+    chg = sum(chgs) / len(chgs) if chgs else None
     br = intraday.get("breadth") or {}
-    chg = idx.get("chg")
     upr = br.get("upRatio")
     trend = idx.get("trend") or []
     tail = None
@@ -361,7 +365,10 @@ def market_pred(intraday: dict) -> dict | None:
     score, reasons = 0.0, []
     if chg is not None:
         score += 0.45 * np.tanh(chg / 1.2)
-        reasons.append(f"沪深300 {chg:+.2f}%，日内{'偏强' if chg > 0 else '偏弱'}")
+        if chg1 is not None and chg2 is not None:
+            reasons.append(f"上证指数 {chg1:+.2f}% · 沪深300 {chg2:+.2f}%")
+        else:
+            reasons.append(f"大盘 {chg:+.2f}%，日内{'偏强' if chg > 0 else '偏弱'}")
     if upr is not None:
         score += 0.25 * np.tanh((upr - 50) / 25)
         reasons.append(f"指数基金估值上涨 {br.get('up')} 只 / 下跌 {br.get('down')} 只"
@@ -516,7 +523,9 @@ def build_records():
         print(f"      当日预测：快照 {intraday.get('date')} {intraday.get('time')}，"
               f"β 覆盖 {len(betas)} 只" + (f"，大盘{mkt['dir']}" if mkt else ""))
     intra_funds = (intraday or {}).get("funds") or {}
-    idx_chg = ((intraday or {}).get("index") or {}).get("chg")
+    idx_chg = ((intraday or {}).get("index2") or {}).get("chg")
+    if idx_chg is None:
+        idx_chg = ((intraday or {}).get("index") or {}).get("chg")
 
     recs = []
     for _, r in t.iterrows():
@@ -564,7 +573,7 @@ def build_records():
 
 
 def index_year(idx: pd.Series | None) -> dict | None:
-    """沪深300 近 1 年走势（首日=100），用于顶部右侧曲线。"""
+    """上证指数近 1 年走势（首日=100），用于顶部右侧曲线。"""
     if idx is None or len(idx) < 60:
         return None
     seg = idx.iloc[-252:]
@@ -587,11 +596,14 @@ def main():
     snap = None
     if intraday:
         idx_now = intraday.get("index") or {}
-        idx_now["year"] = index_year(load_index_daily())
+        idx_now["year"] = index_year(load_index_daily("1.000001", "idx001.json"))
+        idx_now2 = intraday.get("index2") or {}
+        idx_now2["year"] = index_year(load_index_daily())
         snap = {
             "date": intraday.get("date"), "time": intraday.get("time"),
             "stamp": intraday.get("stamp"),
             "index": idx_now,
+            "index2": idx_now2,
             "breadth": intraday.get("breadth") or {},
             "pred": mkt,
             "covered": sum(1 for r in recs if r.get("pred")),

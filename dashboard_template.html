@@ -53,9 +53,13 @@
     align-items:center;background:var(--panel);border:1px solid var(--line);border-radius:9px;
     padding:6px 10px 5px;margin-bottom:8px}
   .mkt-name{font-size:10px;color:var(--dim2);letter-spacing:.6px;display:flex;align-items:center;gap:5px}
-  .mkt-price{display:flex;align-items:baseline;gap:7px;margin-top:1px}
-  .mkt-price b{font-size:17px;font-weight:600;font-variant-numeric:tabular-nums}
-  .mkt-price span{font-size:11px;font-weight:600;font-variant-numeric:tabular-nums}
+  .mkt-quote{display:flex;align-items:baseline;gap:5px;margin-top:1px}
+  .mkt-quote span{font-size:9.5px;color:var(--dim2);width:38px;flex:none}
+  .mkt-quote b{font-size:14px;font-weight:600;font-variant-numeric:tabular-nums}
+  .mkt-quote em{font-style:normal;font-size:10px;font-weight:600;font-variant-numeric:tabular-nums}
+  .mkt-lg{display:inline-flex;align-items:center;gap:3px;font-size:9px;color:var(--dim2)}
+  .mkt-lg i{display:inline-block;width:8px;height:2px;border-radius:1px;margin:0 2px 0 5px}
+  .mkt-lg:first-child i:first-child{margin-left:0}
   .mkt-note{font-size:9.5px;color:var(--dim2);margin-top:2px;white-space:nowrap;
     overflow:hidden;text-overflow:ellipsis}
   .mkt-cell{min-width:0;border-left:1px solid var(--line);padding-left:9px}
@@ -198,12 +202,16 @@
 
   <div class="mkt" id="mkt" style="display:none">
     <div>
-      <div class="mkt-name"><span id="mkName">沪深300</span></div>
-      <div class="mkt-price"><b id="mkPrice">–</b><span id="mkChg">–</span></div>
+      <div class="mkt-name">大盘实时</div>
+      <div class="mkt-quote"><span>上证</span><b id="mkP1">–</b><em id="mkC1">–</em></div>
+      <div class="mkt-quote"><span>沪深300</span><b id="mkP2">–</b><em id="mkC2">–</em></div>
       <div class="mkt-note" id="mkNote">–</div>
     </div>
     <div class="mkt-cell">
-      <div class="mkt-lab"><span>当日分时</span><span id="mkIntraTag">–</span></div>
+      <div class="mkt-lab"><span>当日分时
+        <span class="mkt-lg"><i style="background:#f2c14e"></i>上证</span>
+        <span class="mkt-lg"><i style="background:#57c7d4"></i>沪深300</span></span>
+        <span id="mkIntraTag">–</span></div>
       <svg id="mkIntraChart" viewBox="0 0 600 46" preserveAspectRatio="none"></svg>
       <div class="mkt-axis" id="mkIntraAxis"></div>
     </div>
@@ -246,7 +254,7 @@
     区间高低取近 1 年与近 3 年，标注最高/最低点距今天数；行业为东财披露的行业配置（季报口径）。<br>
     场内 ETF/LOF 的价格与当日分时为打开页面时通过东财接口拉取（约 30 秒刷新）；场外基金无实时价，
     展示盘中估算净值，仅供参考。<br>
-    当日预测：每个交易日 14:30（北京时间）记录沪深300 点位、当日分时与指数基金估值涨跌广度；
+    当日预测：每个交易日 14:30（北京时间）记录上证指数与沪深300 的点位、当日分时及指数基金估值涨跌广度；
     右栏给出该基金方向判断、14:30 价格在近 20/60/120/250 个交易日区间中的分位与风险提示式建议。
     该判断为规则打分的启发式结果，不构成投资建议。<br>
     数据构建时间：<span id="builtAt">–</span>
@@ -672,63 +680,88 @@ async function drawIntraday(secid, preClose){
 }
 
 /* ---------- 顶部大盘：左当日分时 + 右近 1 年 ---------- */
-const MK = {pre:null};
+const MK = {pre:null, pre2:null};
+const MKC = {sse:"#f2c14e", csi:"#57c7d4"};
 
-function drawSpark(svgSel, axisSel, pts, ref, labels){
+function drawLines(svgSel, axisSel, series, labels){
   const svg = $(svgSel), ax = $(axisSel);
-  if(!svg || !pts || pts.length < 2) return;
+  const items = (series||[]).filter(s=>s.pts && s.pts.length > 1);
+  if(!svg || !items.length) return;
   const W = 600, H = 46, pad = 2;
-  const vals = pts.map(p=>p[1]);
-  const base = (ref===null||ref===undefined) ? vals[0] : ref;
-  const lo = Math.min(...vals, base), hi = Math.max(...vals, base);
-  const x = i => pad + i*(W-pad*2)/(pts.length-1);
+  let vals = [];
+  items.forEach(s=>{ vals = vals.concat(s.pts.map(p=>p[1])); });
+  const lo = Math.min(...vals), hi = Math.max(...vals);
+  const n = Math.max(...items.map(s=>s.pts.length));
+  const x = i => pad + i*(W-pad*2)/(n-1);
   const y = v => H-pad - (v-lo)/((hi-lo)||1)*(H-pad*2);
-  const line = pts.map((p,i)=>`${x(i).toFixed(1)},${y(p[1]).toFixed(1)}`).join(" ");
-  const last = vals[vals.length-1];
-  const color = last >= base ? "#ff7b72" : "#67d391";
-  svg.innerHTML = `
-    <line x1="${pad}" y1="${y(base).toFixed(1)}" x2="${W-pad}" y2="${y(base).toFixed(1)}"
-      stroke="#39414f" stroke-width="1" stroke-dasharray="4 4"/>
-    <polygon points="${pad},${H-pad} ${line} ${(W-pad).toFixed(1)},${H-pad}"
-      fill="${color}" fill-opacity=".10"/>
-    <polyline points="${line}" fill="none" stroke="${color}" stroke-width="1.5" stroke-linejoin="round"/>
-    <circle cx="${x(pts.length-1).toFixed(1)}" cy="${y(last).toFixed(1)}" r="2.4" fill="${color}"/>`;
+  let inner = "";
+  items.forEach(s=>{
+    const line = s.pts.map((p,i)=>`${x(i).toFixed(1)},${y(p[1]).toFixed(1)}`).join(" ");
+    inner += `<polyline points="${line}" fill="none" stroke="${s.color}"
+      stroke-width="1.4" stroke-linejoin="round" vector-effect="non-scaling-stroke"/>`;
+    const last = s.pts[s.pts.length-1];
+    inner += `<circle cx="${x(s.pts.length-1).toFixed(1)}" cy="${y(last[1]).toFixed(1)}"
+      r="2.2" fill="${s.color}"/>`;
+  });
+  svg.innerHTML = inner;
   if(labels && ax) ax.innerHTML = labels.map(t=>`<span>${esc(t)}</span>`).join("");
 }
 
-function drawMarketIntraday(points, preClose){
-  if(!points || points.length < 2) return;
-  drawSpark("#mkIntraChart", "#mkIntraAxis", points, preClose,
-    [points[0][0], points[Math.floor(points.length/2)][0], points[points.length-1][0]]);
+function timeLabels(trend){
+  if(!trend || trend.length < 2) return [];
+  return [trend[0][0], trend[Math.floor(trend.length/2)][0], trend[trend.length-1][0]];
+}
+
+function setQuote(prefix, idx){
+  if(!idx) return;
+  if(idx.price !== null && idx.price !== undefined)
+    $("#mkP" + prefix).textContent = Number(idx.price).toFixed(2);
+  const c = idx.chg;
+  const el = $("#mkC" + prefix);
+  el.textContent = (c===null||c===undefined) ? "–" : (c>0?"+":"") + Number(c).toFixed(2) + "%";
+  el.className = (c===null||c===undefined) ? "" : (c>0?"dir-up":(c<0?"dir-dn":"dir-flat"));
+}
+
+function pctSpan(v){
+  const c = Number(v) * 100;
+  return `<b class="${c>0?'dir-up':(c<0?'dir-dn':'dir-flat')}">${c>0?"+":""}${c.toFixed(1)}%</b>`;
 }
 
 function renderMarket(){
   const m = D.intraday;
   if(!m) return;
   $("#mkt").style.display = "grid";
-  const idx = m.index || {};
-  $("#mkName").textContent = idx.name || "沪深300";
-  if(idx.price !== null && idx.price !== undefined){
-    $("#mkPrice").textContent = Number(idx.price).toFixed(2);
-    const c = idx.chg;
-    $("#mkChg").textContent = (c===null||c===undefined) ? "–"
-      : (c>0?"+":"") + Number(c).toFixed(2) + "%";
-    $("#mkChg").className = (c===null||c===undefined) ? ""
-      : (c>0?"dir-up":(c<0?"dir-dn":"dir-flat"));
-  }
+  const idx = m.index || {}, idx2 = m.index2 || {};
+  setQuote("1", idx);
+  setQuote("2", idx2);
   MK.pre = (idx.preClose===null||idx.preClose===undefined) ? null : Number(idx.preClose);
-  if(idx.trend && idx.trend.length >= 2){
-    drawMarketIntraday(idx.trend, MK.pre);
-    $("#mkIntraTag").textContent = idx.trendDate || "";
+  MK.pre2 = (idx2.preClose===null||idx2.preClose===undefined) ? null : Number(idx2.preClose);
+
+  const intra = [];
+  if(idx.trend && idx.trend.length > 1)
+    intra.push({pts: idx.trend, color: MKC.sse});
+  if(idx2.trend && idx2.trend.length > 1)
+    intra.push({pts: idx2.trend, color: MKC.csi});
+  if(intra.length){
+    drawLines("#mkIntraChart", "#mkIntraAxis", intra, timeLabels(idx.trend || idx2.trend));
+    $("#mkIntraTag").textContent = idx.trendDate || idx2.trendDate || "";
   }
-  const yr = idx.year;
-  if(yr && yr.v && yr.v.length > 1){
-    const pts = yr.v.map((v,i)=>[i, v]);
-    drawSpark("#mkYearChart", "#mkYearAxis", pts, 100, yr.d);
-    const c = Number(yr.chg) * 100;
-    $("#mkYearTag").innerHTML = `<b class="${c>0?'dir-up':(c<0?'dir-dn':'dir-flat')}">`
-      + `${c>0?"+":""}${c.toFixed(2)}%</b>`;
+
+  const years = [];
+  let ydates = [];
+  if(idx.year && idx.year.v && idx.year.v.length > 1){
+    years.push({pts: idx.year.v.map((v,i)=>[i, v]), color: MKC.sse});
+    ydates = idx.year.d;
   }
+  if(idx2.year && idx2.year.v && idx2.year.v.length > 1)
+    years.push({pts: idx2.year.v.map((v,i)=>[i, v]), color: MKC.csi});
+  if(years.length){
+    drawLines("#mkYearChart", "#mkYearAxis", years, ydates);
+    $("#mkYearTag").innerHTML =
+      `<span class="mkt-lg"><i style="background:${MKC.sse}"></i>${pctSpan(idx.year && idx.year.chg)}</span>`
+      + `<span class="mkt-lg"><i style="background:${MKC.csi}"></i>${pctSpan(idx2.year && idx2.year.chg)}</span>`;
+  }
+
   const b = m.breadth || {};
   if(b.total){
     $("#mkBreadth").innerHTML = `指数基金估值 涨 <b class="dir-up">${b.up}</b> / 跌 <b class="dir-dn">${b.down}</b>`
@@ -744,31 +777,48 @@ function renderMarket(){
 async function refreshMarket(){
   if(document.hidden || !D.intraday) return;
   try{
-    const d = await jsonp(`https://push2.eastmoney.com/api/qt/ulist.np/get?secids=1.000300&fields=f2,f3,f14,f15,f16,f18&_=${Date.now()}`);
-    const row = d && d.data && d.data.diff && d.data.diff[0];
-    if(row && row.f2 !== undefined && row.f2 !== "-"){
-      const price = Number(row.f2)/100, pre = Number(row.f18)/100, chg = Number(row.f3)/100;
+    const d = await jsonp(`https://push2.eastmoney.com/api/qt/ulist.np/get?secids=1.000001,1.000300&fields=f2,f3,f12,f14,f18&_=${Date.now()}`);
+    const rows = (d && d.data && d.data.diff) || [];
+    const byCode = {};
+    rows.forEach(r=>{ byCode[String(r.f12)] = r; });
+    const sse = byCode["000001"], csi = byCode["000300"];
+    if(sse && sse.f2 !== undefined && sse.f2 !== "-"){
+      const price = Number(sse.f2)/100, pre = Number(sse.f18)/100, chg = Number(sse.f3)/100;
       if(isFinite(price)){
-        $("#mkPrice").textContent = price.toFixed(2);
-        $("#mkChg").textContent = (chg>0?"+":"") + chg.toFixed(2) + "%";
-        $("#mkChg").className = chg>0?"dir-up":(chg<0?"dir-dn":"dir-flat");
+        setQuote("1", {price: price, chg: chg});
         MK.pre = pre;
       }
     }
-    const k = await jsonp(`https://push2his.eastmoney.com/api/qt/stock/kline/get?secid=1.000300&fields1=f1,f2,f3,f4,f5,f6&fields2=f51,f53&klt=5&fqt=0&end=20500101&lmt=120&ut=fa5fd1943c7b386f172d6893dbfba10b&_=${Date.now()}`);
-    const kl = (k && k.data && k.data.klines) || [];
-    if(kl.length){
+    if(csi && csi.f2 !== undefined && csi.f2 !== "-"){
+      const price2 = Number(csi.f2)/100, pre2 = Number(csi.f18)/100, chg2 = Number(csi.f3)/100;
+      if(isFinite(price2)){
+        setQuote("2", {price: price2, chg: chg2});
+        MK.pre2 = pre2;
+      }
+    }
+    const [k1, k2] = await Promise.all([
+      jsonp(`https://push2his.eastmoney.com/api/qt/stock/kline/get?secid=1.000001&fields1=f1,f2,f3,f4,f5,f6&fields2=f51,f53&klt=5&fqt=0&end=20500101&lmt=120&ut=fa5fd1943c7b386f172d6893dbfba10b&_=${Date.now()}`),
+      jsonp(`https://push2his.eastmoney.com/api/qt/stock/kline/get?secid=1.000300&fields1=f1,f2,f3,f4,f5,f6&fields2=f51,f53&klt=5&fqt=0&end=20500101&lmt=120&ut=fa5fd1943c7b386f172d6893dbfba10b&_=${Date.now()}`)
+    ]);
+    const parse = k => {
+      const kl = (k && k.data && k.data.klines) || [];
+      if(!kl.length) return {pts: [], day: ""};
       const day = kl[kl.length-1].split(" ")[0];
       const pts = kl.filter(x=>x.indexOf(day)===0).map(x=>{
         const p = x.split(",");
         return [p[0].slice(11,16), Number(p[1])];
       }).filter(p=>!isNaN(p[1]));
-      if(pts.length >= 2){
-        drawMarketIntraday(pts, MK.pre);
-        $("#mkIntraTag").textContent = day;
-        $("#mkNote").textContent = `快照 ${D.intraday.date||""} ${D.intraday.time||""} · 实时刷新 `
-          + new Date().toLocaleTimeString("zh-CN", {hour12:false});
-      }
+      return {pts: pts, day: day};
+    };
+    const a = parse(k1), b2 = parse(k2);
+    const series = [];
+    if(a.pts.length > 1) series.push({pts: a.pts, color: MKC.sse});
+    if(b2.pts.length > 1) series.push({pts: b2.pts, color: MKC.csi});
+    if(series.length){
+      drawLines("#mkIntraChart", "#mkIntraAxis", series, timeLabels(a.pts.length > 1 ? a.pts : b2.pts));
+      $("#mkIntraTag").textContent = a.day || b2.day;
+      $("#mkNote").textContent = `快照 ${D.intraday.date||""} ${D.intraday.time||""} · 实时刷新 `
+        + new Date().toLocaleTimeString("zh-CN", {hour12:false});
     }
   }catch(e){}
 }

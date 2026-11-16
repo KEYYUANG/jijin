@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-"""交易日 14:30 快照：沪深300 实时点位/当日分时 + 全市场估值涨跌广度 + 覆盖基金估值。
+"""交易日 14:30 快照：上证指数实时点位/当日分时 + 全市场估值涨跌广度 + 覆盖基金估值。
 
 输出 state/intraday.json，由 make_dashboard.py 读取生成“当日走势预测 + 价格分位 + 建议”。
 只做一次东财请求，避免触发 push2 限流。
@@ -18,7 +18,6 @@ STATE = os.path.join(BASE, "state")
 DST = os.path.join(STATE, "intraday.json")
 BJ = timezone(timedelta(hours=8))
 
-INDEX_SECID = "1.000300"
 HEADERS = {
     "User-Agent": ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
                    "(KHTML, like Gecko) Chrome/124.0 Safari/537.36"),
@@ -38,30 +37,37 @@ def fetch_json(url, params, tries=3):
     return None
 
 
-def index_snapshot() -> dict | None:
-    # push2 单只 quote 接口易被断连，改用 ulist 批量接口（同一域名，稳定）
+INDEXES = [("1.000001", "上证指数"), ("1.000300", "沪深300")]
+
+
+def index_snapshots() -> dict:
+    """一次 ulist 批量取两个指数，返回 {'index': 上证, 'index2': 沪深300}。"""
     d = fetch_json("https://push2.eastmoney.com/api/qt/ulist.np/get",
-                   {"secids": INDEX_SECID, "fields": "f2,f3,f12,f14,f15,f16,f18"})
+                   {"secids": ",".join(s for s, _ in INDEXES),
+                    "fields": "f2,f3,f12,f14,f15,f16,f18"})
     rows = ((d or {}).get("data") or {}).get("diff") or []
-    if not rows:
-        return None
-    q = rows[0]
-    try:
-        price = float(q["f2"]) / 100
-        pre = float(q["f18"]) / 100
-        chg = float(q["f3"]) / 100
-    except (TypeError, ValueError, KeyError):
-        return None
-    return {"name": q.get("f14") or "沪深300", "price": round(price, 2),
-            "preClose": round(pre, 2), "chg": round(chg, 2),
-            "high": round(float(q["f15"]) / 100, 2) if q.get("f15") not in (None, "-") else None,
-            "low": round(float(q["f16"]) / 100, 2) if q.get("f16") not in (None, "-") else None}
+    out = {}
+    keys = ["index", "index2"]
+    for key, row in zip(keys, rows):
+        try:
+            price = float(row["f2"]) / 100
+            pre = float(row["f18"]) / 100
+            chg = float(row["f3"]) / 100
+        except (TypeError, ValueError, KeyError):
+            continue
+        out[key] = {
+            "name": row.get("f14") or dict(INDEXES).get("1." + str(row.get("f12")), ""),
+            "price": round(price, 2), "preClose": round(pre, 2), "chg": round(chg, 2),
+            "high": round(float(row["f15"]) / 100, 2) if row.get("f15") not in (None, "-") else None,
+            "low": round(float(row["f16"]) / 100, 2) if row.get("f16") not in (None, "-") else None,
+        }
+    return out
 
 
-def index_trend() -> tuple[list, str]:
+def index_trend(secid: str) -> tuple[list, str]:
     """5 分钟 K 线近似当日分时；非交易时段返回最近一个交易日。"""
     d = fetch_json("https://push2his.eastmoney.com/api/qt/stock/kline/get",
-                   {"secid": INDEX_SECID,
+                   {"secid": secid,
                     "fields1": "f1,f2,f3,f4,f5,f6", "fields2": "f51,f53",
                     "klt": 5, "fqt": 0, "end": "20500101", "lmt": 120,
                     "ut": "fa5fd1943c7b386f172d6893dbfba10b"})
@@ -81,10 +87,10 @@ def index_trend() -> tuple[list, str]:
     return out, day
 
 
-def index_from_kline() -> dict | None:
+def index_from_kline(secid: str, name: str) -> dict | None:
     """兜底：用日线最后两根算点位与涨跌幅（盘中最后一根为实时值）。"""
     d = fetch_json("https://push2his.eastmoney.com/api/qt/stock/kline/get",
-                   {"secid": INDEX_SECID,
+                   {"secid": secid,
                     "fields1": "f1,f2,f3,f4,f5,f6", "fields2": "f51,f53",
                     "klt": 101, "fqt": 0, "end": "20500101", "lmt": 3,
                     "ut": "fa5fd1943c7b386f172d6893dbfba10b"})
@@ -100,7 +106,7 @@ def index_from_kline() -> dict | None:
     if len(closes) < 2 or not closes[-2]:
         return None
     price, pre = closes[-1], closes[-2]
-    return {"name": "沪深300", "price": round(price, 2), "preClose": round(pre, 2),
+    return {"name": name, "price": round(price, 2), "preClose": round(pre, 2),
             "chg": round((price / pre - 1) * 100, 2), "high": None, "low": None}
 
 
@@ -202,14 +208,20 @@ def main():
     codes = tier_codes()
     print(f"      覆盖基金 {len(codes)} 只（S/A/B/C）")
 
-    idx = index_snapshot()
-    if not idx:
-        print("      ulist 实时接口不可用，改用日线兜底")
-        idx = index_from_kline()
-    if not idx:
-        print("      指数数据不可用，仅记录估值快照")
+    idxs = index_snapshots()
+    for key, secid, name in (
+            ("index", "1.000001", "上证指数"), ("index2", "1.000300", "沪深300")):
+        if not idxs.get(key):
+            print(f"      {name} 实时接口不可用，改用日线兜底")
+            fb = index_from_kline(secid, name)
+            if fb:
+                idxs[key] = fb
 
-    trend, trend_day = index_trend()
+    trends, days = {}, {}
+    for key, secid, _ in (("index", "1.000001", "上证指数"),
+                          ("index2", "1.000300", "沪深300")):
+        trends[key], days[key] = index_trend(secid)
+    trend_day = days.get("index") or days.get("index2") or ""
     if trend_day and trend_day != today:
         print(f"      分时日期 {trend_day} 非今日 {today}，疑似休市，不覆盖快照")
         return
@@ -222,10 +234,13 @@ def main():
         print(f"      场内报价 {len(quotes)} 只")
 
     payload = {
-        "date": now.strftime("%Y-%m-%d"),
+        "date": today,
         "time": now.strftime("%H:%M"),
         "stamp": now.strftime("%Y-%m-%d %H:%M:%S"),
-        "index": dict(idx or {}, trend=trend, trendDate=trend_day),
+        "index": dict(idxs.get("index") or {}, trend=trends["index"],
+                      trendDate=days.get("index")),
+        "index2": dict(idxs.get("index2") or {}, trend=trends["index2"],
+                       trendDate=days.get("index2")),
         "breadth": breadth,
         "funds": funds,
     }
@@ -234,9 +249,10 @@ def main():
     with open(tmp, "w", encoding="utf-8") as f:
         json.dump(payload, f, ensure_ascii=False)
     os.replace(tmp, DST)
-    print(f"已写入 {DST}：指数 {idx and idx['price']}（{idx and idx['chg']}%），"
-          f"广度 {breadth.get('up')}/{breadth.get('down')}，基金 {len(funds)} 只，"
-          f"分时 {len(trend)} 点")
+    sse, csi = payload["index"], payload["index2"]
+    print(f"已写入 {DST}：上证 {sse.get('price')}（{sse.get('chg')}%），"
+          f"沪深300 {csi.get('price')}（{csi.get('chg')}%），"
+          f"广度 {breadth.get('up')}/{breadth.get('down')}，基金 {len(funds)} 只")
 
 
 if __name__ == "__main__":
