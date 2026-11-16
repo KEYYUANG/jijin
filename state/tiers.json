@@ -560,7 +560,7 @@
   "000756": {
     "tier": "C",
     "pending": null,
-    "force_refresh": true,
+    "force_refresh": false,
     "updated": "2026-11-16"
   },
   "000772": {
@@ -10218,7 +10218,7 @@
     "updated": "2026-11-16"
   },
   "320003": {
-    "tier": "B",
+    "tier": "D",
     "pending": null,
     "force_refresh": true,
     "updated": "2026-11-16"
