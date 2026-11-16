@@ -97,8 +97,8 @@ def price_range(s: pd.Series, days: int) -> list | None:
             round(cur / hi - 1, 4), round(cur / lo - 1, 4)]
 
 
-def trend_series(s: pd.Series, n: int = 120) -> dict | None:
-    """近 N 个交易日净值走势（首日=100），附 3 个时间刻度。"""
+def trend_series(s: pd.Series, n: int = 252) -> dict | None:
+    """近 N 个交易日（默认 1 年）净值走势（首日=100），附 3 个时间刻度。"""
     seg = s.iloc[-n:]
     if len(seg) < 20:
         return None
@@ -563,6 +563,21 @@ def build_records():
     return recs, intraday, mkt
 
 
+def index_year(idx: pd.Series | None) -> dict | None:
+    """沪深300 近 1 年走势（首日=100），用于顶部右侧曲线。"""
+    if idx is None or len(idx) < 60:
+        return None
+    seg = idx.iloc[-252:]
+    base = float(seg.iloc[0])
+    if base <= 0:
+        return None
+    vals = [round(float(v) / base * 100, 1) for v in seg.values]
+    return {"v": vals,
+            "d": [str(seg.index[0].date()), str(seg.index[len(seg) // 2].date()),
+                  str(seg.index[-1].date())],
+            "chg": round(float(seg.iloc[-1]) / base - 1, 4)}
+
+
 def main():
     recs, intraday, mkt = build_records()
     counts = {k: sum(1 for r in recs if r["tier"] == k) for k in TIERS}
@@ -571,10 +586,12 @@ def main():
     ref = round(sum(gaps) / len(gaps), 4) if gaps else 0.0
     snap = None
     if intraday:
+        idx_now = intraday.get("index") or {}
+        idx_now["year"] = index_year(load_index_daily())
         snap = {
             "date": intraday.get("date"), "time": intraday.get("time"),
             "stamp": intraday.get("stamp"),
-            "index": intraday.get("index") or {},
+            "index": idx_now,
             "breadth": intraday.get("breadth") or {},
             "pred": mkt,
             "covered": sum(1 for r in recs if r.get("pred")),

@@ -49,8 +49,8 @@
   .hint{color:var(--dim2);font-size:10.5px;margin:-2px 0 8px}
 
   /* 顶部大盘条 */
-  .mkt{display:grid;grid-template-columns:178px minmax(0,1fr) 232px;gap:10px;align-items:center;
-    background:var(--panel);border:1px solid var(--line);border-radius:9px;
+  .mkt{display:grid;grid-template-columns:172px minmax(0,1fr) minmax(0,1fr) 212px;gap:10px;
+    align-items:center;background:var(--panel);border:1px solid var(--line);border-radius:9px;
     padding:6px 10px 5px;margin-bottom:8px}
   .mkt-name{font-size:10px;color:var(--dim2);letter-spacing:.6px;display:flex;align-items:center;gap:5px}
   .mkt-price{display:flex;align-items:baseline;gap:7px;margin-top:1px}
@@ -58,8 +58,11 @@
   .mkt-price span{font-size:11px;font-weight:600;font-variant-numeric:tabular-nums}
   .mkt-note{font-size:9.5px;color:var(--dim2);margin-top:2px;white-space:nowrap;
     overflow:hidden;text-overflow:ellipsis}
-  .mkt-chart{min-width:0}
-  .mkt-chart svg{display:block;width:100%;height:46px}
+  .mkt-cell{min-width:0;border-left:1px solid var(--line);padding-left:9px}
+  .mkt-lab{display:flex;justify-content:space-between;gap:6px;font-size:9px;color:var(--dim2);
+    margin-bottom:1px}
+  .mkt-lab b{font-weight:600;font-variant-numeric:tabular-nums}
+  .mkt-cell svg{display:block;width:100%;height:46px}
   .mkt-axis{display:flex;justify-content:space-between;font-size:8.5px;color:var(--dim2);
     margin-top:1px}
   .mkt-right{display:flex;flex-direction:column;gap:3px;align-items:flex-end}
@@ -195,13 +198,19 @@
 
   <div class="mkt" id="mkt" style="display:none">
     <div>
-      <div class="mkt-name"><span id="mkName">沪深300</span><span class="rt-tag">分时</span></div>
+      <div class="mkt-name"><span id="mkName">沪深300</span></div>
       <div class="mkt-price"><b id="mkPrice">–</b><span id="mkChg">–</span></div>
       <div class="mkt-note" id="mkNote">–</div>
     </div>
-    <div class="mkt-chart">
-      <svg id="mkChart" viewBox="0 0 600 46" preserveAspectRatio="none"></svg>
-      <div class="mkt-axis" id="mkAxis"></div>
+    <div class="mkt-cell">
+      <div class="mkt-lab"><span>当日分时</span><span id="mkIntraTag">–</span></div>
+      <svg id="mkIntraChart" viewBox="0 0 600 46" preserveAspectRatio="none"></svg>
+      <div class="mkt-axis" id="mkIntraAxis"></div>
+    </div>
+    <div class="mkt-cell">
+      <div class="mkt-lab"><span>近 1 年</span><span id="mkYearTag">–</span></div>
+      <svg id="mkYearChart" viewBox="0 0 600 46" preserveAspectRatio="none"></svg>
+      <div class="mkt-axis" id="mkYearAxis"></div>
     </div>
     <div class="mkt-right">
       <div class="mkt-pred" id="mkPred">–</div>
@@ -513,7 +522,7 @@ function setLegend(kind, todayPct, f){
   const cls = v => (v===null||v===undefined||isNaN(v)) ? "" : (v>0?"up":(v<0?"dn":""));
   const curve = kind === "intra"
     ? `<span class="lg" title="今日分时曲线"><i></i>分时</span>`
-    : `<span class="lg" title="近半年净值走势，首日归一为 100"><i></i>近半年</span>`;
+    : `<span class="lg" title="近 1 年净值走势，首日归一为 100"><i></i>近1年</span>`;
   const base = kind === "intra"
     ? `<span class="lg"><i class="dash"></i>昨收</span>`
     : `<span class="lg"><i class="dash"></i>基准</span>`;
@@ -530,7 +539,7 @@ function setAxis(labels){
   el.innerHTML = labels.map(x=>`<span>${esc(x)}</span>`).join("");
   el.style.display = "flex";
 }
-/* 场外：近半年净值走势（首日=100） */
+/* 场外：近 1 年净值走势（首日=100） */
 function drawTrend(f){
   const t = f.trend;
   if(!t || !t.v || t.v.length < 2) return;
@@ -552,7 +561,7 @@ function drawTrend(f){
     <polyline points="${line}" fill="none" stroke="${color}" stroke-width="1.4" stroke-linejoin="round"/>
     <circle cx="${x(last).toFixed(1)}" cy="${y(pts[last]).toFixed(1)}" r="2.2" fill="${color}"/>`;
   setAxis(t.d);
-  $("#rtNote").innerHTML += ` <span class="rt-tag">近半年走势</span>`;
+  $("#rtNote").innerHTML += ` <span class="rt-tag">近1年走势</span>`;
   $("#rtTime").textContent = t.d[2];
   let today = (f.val && f.val[1] !== null && f.val[1] !== undefined) ? f.val[1] : null;
   if(today === null && pts.length >= 2)
@@ -662,30 +671,35 @@ async function drawIntraday(secid, preClose){
   setAxis([hm(trends[0]), hm(trends[Math.floor(trends.length/2)]), hm(trends[trends.length-1])]);
 }
 
-/* ---------- 顶部大盘：静态快照 + 实时刷新 ---------- */
+/* ---------- 顶部大盘：左当日分时 + 右近 1 年 ---------- */
 const MK = {pre:null};
 
-function drawMarketTrend(points, preClose){
-  const svg = $("#mkChart");
-  if(!svg || !points || points.length < 2) return;
+function drawSpark(svgSel, axisSel, pts, ref, labels){
+  const svg = $(svgSel), ax = $(axisSel);
+  if(!svg || !pts || pts.length < 2) return;
   const W = 600, H = 46, pad = 2;
-  const vals = points.map(p=>p[1]);
-  const ref = (preClose===null||preClose===undefined) ? vals[0] : preClose;
-  const lo = Math.min(...vals, ref), hi = Math.max(...vals, ref);
-  const x = i => pad + i*(W-pad*2)/(points.length-1);
+  const vals = pts.map(p=>p[1]);
+  const base = (ref===null||ref===undefined) ? vals[0] : ref;
+  const lo = Math.min(...vals, base), hi = Math.max(...vals, base);
+  const x = i => pad + i*(W-pad*2)/(pts.length-1);
   const y = v => H-pad - (v-lo)/((hi-lo)||1)*(H-pad*2);
-  const line = points.map((p,i)=>`${x(i).toFixed(1)},${y(p[1]).toFixed(1)}`).join(" ");
+  const line = pts.map((p,i)=>`${x(i).toFixed(1)},${y(p[1]).toFixed(1)}`).join(" ");
   const last = vals[vals.length-1];
-  const color = last >= ref ? "#ff7b72" : "#67d391";
-  const area = `${pad},${H-pad} ${line} ${(W-pad).toFixed(1)},${H-pad}`;
+  const color = last >= base ? "#ff7b72" : "#67d391";
   svg.innerHTML = `
-    <line x1="${pad}" y1="${y(ref).toFixed(1)}" x2="${W-pad}" y2="${y(ref).toFixed(1)}"
+    <line x1="${pad}" y1="${y(base).toFixed(1)}" x2="${W-pad}" y2="${y(base).toFixed(1)}"
       stroke="#39414f" stroke-width="1" stroke-dasharray="4 4"/>
-    <polygon points="${area}" fill="${color}" fill-opacity=".10"/>
+    <polygon points="${pad},${H-pad} ${line} ${(W-pad).toFixed(1)},${H-pad}"
+      fill="${color}" fill-opacity=".10"/>
     <polyline points="${line}" fill="none" stroke="${color}" stroke-width="1.5" stroke-linejoin="round"/>
-    <circle cx="${x(points.length-1).toFixed(1)}" cy="${y(last).toFixed(1)}" r="2.4" fill="${color}"/>`;
-  $("#mkAxis").innerHTML = [points[0][0], points[Math.floor(points.length/2)][0], points[points.length-1][0]]
-    .map(t=>`<span>${esc(t)}</span>`).join("");
+    <circle cx="${x(pts.length-1).toFixed(1)}" cy="${y(last).toFixed(1)}" r="2.4" fill="${color}"/>`;
+  if(labels && ax) ax.innerHTML = labels.map(t=>`<span>${esc(t)}</span>`).join("");
+}
+
+function drawMarketIntraday(points, preClose){
+  if(!points || points.length < 2) return;
+  drawSpark("#mkIntraChart", "#mkIntraAxis", points, preClose,
+    [points[0][0], points[Math.floor(points.length/2)][0], points[points.length-1][0]]);
 }
 
 function renderMarket(){
@@ -703,7 +717,18 @@ function renderMarket(){
       : (c>0?"dir-up":(c<0?"dir-dn":"dir-flat"));
   }
   MK.pre = (idx.preClose===null||idx.preClose===undefined) ? null : Number(idx.preClose);
-  if(idx.trend && idx.trend.length >= 2) drawMarketTrend(idx.trend, MK.pre);
+  if(idx.trend && idx.trend.length >= 2){
+    drawMarketIntraday(idx.trend, MK.pre);
+    $("#mkIntraTag").textContent = idx.trendDate || "";
+  }
+  const yr = idx.year;
+  if(yr && yr.v && yr.v.length > 1){
+    const pts = yr.v.map((v,i)=>[i, v]);
+    drawSpark("#mkYearChart", "#mkYearAxis", pts, 100, yr.d);
+    const c = Number(yr.chg) * 100;
+    $("#mkYearTag").innerHTML = `<b class="${c>0?'dir-up':(c<0?'dir-dn':'dir-flat')}">`
+      + `${c>0?"+":""}${c.toFixed(2)}%</b>`;
+  }
   const b = m.breadth || {};
   if(b.total){
     $("#mkBreadth").innerHTML = `指数基金估值 涨 <b class="dir-up">${b.up}</b> / 跌 <b class="dir-dn">${b.down}</b>`
@@ -713,8 +738,7 @@ function renderMarket(){
     $("#mkPred").innerHTML = `<span>当日预测</span><b class="${dirCls(m.pred.dir)}">${esc(m.pred.dir)}</b>`
       + `<span class="cd">置信 ${m.pred.conf}%</span>`;
   }
-  $("#mkNote").textContent = `快照 ${m.date||""} ${m.time||""}`
-    + (idx.trendDate ? ` · 分时 ${idx.trendDate}` : "");
+  $("#mkNote").textContent = `快照 ${m.date||""} ${m.time||""}`;
 }
 
 async function refreshMarket(){
@@ -740,8 +764,9 @@ async function refreshMarket(){
         return [p[0].slice(11,16), Number(p[1])];
       }).filter(p=>!isNaN(p[1]));
       if(pts.length >= 2){
-        drawMarketTrend(pts, MK.pre);
-        $("#mkNote").textContent = `分时 ${day} · 刷新 `
+        drawMarketIntraday(pts, MK.pre);
+        $("#mkIntraTag").textContent = day;
+        $("#mkNote").textContent = `快照 ${D.intraday.date||""} ${D.intraday.time||""} · 实时刷新 `
           + new Date().toLocaleTimeString("zh-CN", {hour12:false});
       }
     }
