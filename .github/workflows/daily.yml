@@ -47,25 +47,12 @@ jobs:
           key: nav-${{ github.run_id }}
           restore-keys: nav-
 
-      - name: Ensure today's intraday snapshot
+      - name: Close snapshot (15:00 correction)
+        if: github.event_name == 'schedule'
         shell: bash
         run: |
-          python - <<'PY'
-          import json, os, subprocess
-          from datetime import datetime, timedelta, timezone
-
-          today = datetime.now(timezone(timedelta(hours=8))).strftime("%Y-%m-%d")
-          try:
-              with open("state/intraday.json", encoding="utf-8") as f:
-                  snap = json.load(f)
-          except Exception:
-              snap = {}
-          if snap.get("date") == today:
-              print(f"已有今日快照 {snap.get('time')}，跳过补抓")
-          else:
-              print(f"缺少今日快照（现有 {snap.get('date')}），14:30 任务可能未运行，补抓一次")
-              subprocess.run(["python", "intraday.py"], check=False)
-          PY
+          # 18:00 定时构建时，用收盘价对当日预测做一次修正（槽位记为 15:00 收盘）
+          python intraday.py --close || echo "收盘修正失败，沿用盘中快照"
 
       - name: Run screening
         run: python fund_mvp.py --limit 0 --total-value 100000
