@@ -480,6 +480,97 @@ def make_advice(pos: dict | None, pdir: str | None, approx: bool) -> dict | None
 
 
 
+DIV_CACHE = os.path.join(CACHE, "dividends.json")
+THEMES = [
+    (("红利低波", "红利低波动"), "红利低波"),
+    (("红利",), "红利"),
+    (("低波",), "低波"),
+    (("沪深300",), "沪深300"),
+    (("中证500",), "中证500"),
+    (("中证1000",), "中证1000"),
+    (("科创",), "科创"),
+    (("创业板",), "创业板"),
+    (("半导体", "芯片"), "芯片"),
+    (("科技", "信息", "软件", "互联网", "大数据", "人工智能", "云计算", "通信"), "科技"),
+    (("制造", "工业"), "制造"),
+    (("医药", "医疗", "生物"), "医药"),
+    (("消费", "食品", "饮料", "白酒"), "消费"),
+    (("新能源", "光伏", "碳中和", "低碳"), "新能源"),
+    (("军工", "国防"), "军工"),
+    (("银行", "证券", "金融", "保险"), "金融"),
+    (("地产", "不动产"), "地产"),
+    (("黄金", "有色"), "有色"),
+    (("债",), "债券"),
+    (("纳斯达克", "标普", "恒生", "港股", "全球", "海外", "QDII"), "海外"),
+    (("价值",), "价值"),
+    (("蓝筹",), "价值"),
+    (("中小盘", "中盘"), "中小盘"),
+    (("成长",), "成长"),
+    (("量化",), "量化"),
+    (("均衡",), "均衡"),
+]
+
+
+def theme_of(name: str) -> str:
+    for keys, label in THEMES:
+        if any(k in name for k in keys):
+            return label
+    return ""
+
+
+def load_dividends(codes: list[str]) -> dict:
+    """东财分红送配（全市场），缓存 7 天。"""
+    data = {}
+    if os.path.exists(DIV_CACHE):
+        try:
+            with open(DIV_CACHE, encoding="utf-8") as f:
+                data = json.load(f)
+        except Exception:  # noqa: BLE001
+            data = {}
+    if time.time() - float(data.get("builtAt") or 0) > 7 * 86400 or not data.get("items"):
+        try:
+            import akshare as ak
+            df = ak.fund_fh_em()
+            items: dict[str, list] = {}
+            for _, row in df.iterrows():
+                code = str(row["基金代码"]).zfill(6)
+                day = str(row["除息日期"])[:10]
+                try:
+                    cash = float(row["分红"])
+                except (TypeError, ValueError):
+                    continue
+                items.setdefault(code, []).append([day, round(cash, 4)])
+            data = {"builtAt": time.time(), "items": items}
+            os.makedirs(CACHE, exist_ok=True)
+            tmp = DIV_CACHE + ".tmp"
+            with open(tmp, "w", encoding="utf-8") as f:
+                json.dump(data, f, ensure_ascii=False)
+            os.replace(tmp, DIV_CACHE)
+            print(f"      分红记录：{sum(len(v) for v in items.values())} 条")
+        except Exception as exc:  # noqa: BLE001
+            print(f"      分红接口失败：{exc}")
+    rows = data.get("items") or {}
+    return {c: rows.get(c, []) for c in codes}
+
+
+def dividend_info(rows: list, s: pd.Series) -> dict | None:
+    """近 1/2/3 年：分红次数 + 累计每份分红占期初累计净值比例。"""
+    if not rows or s is None or len(s) < 30:
+        return None
+    last = s.index[-1]
+    out = {"has": False, "y": []}
+    for years in (1, 2, 3):
+        start = last - pd.Timedelta(days=365 * years)
+        sel = [r for r in rows if r[0] >= str(start.date())]
+        if years == 3:
+            out["has"] = bool(sel)
+        seg = s[s.index <= start]
+        base = float(seg.iloc[-1]) if len(seg) else float(s.iloc[0])
+        pct = sum(r[1] for r in sel) / base * 100 if base > 0 else 0
+        out["y"].append([len(sel), round(pct, 2)])
+    return out
+
+
 def build_records():
     t = read("tiers.csv")
     if t.empty:
@@ -514,6 +605,7 @@ def build_records():
     pool_set = set(pool)
     industry = load_industry(pool)
     valuations = load_valuation(set(pool))
+    divs = load_dividends(pool)
 
     intraday = load_intraday()
     mkt = market_pred(intraday) if intraday else None
@@ -532,6 +624,7 @@ def build_records():
         code = r["fund_code"]
         w = win.get(code, {})
         s = nav.get(code)
+        dv = dividend_info(divs.get(code), s)
         chg, approx = None, False
         if code in intra_funds:
             chg = intra_funds[code]
@@ -556,6 +649,7 @@ def build_records():
             "drift": (str(r["drift_level"]) if pd.notna(r.get("drift_level")) else ""),
             "company": ("" if pd.isna(r.get("company")) else str(r.get("company"))),
             "type": ("" if pd.isna(r.get("fund_type")) else str(r.get("fund_type"))) or "未分类",
+            "th": theme_of(str(r.get("fund_name") or "")), "dv": dv,
             "w1": w.get("w1"), "w2": w.get("w2"),
             "r1": w.get("r1"), "r3": w.get("r3"),
             "last": w.get("last"), "nav": w.get("nav"),
@@ -583,6 +677,8 @@ def index_year(idx: pd.Series | None) -> dict | None:
         return None
     vals = [round(float(v) / base * 100, 1) for v in seg.values]
     return {"v": vals,
+            "p": [round(float(v), 2) for v in seg.values],
+            "x": [str(d.date()) for d in seg.index],
             "d": [str(seg.index[0].date()), str(seg.index[len(seg) // 2].date()),
                   str(seg.index[-1].date())],
             "chg": round(float(seg.iloc[-1]) / base - 1, 4)}
