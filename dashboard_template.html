@@ -81,11 +81,12 @@
 
   .layout{display:grid;grid-template-columns:minmax(0,1fr) 318px;gap:10px;align-items:start}
   .grid{display:flex;flex-direction:column;gap:3px}
-  .lhead{display:grid;grid-template-columns:20px minmax(0,1fr) 42px 54px 58px 56px 52px 44px 52px 64px;
+  .lhead{display:grid;grid-template-columns:18px minmax(0,1fr) 96px 40px 50px 54px 56px 50px 40px 48px 58px;
     gap:8px;align-items:center;font-size:9.5px;color:var(--dim2);letter-spacing:.4px;
     padding:0 9px 4px;border-bottom:1px solid var(--line);text-align:right}
   .lhead span:nth-child(2){text-align:left}
-  .row{display:grid;grid-template-columns:20px minmax(0,1fr) 42px 54px 58px 56px 52px 44px 52px 64px;
+  .lhead span:nth-child(3){text-align:left}
+  .row{display:grid;grid-template-columns:18px minmax(0,1fr) 96px 40px 50px 54px 56px 50px 40px 48px 58px;
     gap:8px;align-items:center;background:var(--panel);border:1px solid var(--line);
     border-radius:7px;padding:4px 9px;position:relative;overflow:hidden;
     cursor:pointer;transition:.12s}
@@ -104,16 +105,18 @@
   .rn{text-align:right;font-size:10.5px;color:var(--txt);font-variant-numeric:tabular-nums}
   .radv{text-align:right;font-size:10px;color:var(--dim);white-space:nowrap;
     overflow:hidden;text-overflow:ellipsis}
+  .rsec{font-size:9.5px;color:var(--dim);white-space:nowrap;
+    overflow:hidden;text-overflow:ellipsis}
   .pos{color:var(--pos)}.neg{color:var(--neg)}
   @media(max-width:1280px){
-    .lhead,.row{grid-template-columns:20px minmax(0,1fr) 42px 54px 58px 56px 52px 64px}
-    .lhead span:nth-child(8),.lhead span:nth-child(9),
-    .row > *:nth-child(8),.row > *:nth-child(9){display:none}
+    .lhead,.row{grid-template-columns:18px minmax(0,1fr) 96px 40px 50px 54px 56px 50px 58px}
+    .lhead span:nth-child(9),.lhead span:nth-child(10),
+    .row > *:nth-child(9),.row > *:nth-child(10){display:none}
   }
-  @media(max-width:980px){
-    .lhead,.row{grid-template-columns:20px minmax(0,1fr) 42px 58px 56px 64px}
-    .lhead span:nth-child(4),.lhead span:nth-child(7),
-    .row > *:nth-child(4),.row > *:nth-child(7){display:none}
+  @media(max-width:1050px){
+    .lhead,.row{grid-template-columns:18px minmax(0,1fr) 90px 40px 50px 54px 58px}
+    .lhead span:nth-child(5),.lhead span:nth-child(8),
+    .row > *:nth-child(5),.row > *:nth-child(8){display:none}
   }
 
   /* 右栏 */
@@ -312,8 +315,8 @@ function numOr(v, nd=2, suffix=""){
 }
 
 /* ---------- 左侧基金列表 ---------- */
-const LIST_HEAD = `<div class="lhead"><span></span><span>基金</span><span>总分</span>
-  <span>年化</span><span>近1年</span><span>当日</span><span>回撤</span><span>夏普</span>
+const LIST_HEAD = `<div class="lhead"><span></span><span>基金</span><span>板块</span><span>总分</span>
+  <span>年化</span><span>当日</span><span>近1年</span><span>回撤</span><span>夏普</span>
   <span>规模</span><span>建议</span></div>`;
 
 function row(f){
@@ -321,16 +324,20 @@ function row(f){
   const sel = state.sel===f.code ? " sel" : "";
   const r1 = f.w1 ? f.w1[0] : null;
   const chg = f.chg;
+  const ind = (f.ind && f.ind.top) ? f.ind.top.slice(0, 2) : [];
+  const secTxt = ind.length ? ind.map(x=>x[0]).join("·") : "–";
+  const secTip = ind.map(x=>`${x[0]} ${x[1]}%`).join(" / ");
   const r1c = (r1===null||r1===undefined) ? "" : (r1>0?"pos":(r1<0?"neg":""));
   const cg = (chg===null||chg===undefined) ? "" : (chg>0?"pos":(chg<0?"neg":""));
   return `<div class="row${sel}" data-code="${f.code}" style="--ac:${c}">
     <span class="badge">${f.tier}</span>
     <div class="rname"><b>${esc(f.name)}</b>
       <span>${f.code}${f.company?" · "+esc(f.company):""}${f.quad?" · "+esc(f.quad):""}</span></div>
+    <span class="rsec" title="${esc(secTip)}">${esc(secTxt)}</span>
     <span class="rscore">${f.score.toFixed(1)}</span>
     <span class="rn">${pct(f.ann)}</span>
-    <span class="rn ${r1c}">${pct(r1)}</span>
     <span class="rn ${cg}">${chg===null||chg===undefined?"–":(chg>0?"+":"")+Number(chg).toFixed(2)+"%"}</span>
+    <span class="rn ${r1c}">${pct(r1)}</span>
     <span class="rn neg">${pct(f.mdd)}</span>
     <span class="rn">${numOr(f.sharpe,2)}</span>
     <span class="rn">${f.aum===null||f.aum===undefined?"–":f.aum.toFixed(1)+"亿"}</span>
