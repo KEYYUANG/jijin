@@ -81,9 +81,12 @@ jobs:
 
           url = os.environ["GITHUB_API_URL"] + "/repos/" + os.environ["GITHUB_REPOSITORY"] \
               + "/actions/workflows/daily.yml/dispatches"
+          # 仅 14:30 这一轮通知 PushPlus
+          notify = "1" if os.environ.get("GITHUB_EVENT_SCHEDULE") == "30 6 * * 1-5" else "0"
+          payload = {"ref": "main", "inputs": {"notify": notify}}
           req = urllib.request.Request(
               url,
-              data=json.dumps({"ref": "main"}).encode(),
+              data=json.dumps(payload).encode(),
               headers={"Authorization": "Bearer " + os.environ["GH_TOKEN"],
                        "Accept": "application/vnd.github+json",
                        "Content-Type": "application/json"},
