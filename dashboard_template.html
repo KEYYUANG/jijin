@@ -78,26 +78,33 @@
   .dir-up{color:#ff7b72}.dir-dn{color:#67d391}.dir-flat{color:#e8ecf4}
 
   .layout{display:grid;grid-template-columns:minmax(0,1fr) 318px;gap:10px;align-items:start}
-  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(168px,1fr));gap:7px}
-  .card{background:var(--panel);border:1px solid var(--line);border-radius:9px;
-    padding:7px 8px 5px;position:relative;overflow:hidden;cursor:pointer;transition:.15s}
-  .card:hover{border-color:#39414f;background:var(--panel2)}
-  .card.sel{border-color:#4a566b;background:var(--panel2);box-shadow:0 0 0 1px #4a566b inset}
-  .card::before{content:"";position:absolute;inset:0 auto 0 0;width:2px;background:var(--ac)}
-  .chead{display:flex;align-items:flex-start;gap:6px}
-  .badge{width:19px;height:19px;border-radius:5px;display:grid;place-items:center;
-    font-weight:700;font-size:11px;color:#0b0d12;background:var(--ac);flex:none}
-  .name{font-size:11.5px;font-weight:600;line-height:1.28;word-break:break-all}
-  .meta{font-size:9.5px;color:var(--dim2);margin-top:1px;letter-spacing:.2px;
+  .grid{display:flex;flex-direction:column;gap:3px}
+  .lhead{display:grid;grid-template-columns:20px minmax(0,1fr) 46px 58px 64px 60px 46px 64px;
+    gap:8px;align-items:center;font-size:9.5px;color:var(--dim2);letter-spacing:.4px;
+    padding:0 9px 4px;border-bottom:1px solid var(--line);text-align:right}
+  .lhead span:nth-child(2){text-align:left}
+  .row{display:grid;grid-template-columns:20px minmax(0,1fr) 46px 58px 64px 60px 46px 64px;
+    gap:8px;align-items:center;background:var(--panel);border:1px solid var(--line);
+    border-radius:7px;padding:4px 9px;position:relative;overflow:hidden;
+    cursor:pointer;transition:.12s}
+  .row:hover{border-color:#39414f;background:var(--panel2)}
+  .row.sel{border-color:#4a566b;background:var(--panel2);box-shadow:0 0 0 1px #4a566b inset}
+  .row::before{content:"";position:absolute;inset:0 auto 0 0;width:2px;background:var(--ac)}
+  .badge{width:18px;height:18px;border-radius:5px;display:grid;place-items:center;
+    font-weight:700;font-size:10.5px;color:#0b0d12;background:var(--ac);flex:none}
+  .rname{min-width:0}
+  .rname b{display:block;font-size:11.5px;font-weight:600;line-height:1.25;
     white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .score{margin-left:auto;text-align:right;flex:none}
-  .score b{font-size:15px;font-weight:600;font-variant-numeric:tabular-nums;color:var(--ac)}
-  .score span{display:block;font-size:8.5px;color:var(--dim2);letter-spacing:.8px}
-  .radar{display:block;margin:0 auto -5px}
-  .stats{display:grid;grid-template-columns:1fr 1fr;gap:0 7px;font-size:10px;
-    color:var(--dim);border-top:1px solid var(--line);padding-top:5px;margin-top:2px}
-  .stats b{color:var(--txt);font-weight:600;font-variant-numeric:tabular-nums}
+  .rname span{display:block;font-size:9px;color:var(--dim2);margin-top:1px;
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .rscore{text-align:right;font-size:12.5px;font-weight:600;color:var(--ac);
+    font-variant-numeric:tabular-nums}
+  .rn{text-align:right;font-size:10.5px;color:var(--txt);font-variant-numeric:tabular-nums}
   .pos{color:var(--pos)}.neg{color:var(--neg)}
+  @media(max-width:1180px){
+    .lhead,.row{grid-template-columns:20px minmax(0,1fr) 46px 58px 64px 60px}
+    .lhead span:nth-child(n+7),.row > *:nth-child(n+7){display:none}
+  }
 
   /* 右栏 */
   .side{position:sticky;top:8px;background:var(--panel);border:1px solid var(--line);
@@ -177,13 +184,22 @@
   .foot{color:var(--dim2);font-size:10.5px;line-height:1.8;margin-top:18px;
     border-top:1px solid var(--line);padding-top:10px}
   .empty{color:var(--dim2);padding:50px 0;text-align:center;grid-column:1/-1;font-size:12px}
-  @media(max-width:860px){
+  @media(max-width:960px){
+    .mkt{grid-template-columns:1fr 1fr;grid-template-areas:"info pred" "intra year";row-gap:6px}
+    .mkt > div:nth-child(1){grid-area:info}
+    .mkt > div:nth-child(2){grid-area:intra;border-left:0;padding-left:0}
+    .mkt > div:nth-child(3){grid-area:year}
+    .mkt > div:nth-child(4){grid-area:pred}
+  }
+  @media(max-width:760px){
     .layout{grid-template-columns:1fr}
     .side{position:relative;top:0;max-height:none;order:-1}
-    .mkt{grid-template-columns:1fr}
+  }
+  @media(max-width:640px){
+    .kpis{width:100%;margin-left:0}.kpi{text-align:left}
+    .mkt{grid-template-columns:1fr;grid-template-areas:"info" "pred" "intra" "year"}
     .mkt-right{align-items:flex-start}
   }
-  @media(max-width:640px){.kpis{width:100%;margin-left:0}.kpi{text-align:left}}
 </style>
 </head>
 <body>
@@ -283,53 +299,25 @@ function numOr(v, nd=2, suffix=""){
   return Number(v).toFixed(nd)+suffix;
 }
 
-/* ---------- 雷达图（缩小版） ---------- */
-function radar(powers, color){
-  const cx=78, cy=64, R=40, N=D.dims.length;
-  const pt=(i,r)=>{const a=-Math.PI/2+i*2*Math.PI/N; return [cx+Math.cos(a)*r, cy+Math.sin(a)*r];};
-  let g="";
-  [0.25,0.5,0.75,1].forEach(k=>{
-    const p=[...Array(N)].map((_,i)=>pt(i,R*k).map(v=>v.toFixed(1)).join(",")).join(" ");
-    g+=`<polygon points="${p}" fill="none" stroke="#232a37" stroke-width="1"/>`;
-  });
-  for(let i=0;i<N;i++){
-    const [x,y]=pt(i,R);
-    g+=`<line x1="${cx}" y1="${cy}" x2="${x.toFixed(1)}" y2="${y.toFixed(1)}" stroke="#232a37"/>`;
-  }
-  const vals=powers.map(v=>Math.max(4,Math.min(100,v||0))/100);
-  const poly=vals.map((v,i)=>pt(i,R*v).map(n=>n.toFixed(1)).join(",")).join(" ");
-  g+=`<polygon points="${poly}" fill="${color}" fill-opacity=".22" stroke="${color}" stroke-width="1.4"/>`;
-  vals.forEach((v,i)=>{const [x,y]=pt(i,R*v); g+=`<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="1.8" fill="${color}"/>`;});
-  D.dims.forEach((name,i)=>{
-    const [x,y]=pt(i,R+11);
-    const anchor = Math.abs(x-cx)<6 ? "middle" : (x>cx ? "start" : "end");
-    g+=`<text x="${x.toFixed(1)}" y="${(y+2.8).toFixed(1)}" fill="#8b95a7" font-size="8"
-        text-anchor="${anchor}">${name}</text>`;
-  });
-  return `<svg class="radar" width="156" height="128" viewBox="0 0 156 128">${g}</svg>`;
-}
+/* ---------- 左侧基金列表 ---------- */
+const LIST_HEAD = `<div class="lhead"><span></span><span>基金</span><span>总分</span>
+  <span>年化</span><span>近1年</span><span>回撤</span><span>夏普</span><span>规模</span></div>`;
 
-/* ---------- 卡片 ---------- */
-function card(f){
+function row(f){
   const c = COLORS[f.tier] || "#8b9bb4";
-  const ex = f.excess===null ? "–" : signed(f.excess);
-  const exCls = f.excess>0 ? "pos" : (f.excess<0 ? "neg" : "");
   const sel = state.sel===f.code ? " sel" : "";
-  return `<div class="card${sel}" data-code="${f.code}" style="--ac:${c}">
-    <div class="chead">
-      <div class="badge">${f.tier}</div>
-      <div style="min-width:0"><div class="name">${esc(f.name)}</div>
-        <div class="meta">${f.code}${f.quad?" · "+esc(f.quad):""}</div>
-      </div>
-      <div class="score"><b>${f.score.toFixed(1)}</b><span>SCORE</span></div>
-    </div>
-    ${radar(f.powers, c)}
-    <div class="stats">
-      <div>年化 <b>${pct(f.ann)}</b></div>
-      <div>超额 <b class="${exCls}">${ex}</b></div>
-      <div>回撤 <b>${pct(f.mdd)}</b></div>
-      <div>规模 <b>${f.aum===null?"–":f.aum.toFixed(1)+"亿"}</b></div>
-    </div>
+  const r1 = f.ret1;
+  const r1c = (r1===null||r1===undefined) ? "" : (r1>0?"pos":(r1<0?"neg":""));
+  return `<div class="row${sel}" data-code="${f.code}" style="--ac:${c}">
+    <span class="badge">${f.tier}</span>
+    <div class="rname"><b>${esc(f.name)}</b>
+      <span>${f.code}${f.company?" · "+esc(f.company):""}${f.quad?" · "+esc(f.quad):""}</span></div>
+    <span class="rscore">${f.score.toFixed(1)}</span>
+    <span class="rn">${pct(f.ann)}</span>
+    <span class="rn ${r1c}">${pct(r1)}</span>
+    <span class="rn neg">${pct(f.mdd)}</span>
+    <span class="rn">${numOr(f.sharpe,2)}</span>
+    <span class="rn">${f.aum===null||f.aum===undefined?"–":f.aum.toFixed(1)+"亿"}</span>
   </div>`;
 }
 
@@ -346,15 +334,15 @@ function render(){
   const sorted = shown.slice().sort((a,b)=>
     (ord[a.tier]-ord[b.tier]) || ((b[state.sort]??-1e9)-(a[state.sort]??-1e9)));
 
-  $("#grid").innerHTML = sorted.length ? sorted.map(card).join("")
+  $("#grid").innerHTML = sorted.length ? LIST_HEAD + sorted.map(row).join("")
     : `<div class="empty">当前筛选没有基金</div>`;
 
-  $("#grid").querySelectorAll(".card").forEach(el=>{
+  $("#grid").querySelectorAll(".row").forEach(el=>{
     el.onclick = ()=>select(el.dataset.code);
   });
 
   const nm = state.tiers.has("D") ? `（D 级仅展示前 ${Math.min(300,list.length)} 只）` : "";
-  $("#hint").textContent = `共 ${list.length} 只${nm} · 点击卡片在右栏查看实时与同业对比`;
+  $("#hint").textContent = `共 ${list.length} 只${nm} · 点击列表在右栏查看实时与同业对比`;
   if(!state.sel && sorted.length) select(sorted[0].code);
 }
 
@@ -441,7 +429,7 @@ function select(code){
   const f = byCode[code];
   if(!f) return;
   state.sel = code;
-  document.querySelectorAll(".card").forEach(el=>{
+  document.querySelectorAll(".row").forEach(el=>{
     el.classList.toggle("sel", el.dataset.code === code);
   });
   clearLive();
