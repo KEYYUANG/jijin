@@ -5,6 +5,7 @@
 输出 state/intraday.json，由 make_dashboard.py 读取生成“当日走势预测 + 价格分位 + 建议”。
 只做一次东财请求，避免触发 push2 限流。
 """
+import argparse
 import json
 import os
 import time
@@ -187,6 +188,10 @@ def tier_codes() -> list:
 
 
 def main():
+    ap = argparse.ArgumentParser(description="记录交易日盘中快照")
+    ap.add_argument("--close", action="store_true", help="收盘修正：槽位记为 15:00")
+    args = ap.parse_args()
+
     now = datetime.now(BJ)
     today = now.strftime("%Y-%m-%d")
 
@@ -240,8 +245,11 @@ def main():
     slots = (old.get("slots") or []) if old.get("date") == today else []
     slots = slots[-5:]
     sse, csi = payload["index"], payload["index2"]
+    if args.close:
+        slots = [s for s in slots if not s.get("close")]
     slots.append({
-        "time": payload["time"],
+        "time": "15:00" if args.close else payload["time"],
+        "close": bool(args.close),
         "c1": sse.get("chg"), "i1": sse.get("price"),
         "c2": csi.get("chg"), "i2": csi.get("price"),
         "up": breadth.get("up"), "down": breadth.get("down"),
