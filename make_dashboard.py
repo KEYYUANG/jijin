@@ -399,7 +399,7 @@ def fund_pred(mkt: dict, chg: float | None, mom5: float | None,
     reasons = []
     if chg is not None:
         score += 0.3 * np.tanh(chg / 1.2)
-        reasons.append(f"14:30 估值 {chg:+.2f}%" + ("（β近似）" if approx else "（实时/估算）"))
+        reasons.append(f"盘中估值 {chg:+.2f}%" + ("（β近似）" if approx else "（实时/估算）"))
     if mom5 is not None:
         score += 0.2 * np.tanh(mom5 / 2.5)
         reasons.append(f"近 5 日 {mom5:+.2f}%")
@@ -470,7 +470,7 @@ def make_advice(pos: dict | None, pdir: str | None, approx: bool) -> dict | None
         else:
             bucket, text = "观望", "中位震荡，观望为主，等回踩或突破。"
 
-    note = f"14:30 价约 {pos['adj']:.4f}，处于近 {days} 日区间 {p:.0f}% 分位（低 {lo:.4f} / 高 {hi:.4f}）"
+    note = f"记录价约 {pos['adj']:.4f}，处于近 {days} 日区间 {p:.0f}% 分位（低 {lo:.4f} / 高 {hi:.4f}）"
     if p <= 10:
         note += f"，接近近 {days} 日最低"
     if approx:
@@ -564,6 +564,7 @@ def build_records():
                    num(r.get("p_vol1"), 1)],
             "ind": industry.get(code),
             "val": valuations.get(code),
+            "chg": chg, "approx": approx,
             "trend": (trend_series(s) if code in pool_set and s is not None else None),
             "pred": pred, "advice": advice,
         }
