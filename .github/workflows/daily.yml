@@ -10,6 +10,11 @@ on:
   schedule:
     - cron: "0 10 * * 1-5"
   workflow_dispatch:
+    inputs:
+      notify:
+        description: "构建完成后推送 PushPlus（1=推送）"
+        required: false
+        default: "0"
 
 permissions:
   contents: write
@@ -59,6 +64,12 @@ jobs:
 
       - name: Build dashboard
         run: python make_dashboard.py
+
+      - name: PushPlus notification
+        if: github.event.inputs.notify == '1'
+        env:
+          PUSHPLUS_TOKEN: ${{ secrets.PUSHPLUS_TOKEN }}
+        run: python notify_pushplus.py
 
       - name: Persist state
         run: |
