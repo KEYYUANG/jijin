@@ -7412,7 +7412,7 @@
   "012839": {
     "tier": "C",
     "pending": null,
-    "force_refresh": true,
+    "force_refresh": false,
     "updated": "2026-11-17"
   },
   "012844": {
