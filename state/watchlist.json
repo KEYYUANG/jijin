@@ -1316,20 +1316,21 @@
   "011698": {
     "fund_code": "011698",
     "fund_name": "南方均衡回报混合A",
-    "status": "watching",
+    "status": "reactivated",
     "trigger_reason": "manager_changes_2",
     "trigger_flags": "",
     "enter_date": "2026-11-14",
     "review_deadline": "2027-05-14",
     "periods": 0,
-    "last_review": "2026-11-14",
+    "last_review": "2026-11-17",
     "entry_calmar": 0.20284097462802933,
     "entry_calmar_source": "entry_value",
     "entry_quadrant": "小盘成长",
     "entry_manager_changes": 2.0,
     "entry_manager_tenure": 1.8809034907597535,
     "entry_aum_chg": 0.0085,
-    "last_check": "entered"
+    "last_check": "trigger_resolved",
+    "reactivated_date": "2026-11-17"
   },
   "012124": {
     "fund_code": "012124",
@@ -2229,6 +2230,24 @@
     "entry_manager_changes": 2.0,
     "entry_manager_tenure": 1.8836413415468858,
     "entry_aum_chg": -0.2589,
+    "last_check": "entered"
+  },
+  "121006": {
+    "fund_code": "121006",
+    "fund_name": "国投瑞银稳健增长混合",
+    "status": "watching",
+    "trigger_reason": "significant_drift",
+    "trigger_flags": "",
+    "enter_date": "2026-11-17",
+    "review_deadline": "2027-05-17",
+    "periods": 0,
+    "last_review": "2026-11-17",
+    "entry_calmar": 0.08041469194855835,
+    "entry_calmar_source": "entry_value",
+    "entry_quadrant": "大盘成长",
+    "entry_manager_changes": 0.0,
+    "entry_manager_tenure": 4.878850102669404,
+    "entry_aum_chg": -0.22519999999999998,
     "last_check": "entered"
   }
 }
