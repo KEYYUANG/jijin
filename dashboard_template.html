@@ -75,6 +75,8 @@
   .mkt-pred .cd{font-size:9px;color:var(--dim2)}
   .mkt-breadth{font-size:9.5px;color:var(--dim2);text-align:right;line-height:1.5}
   .mkt-breadth b{font-variant-numeric:tabular-nums}
+  .mkt-slots{font-size:9px;color:var(--dim2);text-align:right;line-height:1.55;margin-top:2px}
+  .mkt-slots b{font-weight:600;font-variant-numeric:tabular-nums}
   .dir-up{color:#ff7b72}.dir-dn{color:#67d391}.dir-flat{color:#e8ecf4}
 
   .layout{display:grid;grid-template-columns:minmax(0,1fr) 318px;gap:10px;align-items:start}
@@ -239,6 +241,7 @@
     <div class="mkt-right">
       <div class="mkt-pred" id="mkPred">–</div>
       <div class="mkt-breadth" id="mkBreadth">–</div>
+      <div class="mkt-slots" id="mkSlots"></div>
     </div>
   </div>
 
@@ -270,8 +273,8 @@
     区间高低取近 1 年与近 3 年，标注最高/最低点距今天数；行业为东财披露的行业配置（季报口径）。<br>
     场内 ETF/LOF 的价格与当日分时为打开页面时通过东财接口拉取（约 30 秒刷新）；场外基金无实时价，
     展示盘中估算净值，仅供参考。<br>
-    当日预测：每个交易日 14:30（北京时间）记录上证指数与沪深300 的点位、当日分时及指数基金估值涨跌广度；
-    右栏给出该基金方向判断、14:30 价格在近 20/60/120/250 个交易日区间中的分位与风险提示式建议。
+    当日预测：每个交易日 14:00 / 14:15 / 14:45（北京时间）各记录一次上证指数与沪深300 的点位、当日分时及指数基金估值涨跌广度；
+    右栏给出该基金方向判断、记录价格在近 20/60/120/250 个交易日区间中的分位与风险提示式建议。
     该判断为规则打分的启发式结果，不构成投资建议。<br>
     数据构建时间：<span id="builtAt">–</span>
   </div>
@@ -754,6 +757,14 @@ function renderMarket(){
   if(b.total){
     $("#mkBreadth").innerHTML = `指数基金估值 涨 <b class="dir-up">${b.up}</b> / 跌 <b class="dir-dn">${b.down}</b>`
       + `<br>上涨占比 ${b.upRatio}% · 样本 ${b.total}`;
+  }
+  const slots = m.slots || [];
+  if(slots.length){
+    const fmt = v => (v===null||v===undefined) ? "–" : (v>0?"+":"") + Number(v).toFixed(2) + "%";
+    const cls = v => (v>0?"dir-up":(v<0?"dir-dn":"dir-flat"));
+    $("#mkSlots").innerHTML = slots.map(s=>
+      `<span>${esc(s.time)} <b class="${cls(s.c1)}">${fmt(s.c1)}</b>/<b class="${cls(s.c2)}">${fmt(s.c2)}</b></span>`
+    ).join(" · ");
   }
   if(m.pred){
     $("#mkPred").innerHTML = `<span>当日预测</span><b class="${dirCls(m.pred.dir)}">${esc(m.pred.dir)}</b>`
