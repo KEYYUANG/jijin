@@ -626,10 +626,10 @@ def build_records():
         s = nav.get(code)
         dv = dividend_info(divs.get(code), s)
         chg, approx = None, False
-        if code in intra_funds:
-            chg = intra_funds[code]
-        elif valuations.get(code) and valuations[code][1] is not None:
+        if valuations.get(code) and valuations[code][1] is not None:
             chg = valuations[code][1]
+        elif code in intra_funds:
+            chg = intra_funds[code]
         elif idx_chg is not None and code in betas:
             chg, approx = round(betas[code] * idx_chg, 2), True
         mom5 = None
@@ -658,7 +658,7 @@ def build_records():
                    num(r.get("p_vol1"), 1)],
             "ind": industry.get(code),
             "val": valuations.get(code),
-            "chg": chg, "approx": approx,
+            "chg": None if approx else chg, "approx": approx,
             "trend": (trend_series(s) if code in pool_set and s is not None else None),
             "pred": pred, "advice": advice,
         }
