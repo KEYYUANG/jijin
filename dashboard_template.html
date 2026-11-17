@@ -81,11 +81,11 @@
 
   .layout{display:grid;grid-template-columns:minmax(0,1fr) 318px;gap:10px;align-items:start}
   .grid{display:flex;flex-direction:column;gap:3px}
-  .lhead{display:grid;grid-template-columns:20px minmax(0,1fr) 46px 58px 64px 60px 46px 64px;
+  .lhead{display:grid;grid-template-columns:20px minmax(0,1fr) 42px 54px 58px 56px 52px 44px 52px 64px;
     gap:8px;align-items:center;font-size:9.5px;color:var(--dim2);letter-spacing:.4px;
     padding:0 9px 4px;border-bottom:1px solid var(--line);text-align:right}
   .lhead span:nth-child(2){text-align:left}
-  .row{display:grid;grid-template-columns:20px minmax(0,1fr) 46px 58px 64px 60px 46px 64px;
+  .row{display:grid;grid-template-columns:20px minmax(0,1fr) 42px 54px 58px 56px 52px 44px 52px 64px;
     gap:8px;align-items:center;background:var(--panel);border:1px solid var(--line);
     border-radius:7px;padding:4px 9px;position:relative;overflow:hidden;
     cursor:pointer;transition:.12s}
@@ -102,10 +102,18 @@
   .rscore{text-align:right;font-size:12.5px;font-weight:600;color:var(--ac);
     font-variant-numeric:tabular-nums}
   .rn{text-align:right;font-size:10.5px;color:var(--txt);font-variant-numeric:tabular-nums}
+  .radv{text-align:right;font-size:10px;color:var(--dim);white-space:nowrap;
+    overflow:hidden;text-overflow:ellipsis}
   .pos{color:var(--pos)}.neg{color:var(--neg)}
-  @media(max-width:1180px){
-    .lhead,.row{grid-template-columns:20px minmax(0,1fr) 46px 58px 64px 60px}
-    .lhead span:nth-child(n+7),.row > *:nth-child(n+7){display:none}
+  @media(max-width:1280px){
+    .lhead,.row{grid-template-columns:20px minmax(0,1fr) 42px 54px 58px 56px 52px 64px}
+    .lhead span:nth-child(8),.lhead span:nth-child(9),
+    .row > *:nth-child(8),.row > *:nth-child(9){display:none}
+  }
+  @media(max-width:980px){
+    .lhead,.row{grid-template-columns:20px minmax(0,1fr) 42px 58px 56px 64px}
+    .lhead span:nth-child(4),.lhead span:nth-child(7),
+    .row > *:nth-child(4),.row > *:nth-child(7){display:none}
   }
 
   /* 右栏 */
@@ -273,7 +281,8 @@
     区间高低取近 1 年与近 3 年，标注最高/最低点距今天数；行业为东财披露的行业配置（季报口径）。<br>
     场内 ETF/LOF 的价格与当日分时为打开页面时通过东财接口拉取（约 30 秒刷新）；场外基金无实时价，
     展示盘中估算净值，仅供参考。<br>
-    当日预测：每个交易日 14:00 / 14:15 / 14:45（北京时间）各记录一次上证指数与沪深300 的点位、当日分时及指数基金估值涨跌广度；
+    当日预测：每个交易日 14:00 / 14:15 / 14:30（北京时间）各记录一次上证指数与沪深300 的点位、当日分时及指数基金估值涨跌广度；
+    18:00 再按收盘价修正一次（槽位记 15:00）。
     右栏给出该基金方向判断、记录价格在近 20/60/120/250 个交易日区间中的分位与风险提示式建议。
     该判断为规则打分的启发式结果，不构成投资建议。<br>
     数据构建时间：<span id="builtAt">–</span>
@@ -304,13 +313,16 @@ function numOr(v, nd=2, suffix=""){
 
 /* ---------- 左侧基金列表 ---------- */
 const LIST_HEAD = `<div class="lhead"><span></span><span>基金</span><span>总分</span>
-  <span>年化</span><span>近1年</span><span>回撤</span><span>夏普</span><span>规模</span></div>`;
+  <span>年化</span><span>近1年</span><span>当日</span><span>回撤</span><span>夏普</span>
+  <span>规模</span><span>建议</span></div>`;
 
 function row(f){
   const c = COLORS[f.tier] || "#8b9bb4";
   const sel = state.sel===f.code ? " sel" : "";
-  const r1 = f.ret1;
+  const r1 = f.w1 ? f.w1[0] : null;
+  const chg = f.chg;
   const r1c = (r1===null||r1===undefined) ? "" : (r1>0?"pos":(r1<0?"neg":""));
+  const cg = (chg===null||chg===undefined) ? "" : (chg>0?"pos":(chg<0?"neg":""));
   return `<div class="row${sel}" data-code="${f.code}" style="--ac:${c}">
     <span class="badge">${f.tier}</span>
     <div class="rname"><b>${esc(f.name)}</b>
@@ -318,9 +330,11 @@ function row(f){
     <span class="rscore">${f.score.toFixed(1)}</span>
     <span class="rn">${pct(f.ann)}</span>
     <span class="rn ${r1c}">${pct(r1)}</span>
+    <span class="rn ${cg}">${chg===null||chg===undefined?"–":(chg>0?"+":"")+Number(chg).toFixed(2)+"%"}</span>
     <span class="rn neg">${pct(f.mdd)}</span>
     <span class="rn">${numOr(f.sharpe,2)}</span>
     <span class="rn">${f.aum===null||f.aum===undefined?"–":f.aum.toFixed(1)+"亿"}</span>
+    <span class="radv">${f.advice?esc(f.advice.bucket):"–"}</span>
   </div>`;
 }
 
@@ -763,14 +777,15 @@ function renderMarket(){
     const fmt = v => (v===null||v===undefined) ? "–" : (v>0?"+":"") + Number(v).toFixed(2) + "%";
     const cls = v => (v>0?"dir-up":(v<0?"dir-dn":"dir-flat"));
     $("#mkSlots").innerHTML = slots.map(s=>
-      `<span>${esc(s.time)} <b class="${cls(s.c1)}">${fmt(s.c1)}</b>/<b class="${cls(s.c2)}">${fmt(s.c2)}</b></span>`
+      `<span>${esc(s.close ? "收盘" : s.time)} <b class="${cls(s.c1)}">${fmt(s.c1)}</b>/<b class="${cls(s.c2)}">${fmt(s.c2)}</b></span>`
     ).join(" · ");
   }
   if(m.pred){
     $("#mkPred").innerHTML = `<span>当日预测</span><b class="${dirCls(m.pred.dir)}">${esc(m.pred.dir)}</b>`
       + `<span class="cd">置信 ${m.pred.conf}%</span>`;
   }
-  $("#mkNote").textContent = `快照 ${m.date||""} ${m.time||""}`;
+  $("#mkNote").textContent = `快照 ${m.date||""} ${m.time||""}`
+    + (slots.length && slots[slots.length-1].close ? " · 收盘修正" : "");
 }
 
 async function refreshMarket(){
