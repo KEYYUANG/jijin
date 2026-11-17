@@ -301,7 +301,8 @@
     18:00 再按收盘价修正一次（槽位记 15:00）。
     右栏给出该基金方向判断、记录价格在近 20/60/120/250 个交易日区间中的分位与风险提示式建议。<br>
     主题按基金名称关键词归类（如“红利低波”）；分红取东财分红送配，按除息日统计近 1/2/3 年次数，
-    比例＝区间累计每份分红 ÷ 区间起点累计净值。
+    比例＝区间累计每份分红 ÷ 区间起点累计净值。<br>
+    列表“当日”与右栏“今”同源：东财当日估算涨跌（收盘后为当日净值涨跌）；没有估值的显示“–”，不做 β 推测。
     该判断为规则打分的启发式结果，不构成投资建议。<br>
     数据构建时间：<span id="builtAt">–</span>
   </div>
@@ -331,7 +332,7 @@ function numOr(v, nd=2, suffix=""){
 
 /* ---------- 左侧基金列表 ---------- */
 const LIST_HEAD = `<div class="lhead"><span></span><span>基金</span><span>板块</span><span>总分</span>
-  <span>年化</span><span>当日</span><span>近1年</span><span>回撤</span><span>夏普</span>
+  <span>年化</span><span title="盘中为估算涨跌，收盘后为当日净值涨跌">当日</span><span>近1年</span><span>回撤</span><span>夏普</span>
   <span>规模</span><span>建议</span></div>`;
 
 function row(f){
