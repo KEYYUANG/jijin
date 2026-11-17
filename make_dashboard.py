@@ -604,6 +604,7 @@ def main():
             "stamp": intraday.get("stamp"),
             "index": idx_now,
             "index2": idx_now2,
+            "slots": intraday.get("slots") or [],
             "breadth": intraday.get("breadth") or {},
             "pred": mkt,
             "covered": sum(1 for r in recs if r.get("pred")),
