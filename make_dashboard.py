@@ -480,6 +480,30 @@ def make_advice(pos: dict | None, pdir: str | None, approx: bool) -> dict | None
 
 
 
+def load_nav_changes(codes: set[str]) -> dict:
+    """东财当日已公布的净值涨跌（收盘后 20:00 起逐步发布），用作“当日”最终口径。"""
+    try:
+        import akshare as ak
+        df = ak.fund_open_fund_daily_em()
+    except Exception as exc:  # noqa: BLE001
+        print(f"      净值日增读取失败：{exc}")
+        return {}
+    col_chg = next((c for c in df.columns if str(c) == "日增长率"), None)
+    col_nav = next((c for c in df.columns if "单位净值" in str(c)), None)
+    if col_chg is None:
+        return {}
+    day = str(col_nav).split("-单位净值")[0] if col_nav else ""
+    out = {}
+    for _, r in df.iterrows():
+        code = str(r["基金代码"]).zfill(6)
+        if code not in codes:
+            continue
+        v = num(r.get(col_chg), 2)
+        if v is not None:
+            out[code] = [v, num(r.get(col_nav), 4), day]
+    return out
+
+
 DIV_CACHE = os.path.join(CACHE, "dividends.json")
 THEMES = [
     (("红利低波", "红利低波动"), "红利低波"),
@@ -605,6 +629,7 @@ def build_records():
     pool_set = set(pool)
     industry = load_industry(pool)
     valuations = load_valuation(set(pool))
+    nav_changes = load_nav_changes(set(pool))
     divs = load_dividends(pool)
 
     intraday = load_intraday()
@@ -626,7 +651,11 @@ def build_records():
         s = nav.get(code)
         dv = dividend_info(divs.get(code), s)
         chg, approx = None, False
-        if valuations.get(code) and valuations[code][1] is not None:
+        day = str(datetime.now().date())
+        nc = nav_changes.get(code)
+        if nc and nc[2] == day:
+            chg = nc[0]
+        elif valuations.get(code) and valuations[code][1] is not None:
             chg = valuations[code][1]
         elif code in intra_funds:
             chg = intra_funds[code]
@@ -657,7 +686,7 @@ def build_records():
                    num(r.get("p_ret1"), 1), num(r.get("p_ret2"), 1),
                    num(r.get("p_vol1"), 1)],
             "ind": industry.get(code),
-            "val": valuations.get(code),
+            "val": valuations.get(code) or ([None, nc[0], nc[1], nc[2]] if nc else None),
             "chg": None if approx else chg, "approx": approx,
             "trend": (trend_series(s) if code in pool_set and s is not None else None),
             "pred": pred, "advice": advice,
