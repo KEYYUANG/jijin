@@ -21,14 +21,50 @@ def pct(v):
     return f"{v:+.2f}%"
 
 
+def today_str():
+    from datetime import datetime, timedelta, timezone
+    return datetime.now(timezone(timedelta(hours=8))).strftime("%Y-%m-%d")
+
+
+def read_payload():
+    html = open("output/tier_dashboard.html", encoding="utf-8").read()
+    return json.JSONDecoder().raw_decode(html[html.index("const D = ") + 10:])[0]
+
+
+def read_snapshot():
+    try:
+        with open(os.path.join("state", "intraday.json"), encoding="utf-8") as f:
+            return json.load(f)
+    except Exception:  # noqa: BLE001
+        return {}
+
+
 def main():
     token = os.environ.get("PUSHPLUS_TOKEN", "").strip()
+    mode = sys.argv[1] if len(sys.argv) > 1 else "--push"
     if not token:
         print("未配置 PUSHPLUS_TOKEN，跳过推送")
         return 0
     try:
-        html = open("output/tier_dashboard.html", encoding="utf-8").read()
-        data, _ = json.JSONDecoder().raw_decode(html[html.index("const D = ") + 10:])
+        if mode == "--heartbeat":
+            snap = read_snapshot()
+            title = "基金看板 · 月度自检"
+            content = (f"<div style='font-size:13px'>定时链路存活。<br>"
+                       f"最近快照：{snap.get('date', '–')} {snap.get('time', '–')}"
+                       f"（{snap.get('time') and '有' or '无'}数据）<br>"
+                       f"<a href='{PAGE}'>打开看板</a></div>")
+            return send(token, title, content)
+
+        if mode == "--catch-up":
+            snap = read_snapshot()
+            if snap.get("notifiedDate") == snap.get("date") == today_str():
+                print("今日已推送，补发跳过")
+                return 0
+            if snap.get("date") != today_str():
+                print("快照非今日，补发跳过")
+                return 0
+
+        data = read_payload()
     except Exception as exc:  # noqa: BLE001
         print(f"读取看板数据失败：{exc}")
         return 0
@@ -44,7 +80,8 @@ def main():
                    key=lambda f: -(f.get("score") or 0))[:5]
 
     time_txt = f"{m.get('date', '')} {m.get('time', '')}".strip()
-    title = (f"基金看板 {m.get('date', '')} 上证{pct(i1.get('chg'))} "
+    label = "补发 · " if mode == "--catch-up" else ""
+    title = (f"{label}基金看板 {m.get('date', '')} 上证{pct(i1.get('chg'))} "
              f"沪深300{pct(i2.get('chg'))} · {p.get('dir', '')}")
 
     rows = "".join(
@@ -72,14 +109,20 @@ def main():
   <div style="color:#888;font-size:11px;margin-top:6px">规则打分的启发式结果，不构成投资建议。</div>
 </div>"""
 
+    return send(token, title, content)
+
+
+def send(token, title, content):
     try:
         r = requests.post(URL, json={"token": token, "title": title[:100],
                                      "content": content, "template": "html"},
                           timeout=20)
         print(r.status_code, r.text[:200])
+        ok = r.status_code == 200 and '"code":200' in r.text.replace(" ", "")
+        return 0 if ok else 1
     except Exception as exc:  # noqa: BLE001
         print(f"PushPlus 推送失败：{exc}")
-    return 0
+        return 1
 
 
 if __name__ == "__main__":
