@@ -2249,5 +2249,23 @@
     "entry_manager_tenure": 4.878850102669404,
     "entry_aum_chg": -0.22519999999999998,
     "last_check": "entered"
+  },
+  "501070": {
+    "fund_code": "501070",
+    "fund_name": "广发睿阳三年定开混合",
+    "status": "watching",
+    "trigger_reason": "manager_changes_2",
+    "trigger_flags": "",
+    "enter_date": "2026-11-18",
+    "review_deadline": "2027-05-18",
+    "periods": 0,
+    "last_review": "2026-11-18",
+    "entry_calmar": 0.1817540507263067,
+    "entry_calmar_source": "entry_value",
+    "entry_quadrant": "大盘平衡",
+    "entry_manager_changes": 2.0,
+    "entry_manager_tenure": 0.6844626967830253,
+    "entry_aum_chg": -0.12380000000000001,
+    "last_check": "entered"
   }
 }
