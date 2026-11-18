@@ -96,6 +96,27 @@ jobs:
         with:
           path: site
 
+      # 兜底：14:30 那轮若因 GitHub 定时延迟未推送，18:00 这轮补发一条（当日已推过则跳过）
+      - name: Catch-up notification
+        if: github.event_name == 'schedule'
+        continue-on-error: true
+        env:
+          PUSHPLUS_TOKEN: ${{ secrets.PUSHPLUS_TOKEN }}
+        run: python notify_pushplus.py --catch-up
+
+      # 每月 1 日发一条心跳，连续缺席即说明定时或推送链路已静默失效
+      - name: Monthly heartbeat
+        if: github.event_name == 'schedule'
+        continue-on-error: true
+        env:
+          PUSHPLUS_TOKEN: ${{ secrets.PUSHPLUS_TOKEN }}
+        run: |
+          if [ "$(TZ=Asia/Shanghai date +%d)" = "01" ]; then
+            python notify_pushplus.py --heartbeat
+          else
+            echo "非月初，跳过心跳"
+          fi
+
   deploy:
     needs: build
     runs-on: ubuntu-latest
