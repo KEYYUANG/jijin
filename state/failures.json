@@ -303,5 +303,35 @@
     "reason": "KeyError: \"None of [Index(['date', 'nav'], dtype='str')] are in the [c",
     "last_try": "2026-11-15",
     "attempts": 1
+  },
+  "027878": {
+    "reason": "KeyError: \"None of [Index(['date', 'nav'], dtype='str')] are in the [c",
+    "last_try": "2026-11-18",
+    "attempts": 1
+  },
+  "029472": {
+    "reason": "KeyError: \"None of [Index(['date', 'nav'], dtype='str')] are in the [c",
+    "last_try": "2026-11-18",
+    "attempts": 1
+  },
+  "029520": {
+    "reason": "KeyError: \"None of [Index(['date', 'nav'], dtype='str')] are in the [c",
+    "last_try": "2026-11-18",
+    "attempts": 1
+  },
+  "029767": {
+    "reason": "KeyError: \"None of [Index(['date', 'nav'], dtype='str')] are in the [c",
+    "last_try": "2026-11-18",
+    "attempts": 1
+  },
+  "029769": {
+    "reason": "KeyError: \"None of [Index(['date', 'nav'], dtype='str')] are in the [c",
+    "last_try": "2026-11-18",
+    "attempts": 1
+  },
+  "029881": {
+    "reason": "KeyError: \"None of [Index(['date', 'nav'], dtype='str')] are in the [c",
+    "last_try": "2026-11-18",
+    "attempts": 1
   }
 }
