@@ -243,12 +243,13 @@ def main():
         except Exception:  # noqa: BLE001
             old = {}
     slots = (old.get("slots") or []) if old.get("date") == today else []
-    slots = slots[-5:]
+    slots = slots[-8:]
     sse, csi = payload["index"], payload["index2"]
+    slot_time = "15:00" if args.close else payload["time"]
     if args.close:
         slots = [s for s in slots if not s.get("close")]
     slots.append({
-        "time": "15:00" if args.close else payload["time"],
+        "time": slot_time,
         "close": bool(args.close),
         "c1": sse.get("chg"), "i1": sse.get("price"),
         "c2": csi.get("chg"), "i2": csi.get("price"),
@@ -256,6 +257,14 @@ def main():
         "ratio": breadth.get("upRatio"),
     })
     payload["slots"] = slots
+
+    # 14:25–14:55 之间只标记一次推送，避免密集定时重复推送
+    notified = old.get("notifiedDate") if old.get("date") == today else None
+    payload["notifiedDate"] = notified
+    payload["notifyRun"] = False
+    if not args.close and notified != today and "14:25" <= payload["time"] < "14:55":
+        payload["notifiedDate"] = today
+        payload["notifyRun"] = True
 
     os.makedirs(STATE, exist_ok=True)
     tmp = DST + ".tmp"
