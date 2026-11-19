@@ -71,6 +71,15 @@ jobs:
           PUSHPLUS_TOKEN: ${{ secrets.PUSHPLUS_TOKEN }}
         run: python notify_pushplus.py
 
+      # 兜底：13:30–14:30 那轮若因 GitHub 定时延迟未推送，18:00 这轮补发（已推过则跳过）。
+      # 必须放在 Persist state 之前，这样“已推送”标记才会随本次提交落库。
+      - name: Catch-up notification
+        if: github.event_name == 'schedule'
+        continue-on-error: true
+        env:
+          PUSHPLUS_TOKEN: ${{ secrets.PUSHPLUS_TOKEN }}
+        run: python notify_pushplus.py --catch-up
+
       - name: Persist state
         run: |
           git config user.name "github-actions[bot]"
@@ -95,14 +104,6 @@ jobs:
       - uses: actions/upload-pages-artifact@v3
         with:
           path: site
-
-      # 兜底：14:30 那轮若因 GitHub 定时延迟未推送，18:00 这轮补发一条（当日已推过则跳过）
-      - name: Catch-up notification
-        if: github.event_name == 'schedule'
-        continue-on-error: true
-        env:
-          PUSHPLUS_TOKEN: ${{ secrets.PUSHPLUS_TOKEN }}
-        run: python notify_pushplus.py --catch-up
 
       # 每月 1 日发一条心跳，连续缺席即说明定时或推送链路已静默失效
       - name: Monthly heartbeat
