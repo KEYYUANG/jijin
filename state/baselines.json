@@ -1,10 +1,10 @@
 {
   "000017": {
-    "date": "2026-11-18",
-    "calmar": 0.11172023194007362,
+    "date": "2026-11-19",
+    "calmar": 0.11081880391912147,
     "quadrant": "大盘成长",
     "manager_changes": 1.0,
-    "manager_tenure": 0.2053388090349076
+    "manager_tenure": 0.2080766598220397
   },
   "000058": {
     "date": "2026-11-14",
@@ -35,11 +35,11 @@
     "manager_tenure": 4.4517453798767965
   },
   "000242": {
-    "date": "2026-11-18",
-    "calmar": 0.053654073694876084,
+    "date": "2026-11-19",
+    "calmar": 0.04675937462587891,
     "quadrant": "小盘成长",
     "manager_changes": 0.0,
-    "manager_tenure": 7.5564681724846
+    "manager_tenure": 7.559206023271732
   },
   "000314": {
     "date": "2026-11-14",
@@ -49,39 +49,39 @@
     "manager_tenure": 9.297741273100616
   },
   "000390": {
-    "date": "2026-11-18",
-    "calmar": 0.22629121902428292,
+    "date": "2026-11-19",
+    "calmar": 0.22236018904764013,
     "quadrant": "大盘成长",
     "manager_changes": 1.0,
-    "manager_tenure": 1.6865160848733745
+    "manager_tenure": 1.6892539356605065
   },
   "000418": {
-    "date": "2026-11-18",
-    "calmar": 0.061248145364185144,
+    "date": "2026-11-19",
+    "calmar": 0.05666813739874169,
     "quadrant": "小盘成长",
     "manager_changes": 0.0,
-    "manager_tenure": 4.0219028062970565
+    "manager_tenure": 4.024640657084189
   },
   "000534": {
-    "date": "2026-11-18",
-    "calmar": 0.12756804712965844,
+    "date": "2026-11-19",
+    "calmar": 0.12058235343614004,
     "quadrant": "大盘成长",
     "manager_changes": 1.0,
-    "manager_tenure": 0.9911019849418207
+    "manager_tenure": 0.9938398357289527
   },
   "000598": {
-    "date": "2026-11-18",
-    "calmar": 0.24746740256135985,
+    "date": "2026-11-19",
+    "calmar": 0.23919123246176308,
     "quadrant": "大盘成长",
     "manager_changes": 1.0,
-    "manager_tenure": 0.9911019849418207
+    "manager_tenure": 0.9938398357289527
   },
   "000628": {
-    "date": "2026-11-18",
-    "calmar": 0.19642676159258782,
+    "date": "2026-11-19",
+    "calmar": 0.18413952441583922,
     "quadrant": "小盘价值",
     "manager_changes": 0.0,
-    "manager_tenure": 8.186173853524982
+    "manager_tenure": 8.188911704312115
   },
   "000743": {
     "date": "2026-11-14",
@@ -98,11 +98,11 @@
     "manager_tenure": 5.801505817932923
   },
   "000893": {
-    "date": "2026-11-18",
-    "calmar": 0.3422416503392468,
+    "date": "2026-11-19",
+    "calmar": 0.33022667201609573,
     "quadrant": "小盘价值",
     "manager_changes": 0.0,
-    "manager_tenure": 7.7180013689253935
+    "manager_tenure": 7.7207392197125255
   },
   "000916": {
     "date": "2026-11-14",
@@ -112,25 +112,25 @@
     "manager_tenure": 5.563312799452429
   },
   "000940": {
-    "date": "2026-11-18",
-    "calmar": 0.26065465833022167,
+    "date": "2026-11-19",
+    "calmar": 0.2553112876283828,
     "quadrant": "大盘成长",
     "manager_changes": 0.0,
-    "manager_tenure": 11.819301848049282
+    "manager_tenure": 11.822039698836413
   },
   "000965": {
-    "date": "2026-11-18",
-    "calmar": 0.1295081829205844,
+    "date": "2026-11-19",
+    "calmar": 0.12363744566693301,
     "quadrant": "小盘价值",
     "manager_changes": 1.0,
-    "manager_tenure": 2.521560574948665
+    "manager_tenure": 2.524298425735797
   },
   "001018": {
-    "date": "2026-11-18",
-    "calmar": 0.13069510675883828,
+    "date": "2026-11-19",
+    "calmar": 0.1267152270896914,
     "quadrant": "大盘成长",
     "manager_changes": 0.0,
-    "manager_tenure": 11.764544832306639
+    "manager_tenure": 11.767282683093772
   },
   "001068": {
     "date": "2026-11-14",
@@ -140,18 +140,18 @@
     "manager_tenure": 5.160848733744011
   },
   "001071": {
-    "date": "2026-11-18",
-    "calmar": 0.10931415466417087,
+    "date": "2026-11-19",
+    "calmar": 0.10741197938519484,
     "quadrant": "大盘成长",
     "manager_changes": 0.0,
-    "manager_tenure": 10.157426420260096
+    "manager_tenure": 10.160164271047227
   },
   "001076": {
-    "date": "2026-11-18",
-    "calmar": 0.40475214205197074,
+    "date": "2026-11-19",
+    "calmar": 0.3989914307309286,
     "quadrant": "大盘成长",
     "manager_changes": 0.0,
-    "manager_tenure": 4.848733744010952
+    "manager_tenure": 4.851471594798084
   },
   "001097": {
     "date": "2026-11-14",
@@ -161,11 +161,11 @@
     "manager_tenure": 3.24435318275154
   },
   "001122": {
-    "date": "2026-11-18",
-    "calmar": 1.1598371746846285,
+    "date": "2026-11-19",
+    "calmar": 1.1473590588487403,
     "quadrant": "中盘成长",
     "manager_changes": 0.0,
-    "manager_tenure": 8.188911704312115
+    "manager_tenure": 8.191649555099247
   },
   "001162": {
     "date": "2026-11-14",
@@ -182,11 +182,11 @@
     "manager_tenure": 1.215605749486653
   },
   "001183": {
-    "date": "2026-11-18",
-    "calmar": 0.41279518720417063,
+    "date": "2026-11-19",
+    "calmar": 0.3992111497272771,
     "quadrant": "小盘成长",
     "manager_changes": 0.0,
-    "manager_tenure": 6.510609171800137
+    "manager_tenure": 6.513347022587269
   },
   "001190": {
     "date": "2026-11-14",
@@ -196,32 +196,32 @@
     "manager_tenure": 2.138261464750171
   },
   "001208": {
-    "date": "2026-11-18",
-    "calmar": 0.1997364262037064,
+    "date": "2026-11-19",
+    "calmar": 0.1841566885202141,
     "quadrant": "小盘成长",
     "manager_changes": 0.0,
-    "manager_tenure": 3.728952772073922
+    "manager_tenure": 3.7316906228610542
   },
   "001230": {
-    "date": "2026-11-18",
-    "calmar": 0.15762734468628192,
+    "date": "2026-11-19",
+    "calmar": 0.1602244457338676,
     "quadrant": "小盘成长",
     "manager_changes": 1.0,
-    "manager_tenure": 0.2272416153319644
+    "manager_tenure": 0.2299794661190965
   },
   "001247": {
-    "date": "2026-11-18",
-    "calmar": 0.9935701040747531,
+    "date": "2026-11-19",
+    "calmar": 0.9797791222763798,
     "quadrant": "小盘平衡",
     "manager_changes": 0.0,
-    "manager_tenure": 6.231348391512663
+    "manager_tenure": 6.234086242299795
   },
   "001249": {
-    "date": "2026-11-18",
-    "calmar": 1.4276468164978224,
+    "date": "2026-11-19",
+    "calmar": 1.411500702419647,
     "quadrant": "中盘平衡",
     "manager_changes": 1.0,
-    "manager_tenure": 0.6844626967830253
+    "manager_tenure": 0.6872005475701575
   },
   "001336": {
     "date": "2026-11-14",
@@ -231,11 +231,11 @@
     "manager_tenure": 2.8774811772758384
   },
   "001342": {
-    "date": "2026-11-18",
-    "calmar": 1.3516394551983915,
+    "date": "2026-11-19",
+    "calmar": 1.3332286190302838,
     "quadrant": "小盘成长",
     "manager_changes": 1.0,
-    "manager_tenure": 1.5277207392197125
+    "manager_tenure": 1.5304585900068446
   },
   "001345": {
     "date": "2026-11-16",
@@ -266,11 +266,11 @@
     "manager_tenure": 3.1457905544147846
   },
   "001422": {
-    "date": "2026-11-18",
-    "calmar": 0.5830021611544498,
+    "date": "2026-11-19",
+    "calmar": 0.5750197556337749,
     "quadrant": "中盘成长",
     "manager_changes": 0.0,
-    "manager_tenure": 5.218343600273785
+    "manager_tenure": 5.221081451060917
   },
   "001427": {
     "date": "2026-11-14",
@@ -287,25 +287,25 @@
     "manager_tenure": 0.2327173169062286
   },
   "001433": {
-    "date": "2026-11-18",
-    "calmar": 1.4412227387213734,
+    "date": "2026-11-19",
+    "calmar": 1.4240736617569323,
     "quadrant": "中盘平衡",
     "manager_changes": 0.0,
-    "manager_tenure": 4.284736481861739
+    "manager_tenure": 4.287474332648871
   },
   "001484": {
-    "date": "2026-11-18",
-    "calmar": 0.1837960639242597,
+    "date": "2026-11-19",
+    "calmar": 0.1770357726074232,
     "quadrant": "大盘价值",
     "manager_changes": 0.0,
-    "manager_tenure": 3.759069130732375
+    "manager_tenure": 3.761806981519507
   },
   "001488": {
-    "date": "2026-11-18",
-    "calmar": 0.12498001119845499,
+    "date": "2026-11-19",
+    "calmar": 0.12253801395087008,
     "quadrant": "小盘成长",
     "manager_changes": 1.0,
-    "manager_tenure": 1.6399726214921286
+    "manager_tenure": 1.6427104722792607
   },
   "001506": {
     "date": "2026-11-14",
@@ -315,11 +315,11 @@
     "manager_tenure": 6.499657768651608
   },
   "001528": {
-    "date": "2026-11-18",
-    "calmar": 0.09714910561280263,
+    "date": "2026-11-19",
+    "calmar": 0.0883885614800118,
     "quadrant": "小盘成长",
     "manager_changes": 0.0,
-    "manager_tenure": 10.992470910335387
+    "manager_tenure": 10.99520876112252
   },
   "001535": {
     "date": "2026-11-14",
@@ -329,25 +329,25 @@
     "manager_tenure": 4.361396303901437
   },
   "001562": {
-    "date": "2026-11-18",
-    "calmar": 1.2461454905272717,
+    "date": "2026-11-19",
+    "calmar": 1.230462789672538,
     "quadrant": "中盘成长",
     "manager_changes": 1.0,
-    "manager_tenure": 1.5277207392197125
+    "manager_tenure": 1.5304585900068446
   },
   "001564": {
-    "date": "2026-11-18",
-    "calmar": 0.3838726830441494,
+    "date": "2026-11-19",
+    "calmar": 0.37176480808205076,
     "quadrant": "小盘成长",
     "manager_changes": 0.0,
-    "manager_tenure": 10.803559206023271
+    "manager_tenure": 10.806297056810404
   },
   "001570": {
-    "date": "2026-11-18",
-    "calmar": 0.6255750054231127,
+    "date": "2026-11-19",
+    "calmar": 0.611762657862553,
     "quadrant": "中盘价值",
     "manager_changes": 1.0,
-    "manager_tenure": 1.431895961670089
+    "manager_tenure": 1.434633812457221
   },
   "001609": {
     "date": "2026-11-14",
@@ -371,18 +371,18 @@
     "manager_tenure": 2.4996577686516086
   },
   "001672": {
-    "date": "2026-11-18",
-    "calmar": 0.1031195032726946,
+    "date": "2026-11-19",
+    "calmar": 0.09722150878931891,
     "quadrant": "大盘成长",
     "manager_changes": 0.0,
-    "manager_tenure": 9.062286105407255
+    "manager_tenure": 9.065023956194388
   },
   "001678": {
-    "date": "2026-11-18",
-    "calmar": 0.204665594665169,
+    "date": "2026-11-19",
+    "calmar": 0.20150397970719527,
     "quadrant": "大盘成长",
     "manager_changes": 0.0,
-    "manager_tenure": 3.6358658453114305
+    "manager_tenure": 3.6386036960985626
   },
   "001682": {
     "date": "2026-11-14",
@@ -406,494 +406,494 @@
     "manager_tenure": 1.8179329226557153
   },
   "001743": {
-    "date": "2026-11-18",
-    "calmar": 0.2175953005232068,
+    "date": "2026-11-19",
+    "calmar": 0.2057210163583971,
     "quadrant": "大盘成长",
     "manager_changes": 0.0,
-    "manager_tenure": 3.077344284736482
+    "manager_tenure": 3.080082135523614
   },
   "001744": {
-    "date": "2026-11-18",
-    "calmar": 0.4097991457386644,
+    "date": "2026-11-19",
+    "calmar": 0.4093227199553799,
     "quadrant": "大盘成长",
     "manager_changes": 1.0,
-    "manager_tenure": 2.598220396988364
+    "manager_tenure": 2.6009582477754964
   },
   "001801": {
-    "date": "2026-11-18",
-    "calmar": 0.23686490020721396,
+    "date": "2026-11-19",
+    "calmar": 0.23573212275251298,
     "quadrant": "小盘成长",
     "manager_changes": 0.0,
-    "manager_tenure": 4.076659822039699
+    "manager_tenure": 4.079397672826831
   },
   "001835": {
-    "date": "2026-11-18",
-    "calmar": 1.3573267925702284,
+    "date": "2026-11-19",
+    "calmar": 1.3384438989690925,
     "quadrant": "大盘平衡",
     "manager_changes": 0.0,
-    "manager_tenure": 3.1813826146475015
+    "manager_tenure": 3.184120465434634
   },
   "001892": {
-    "date": "2026-11-18",
-    "calmar": 0.2377593369159598,
+    "date": "2026-11-19",
+    "calmar": 0.23222664634464113,
     "quadrant": "大盘成长",
     "manager_changes": 1.0,
-    "manager_tenure": 0.9911019849418207
+    "manager_tenure": 0.9938398357289527
   },
   "001898": {
-    "date": "2026-11-18",
-    "calmar": 0.13815754943940745,
+    "date": "2026-11-19",
+    "calmar": 0.1362635747772864,
     "quadrant": "小盘价值",
     "manager_changes": 0.0,
-    "manager_tenure": 3.0965092402464065
+    "manager_tenure": 3.0992470910335386
   },
   "001917": {
-    "date": "2026-11-18",
-    "calmar": 0.4198396683502269,
+    "date": "2026-11-19",
+    "calmar": 0.40778204051177863,
     "quadrant": "小盘平衡",
     "manager_changes": 0.0,
-    "manager_tenure": 10.677618069815194
+    "manager_tenure": 10.680355920602327
   },
   "001959": {
-    "date": "2026-11-18",
-    "calmar": 0.27568099133837776,
+    "date": "2026-11-19",
+    "calmar": 0.2687539214584087,
     "quadrant": "大盘成长",
     "manager_changes": 0.0,
-    "manager_tenure": 4.158795345653662
+    "manager_tenure": 4.161533196440794
   },
   "002049": {
-    "date": "2026-11-18",
-    "calmar": 0.32943051500573667,
+    "date": "2026-11-19",
+    "calmar": 0.3264480135371893,
     "quadrant": "小盘成长",
     "manager_changes": 0.0,
-    "manager_tenure": 3.326488706365503
+    "manager_tenure": 3.3292265571526354
   },
   "002095": {
-    "date": "2026-11-18",
-    "calmar": 0.10718078988884358,
+    "date": "2026-11-19",
+    "calmar": 0.10129978609971874,
     "quadrant": "大盘成长",
     "manager_changes": 0.0,
-    "manager_tenure": 6.272416153319644
+    "manager_tenure": 6.275154004106776
   },
   "002137": {
-    "date": "2026-11-18",
-    "calmar": 0.08391398843432647,
+    "date": "2026-11-19",
+    "calmar": 0.0790402058333484,
     "quadrant": "小盘价值",
     "manager_changes": 1.0,
-    "manager_tenure": 2.3874058863791925
+    "manager_tenure": 2.3901437371663246
   },
   "002289": {
-    "date": "2026-11-18",
-    "calmar": 0.37767726062515794,
+    "date": "2026-11-19",
+    "calmar": 0.37410336564271857,
     "quadrant": "大盘成长",
     "manager_changes": 0.0,
-    "manager_tenure": 3.8466803559206024
+    "manager_tenure": 3.8494182067077345
   },
   "002350": {
-    "date": "2026-11-18",
-    "calmar": 0.10575314961347909,
+    "date": "2026-11-19",
+    "calmar": 0.10274361660185712,
     "quadrant": "大盘成长",
     "manager_changes": 0.0,
-    "manager_tenure": 5.2731006160164275
+    "manager_tenure": 5.27583846680356
   },
   "002450": {
-    "date": "2026-11-18",
-    "calmar": 0.18675181782855274,
+    "date": "2026-11-19",
+    "calmar": 0.18509902861685176,
     "quadrant": "中盘成长",
     "manager_changes": 0.0,
-    "manager_tenure": 10.21492128678987
+    "manager_tenure": 10.217659137577002
   },
   "002597": {
-    "date": "2026-11-18",
-    "calmar": 0.24375888852088348,
+    "date": "2026-11-19",
+    "calmar": 0.23494672623770474,
     "quadrant": "小盘成长",
     "manager_changes": 0.0,
-    "manager_tenure": 5.90280629705681
+    "manager_tenure": 5.905544147843942
   },
   "002833": {
-    "date": "2026-11-18",
-    "calmar": 0.4081724570153131,
+    "date": "2026-11-19",
+    "calmar": 0.403983821372981,
     "quadrant": "小盘平衡",
     "manager_changes": 0.0,
-    "manager_tenure": 5.4811772758384665
+    "manager_tenure": 5.4839151266255985
   },
   "002910": {
-    "date": "2026-11-18",
-    "calmar": 0.6441979555394588,
+    "date": "2026-11-19",
+    "calmar": 0.6352375824660589,
     "quadrant": "大盘成长",
     "manager_changes": 0.0,
-    "manager_tenure": 6.239561943874059
+    "manager_tenure": 6.242299794661191
   },
   "002980": {
-    "date": "2026-11-18",
-    "calmar": 0.13059044184899926,
+    "date": "2026-11-19",
+    "calmar": 0.12826747810976913,
     "quadrant": "大盘成长",
     "manager_changes": 0.0,
-    "manager_tenure": 3.619438740588638
+    "manager_tenure": 3.62217659137577
   },
   "003165": {
-    "date": "2026-11-18",
-    "calmar": 0.05127717283414478,
+    "date": "2026-11-19",
+    "calmar": 0.04169697342373553,
     "quadrant": "小盘价值",
     "manager_changes": 0.0,
-    "manager_tenure": 6.48870636550308
+    "manager_tenure": 6.491444216290212
   },
   "003189": {
-    "date": "2026-11-18",
-    "calmar": 0.7301675614378975,
+    "date": "2026-11-19",
+    "calmar": 0.7175480733719075,
     "quadrant": "小盘成长",
     "manager_changes": 1.0,
-    "manager_tenure": 0.5776865160848734
+    "manager_tenure": 0.5804243668720055
   },
   "003396": {
-    "date": "2026-11-18",
-    "calmar": 0.1733983303586574,
+    "date": "2026-11-19",
+    "calmar": 0.1562198209133045,
     "quadrant": "小盘成长",
     "manager_changes": 0.0,
-    "manager_tenure": 4.342231348391513
+    "manager_tenure": 4.344969199178645
   },
   "003591": {
-    "date": "2026-11-18",
-    "calmar": 1.1512134540574748,
+    "date": "2026-11-19",
+    "calmar": 1.1358832388938422,
     "quadrant": "中盘平衡",
     "manager_changes": 0.0,
-    "manager_tenure": 3.2553045859000687
+    "manager_tenure": 3.2580424366872007
   },
   "003598": {
-    "date": "2026-11-18",
-    "calmar": 0.6552430453614202,
+    "date": "2026-11-19",
+    "calmar": 0.651428192186415,
     "quadrant": "小盘成长",
     "manager_changes": 0.0,
-    "manager_tenure": 7.660506502395619
+    "manager_tenure": 7.663244353182751
   },
   "003624": {
-    "date": "2026-11-18",
-    "calmar": 0.11524570971176319,
+    "date": "2026-11-19",
+    "calmar": 0.1089086776341412,
     "quadrant": "大盘价值",
     "manager_changes": 0.0,
-    "manager_tenure": 3.5208761122518824
+    "manager_tenure": 3.5236139630390144
   },
   "003692": {
-    "date": "2026-11-18",
-    "calmar": 1.1465713943370588,
+    "date": "2026-11-19",
+    "calmar": 1.1359824500618245,
     "quadrant": "中盘平衡",
     "manager_changes": 0.0,
-    "manager_tenure": 3.6605065023956196
+    "manager_tenure": 3.6632443531827517
   },
   "003822": {
-    "date": "2026-11-18",
-    "calmar": 0.08617928444502825,
+    "date": "2026-11-19",
+    "calmar": 0.07819293408358356,
     "quadrant": "小盘成长",
     "manager_changes": 0.0,
-    "manager_tenure": 7.835728952772074
+    "manager_tenure": 7.838466803559206
   },
   "003839": {
-    "date": "2026-11-18",
-    "calmar": 0.3485419503802505,
+    "date": "2026-11-19",
+    "calmar": 0.34329004760128795,
     "quadrant": "中盘价值",
     "manager_changes": 1.0,
-    "manager_tenure": 1.6098562628336757
+    "manager_tenure": 1.6125941136208077
   },
   "004010": {
-    "date": "2026-11-18",
-    "calmar": 0.9317387190267821,
+    "date": "2026-11-19",
+    "calmar": 0.91788595022507,
     "quadrant": "小盘价值",
     "manager_changes": 1.0,
-    "manager_tenure": 2.4941820670773445
+    "manager_tenure": 2.4969199178644765
   },
   "004206": {
-    "date": "2026-11-18",
-    "calmar": 0.6581050847049004,
+    "date": "2026-11-19",
+    "calmar": 0.6513296816782688,
     "quadrant": "小盘成长",
-    "manager_changes": 0.0,
-    "manager_tenure": 6.882956878850103
-  },
-  "004335": {
-    "date": "2026-11-18",
-    "calmar": 0.2002114111673783,
-    "quadrant": "小盘成长",
-    "manager_changes": 0.0,
-    "manager_tenure": 3.154004106776181
-  },
-  "004641": {
-    "date": "2026-11-18",
-    "calmar": 0.11425827342278755,
-    "quadrant": "大盘成长",
-    "manager_changes": 0.0,
-    "manager_tenure": 7.1649555099247095
-  },
-  "004685": {
-    "date": "2026-11-18",
-    "calmar": 1.1960834387404733,
-    "quadrant": "小盘价值",
-    "manager_changes": 0.0,
-    "manager_tenure": 9.010266940451745
-  },
-  "004814": {
-    "date": "2026-11-18",
-    "calmar": 0.2016142733837936,
-    "quadrant": "大盘价值",
-    "manager_changes": 0.0,
-    "manager_tenure": 5.768651608487337
-  },
-  "005094": {
-    "date": "2026-11-18",
-    "calmar": 0.26751079466938793,
-    "quadrant": "小盘成长",
-    "manager_changes": 0.0,
-    "manager_tenure": 8.91170431211499
-  },
-  "005109": {
-    "date": "2026-11-18",
-    "calmar": 0.03958756081014697,
-    "quadrant": "小盘价值",
-    "manager_changes": 0.0,
-    "manager_tenure": 3.4524298425735798
-  },
-  "005161": {
-    "date": "2026-11-18",
-    "calmar": 0.19732701229062094,
-    "quadrant": "小盘价值",
-    "manager_changes": 1.0,
-    "manager_tenure": 2.8993839835728954
-  },
-  "005443": {
-    "date": "2026-11-18",
-    "calmar": 0.2899961981891764,
-    "quadrant": "小盘成长",
-    "manager_changes": 0.0,
-    "manager_tenure": 3.868583162217659
-  },
-  "005576": {
-    "date": "2026-11-18",
-    "calmar": 0.8155627245440755,
-    "quadrant": "大盘价值",
-    "manager_changes": 0.0,
-    "manager_tenure": 8.698151950718685
-  },
-  "005660": {
-    "date": "2026-11-18",
-    "calmar": 0.2684553624375176,
-    "quadrant": "大盘价值",
-    "manager_changes": 1.0,
-    "manager_tenure": 2.6557152635181382
-  },
-  "006025": {
-    "date": "2026-11-18",
-    "calmar": 0.38108893274734557,
-    "quadrant": "大盘成长",
-    "manager_changes": 0.0,
-    "manager_tenure": 3.326488706365503
-  },
-  "006274": {
-    "date": "2026-11-18",
-    "calmar": 0.21873956434470535,
-    "quadrant": "小盘价值",
-    "manager_changes": 0.0,
-    "manager_tenure": 6.97056810403833
-  },
-  "006603": {
-    "date": "2026-11-18",
-    "calmar": 0.18206911960908032,
-    "quadrant": "小盘价值",
-    "manager_changes": 0.0,
-    "manager_tenure": 4.15605749486653
-  },
-  "006904": {
-    "date": "2026-11-18",
-    "calmar": 0.08558321740151124,
-    "quadrant": "中盘成长",
-    "manager_changes": 0.0,
-    "manager_tenure": 7.507186858316222
-  },
-  "006921": {
-    "date": "2026-11-18",
-    "calmar": 0.13223999632192063,
-    "quadrant": "大盘价值",
-    "manager_changes": 0.0,
-    "manager_tenure": 5.993155373032169
-  },
-  "007449": {
-    "date": "2026-11-18",
-    "calmar": 0.1138056345250002,
-    "quadrant": "大盘成长",
-    "manager_changes": 0.0,
-    "manager_tenure": 5.341546885694729
-  },
-  "007592": {
-    "date": "2026-11-18",
-    "calmar": 0.2099058329853536,
-    "quadrant": "小盘成长",
-    "manager_changes": 0.0,
-    "manager_tenure": 4.884325804243669
-  },
-  "008134": {
-    "date": "2026-11-18",
-    "calmar": 0.31923058659825887,
-    "quadrant": "大盘价值",
-    "manager_changes": 0.0,
-    "manager_tenure": 6.921286789869952
-  },
-  "008261": {
-    "date": "2026-11-18",
-    "calmar": 0.2711694903959226,
-    "quadrant": "中盘成长",
-    "manager_changes": 0.0,
-    "manager_tenure": 4.0
-  },
-  "008269": {
-    "date": "2026-11-18",
-    "calmar": 0.3811115665671823,
-    "quadrant": "小盘价值",
     "manager_changes": 0.0,
     "manager_tenure": 6.885694729637235
   },
-  "008271": {
-    "date": "2026-11-18",
-    "calmar": 0.13840444005361444,
+  "004335": {
+    "date": "2026-11-19",
+    "calmar": 0.19168524937027856,
+    "quadrant": "小盘成长",
+    "manager_changes": 0.0,
+    "manager_tenure": 3.156741957563313
+  },
+  "004641": {
+    "date": "2026-11-19",
+    "calmar": 0.10921969163683312,
+    "quadrant": "大盘成长",
+    "manager_changes": 0.0,
+    "manager_tenure": 7.167693360711842
+  },
+  "004685": {
+    "date": "2026-11-19",
+    "calmar": 1.1869138178772072,
     "quadrant": "小盘价值",
     "manager_changes": 0.0,
-    "manager_tenure": 6.9021218343600275
+    "manager_tenure": 9.013004791238878
   },
-  "008283": {
-    "date": "2026-11-18",
-    "calmar": 0.10415720654385481,
+  "004814": {
+    "date": "2026-11-19",
+    "calmar": 0.1887298448097734,
+    "quadrant": "大盘价值",
+    "manager_changes": 0.0,
+    "manager_tenure": 5.771389459274469
+  },
+  "005094": {
+    "date": "2026-11-19",
+    "calmar": 0.2562737485039829,
     "quadrant": "小盘成长",
-    "manager_changes": 1.0,
-    "manager_tenure": 2.7132101300479126
+    "manager_changes": 0.0,
+    "manager_tenure": 8.914442162902121
   },
-  "008318": {
-    "date": "2026-11-18",
-    "calmar": 0.07670976571511678,
+  "005109": {
+    "date": "2026-11-19",
+    "calmar": 0.033050599337428974,
+    "quadrant": "小盘价值",
+    "manager_changes": 0.0,
+    "manager_tenure": 3.455167693360712
+  },
+  "005161": {
+    "date": "2026-11-19",
+    "calmar": 0.18977797235319185,
+    "quadrant": "小盘价值",
+    "manager_changes": 1.0,
+    "manager_tenure": 2.9021218343600275
+  },
+  "005443": {
+    "date": "2026-11-19",
+    "calmar": 0.2851400289172605,
+    "quadrant": "小盘成长",
+    "manager_changes": 0.0,
+    "manager_tenure": 3.871321013004791
+  },
+  "005576": {
+    "date": "2026-11-19",
+    "calmar": 0.7923508357503033,
+    "quadrant": "大盘价值",
+    "manager_changes": 0.0,
+    "manager_tenure": 8.700889801505818
+  },
+  "005660": {
+    "date": "2026-11-19",
+    "calmar": 0.2560576375360988,
+    "quadrant": "大盘价值",
+    "manager_changes": 1.0,
+    "manager_tenure": 2.6584531143052703
+  },
+  "006025": {
+    "date": "2026-11-19",
+    "calmar": 0.37718747095126137,
     "quadrant": "大盘成长",
-    "manager_changes": 1.0,
-    "manager_tenure": 2.0670773442847366
+    "manager_changes": 0.0,
+    "manager_tenure": 3.3292265571526354
   },
-  "008347": {
-    "date": "2026-11-18",
-    "calmar": 0.12455152867966593,
+  "006274": {
+    "date": "2026-11-19",
+    "calmar": 0.21497429969360507,
+    "quadrant": "小盘价值",
+    "manager_changes": 0.0,
+    "manager_tenure": 6.973305954825462
+  },
+  "006603": {
+    "date": "2026-11-19",
+    "calmar": 0.17434633220077198,
+    "quadrant": "小盘价值",
+    "manager_changes": 0.0,
+    "manager_tenure": 4.158795345653662
+  },
+  "006904": {
+    "date": "2026-11-19",
+    "calmar": 0.08104777029803954,
+    "quadrant": "中盘成长",
+    "manager_changes": 0.0,
+    "manager_tenure": 7.509924709103354
+  },
+  "006921": {
+    "date": "2026-11-19",
+    "calmar": 0.12764583386633407,
+    "quadrant": "大盘价值",
+    "manager_changes": 0.0,
+    "manager_tenure": 5.9958932238193015
+  },
+  "007449": {
+    "date": "2026-11-19",
+    "calmar": 0.11055541309747292,
+    "quadrant": "大盘成长",
+    "manager_changes": 0.0,
+    "manager_tenure": 5.344284736481861
+  },
+  "007592": {
+    "date": "2026-11-19",
+    "calmar": 0.20309341987119137,
     "quadrant": "小盘成长",
+    "manager_changes": 0.0,
+    "manager_tenure": 4.887063655030801
+  },
+  "008134": {
+    "date": "2026-11-19",
+    "calmar": 0.310149043154554,
+    "quadrant": "大盘价值",
+    "manager_changes": 0.0,
+    "manager_tenure": 6.924024640657084
+  },
+  "008261": {
+    "date": "2026-11-19",
+    "calmar": 0.267366958587054,
+    "quadrant": "中盘成长",
+    "manager_changes": 0.0,
+    "manager_tenure": 4.002737850787132
+  },
+  "008269": {
+    "date": "2026-11-19",
+    "calmar": 0.37278643701313047,
+    "quadrant": "小盘价值",
+    "manager_changes": 0.0,
+    "manager_tenure": 6.888432580424367
+  },
+  "008271": {
+    "date": "2026-11-19",
+    "calmar": 0.1256110559547725,
+    "quadrant": "小盘价值",
     "manager_changes": 0.0,
     "manager_tenure": 6.9048596851471595
   },
+  "008283": {
+    "date": "2026-11-19",
+    "calmar": 0.0940878708299752,
+    "quadrant": "小盘成长",
+    "manager_changes": 1.0,
+    "manager_tenure": 2.7159479808350446
+  },
+  "008318": {
+    "date": "2026-11-19",
+    "calmar": 0.07267232224951867,
+    "quadrant": "大盘成长",
+    "manager_changes": 1.0,
+    "manager_tenure": 2.0698151950718686
+  },
+  "008347": {
+    "date": "2026-11-19",
+    "calmar": 0.11751036658181743,
+    "quadrant": "小盘成长",
+    "manager_changes": 0.0,
+    "manager_tenure": 6.907597535934292
+  },
   "008923": {
-    "date": "2026-11-18",
+    "date": "2026-11-19",
     "calmar": 0.2607125035750131,
     "quadrant": "小盘成长",
     "manager_changes": 0.0,
-    "manager_tenure": 4.889801505817933
+    "manager_tenure": 4.892539356605065
   },
   "009394": {
-    "date": "2026-11-18",
-    "calmar": 0.19916999436708943,
+    "date": "2026-11-19",
+    "calmar": 0.19497667480314007,
     "quadrant": "大盘价值",
     "manager_changes": 1.0,
-    "manager_tenure": 0.8569472963723477
+    "manager_tenure": 0.8596851471594799
   },
   "009689": {
-    "date": "2026-11-18",
-    "calmar": 1.9668475833706525,
+    "date": "2026-11-19",
+    "calmar": 1.9502006981077444,
     "quadrant": "小盘成长",
     "manager_changes": 0.0,
-    "manager_tenure": 4.284736481861739
+    "manager_tenure": 4.287474332648871
   },
   "010064": {
-    "date": "2026-11-18",
-    "calmar": 0.04890112634680202,
+    "date": "2026-11-19",
+    "calmar": 0.0401312396422239,
     "quadrant": "小盘成长",
     "manager_changes": 1.0,
-    "manager_tenure": 2.625598904859685
+    "manager_tenure": 2.628336755646817
   },
   "010338": {
-    "date": "2026-11-18",
-    "calmar": 0.1276975292300149,
+    "date": "2026-11-19",
+    "calmar": 0.11503689915788426,
     "quadrant": "小盘价值",
     "manager_changes": 0.0,
-    "manager_tenure": 4.8815879534565365
+    "manager_tenure": 4.884325804243669
   },
   "010460": {
-    "date": "2026-11-18",
-    "calmar": 0.1225576344031826,
+    "date": "2026-11-19",
+    "calmar": 0.11420993928720632,
     "quadrant": "大盘成长",
     "manager_changes": 0.0,
-    "manager_tenure": 5.979466119096509
+    "manager_tenure": 5.982203969883641
   },
   "010469": {
-    "date": "2026-11-18",
-    "calmar": 0.07848807600961258,
+    "date": "2026-11-19",
+    "calmar": 0.07100268877691401,
     "quadrant": "小盘价值",
     "manager_changes": 1.0,
-    "manager_tenure": 2.625598904859685
+    "manager_tenure": 2.628336755646817
   },
   "010994": {
-    "date": "2026-11-18",
-    "calmar": 0.11710049954404837,
+    "date": "2026-11-19",
+    "calmar": 0.11259479780040405,
     "quadrant": "小盘价值",
     "manager_changes": 0.0,
-    "manager_tenure": 4.777549623545517
+    "manager_tenure": 4.780287474332649
   },
   "011220": {
-    "date": "2026-11-18",
-    "calmar": 0.07895780147548061,
+    "date": "2026-11-19",
+    "calmar": 0.07458632301265702,
     "quadrant": "大盘价值",
     "manager_changes": 0.0,
-    "manager_tenure": 5.790554414784395
+    "manager_tenure": 5.793292265571527
   },
   "011826": {
-    "date": "2026-11-18",
-    "calmar": 0.09246843155863872,
+    "date": "2026-11-19",
+    "calmar": 0.09342982418454454,
     "quadrant": "小盘价值",
     "manager_changes": 0.0,
-    "manager_tenure": 4.3668720054757015
+    "manager_tenure": 4.369609856262834
   },
   "011830": {
-    "date": "2026-11-18",
+    "date": "2026-11-19",
     "calmar": 0.11688527010071637,
     "quadrant": "小盘成长",
     "manager_changes": 0.0,
-    "manager_tenure": 4.815879534565366
+    "manager_tenure": 4.818617385352498
   },
   "011834": {
-    "date": "2026-11-18",
-    "calmar": 0.4035060999256552,
+    "date": "2026-11-19",
+    "calmar": 0.4006190948889891,
     "quadrant": "小盘价值",
     "manager_changes": 0.0,
-    "manager_tenure": 5.341546885694729
+    "manager_tenure": 5.344284736481861
   },
   "012064": {
-    "date": "2026-11-18",
-    "calmar": 0.0872565107299316,
+    "date": "2026-11-19",
+    "calmar": 0.08420297344960379,
     "quadrant": "大盘成长",
     "manager_changes": 1.0,
-    "manager_tenure": 2.625598904859685
+    "manager_tenure": 2.628336755646817
   },
   "012153": {
-    "date": "2026-11-18",
-    "calmar": 0.08300582059317527,
+    "date": "2026-11-19",
+    "calmar": 0.07475217845483949,
     "quadrant": "大盘成长",
     "manager_changes": 1.0,
-    "manager_tenure": 0.34223134839151265
+    "manager_tenure": 0.34496919917864477
   },
   "012294": {
-    "date": "2026-11-18",
+    "date": "2026-11-19",
     "calmar": 0.07088509168019659,
     "quadrant": "中盘成长",
     "manager_changes": 0.0,
-    "manager_tenure": 5.215605749486653
+    "manager_tenure": 5.218343600273785
   },
   "012350": {
-    "date": "2026-11-18",
+    "date": "2026-11-19",
     "calmar": 0.26776761409478805,
     "quadrant": "大盘成长",
     "manager_changes": 0.0,
-    "manager_tenure": 3.682409308692676
+    "manager_tenure": 3.685147159479808
   },
   "012578": {
-    "date": "2026-11-18",
+    "date": "2026-11-19",
     "calmar": 0.18615106376696777,
     "quadrant": "大盘价值",
     "manager_changes": 0.0,
-    "manager_tenure": 4.908966461327857
+    "manager_tenure": 4.91170431211499
   },
   "012839": {
     "date": "2026-11-18",
@@ -903,515 +903,515 @@
     "manager_tenure": 1.754962354551677
   },
   "013107": {
-    "date": "2026-11-18",
+    "date": "2026-11-19",
     "calmar": 0.49914116754950666,
     "quadrant": "大盘成长",
     "manager_changes": 1.0,
-    "manager_tenure": 2.3737166324435317
+    "manager_tenure": 2.3764544832306638
   },
   "013166": {
-    "date": "2026-11-18",
+    "date": "2026-11-19",
     "calmar": 0.1669519946791424,
     "quadrant": "大盘成长",
     "manager_changes": 0.0,
-    "manager_tenure": 4.804928131416838
+    "manager_tenure": 4.80766598220397
   },
   "013247": {
-    "date": "2026-11-18",
+    "date": "2026-11-19",
     "calmar": 0.10286351336326208,
     "quadrant": "小盘成长",
     "manager_changes": 0.0,
-    "manager_tenure": 5.149897330595483
+    "manager_tenure": 5.152635181382615
   },
   "013463": {
-    "date": "2026-11-18",
+    "date": "2026-11-19",
     "calmar": 0.39169438573749454,
     "quadrant": "小盘价值",
     "manager_changes": 0.0,
-    "manager_tenure": 4.97741273100616
+    "manager_tenure": 4.980150581793292
   },
   "013465": {
-    "date": "2026-11-18",
+    "date": "2026-11-19",
     "calmar": 0.2878826183459977,
     "quadrant": "小盘成长",
     "manager_changes": 0.0,
-    "manager_tenure": 5.04312114989733
+    "manager_tenure": 5.045859000684462
   },
   "013641": {
-    "date": "2026-11-18",
+    "date": "2026-11-19",
     "calmar": 0.16420890902165303,
     "quadrant": "大盘成长",
     "manager_changes": 0.0,
-    "manager_tenure": 5.062286105407256
+    "manager_tenure": 5.065023956194388
   },
   "013680": {
-    "date": "2026-11-18",
+    "date": "2026-11-19",
     "calmar": 0.05545305232671401,
     "quadrant": "大盘成长",
     "manager_changes": 0.0,
-    "manager_tenure": 4.287474332648871
+    "manager_tenure": 4.290212183436003
   },
   "013853": {
-    "date": "2026-11-18",
+    "date": "2026-11-19",
     "calmar": 0.6535074542256175,
     "quadrant": "小盘价值",
     "manager_changes": 0.0,
-    "manager_tenure": 4.4490075290896645
+    "manager_tenure": 4.4517453798767965
   },
   "014038": {
-    "date": "2026-11-18",
+    "date": "2026-11-19",
     "calmar": 0.1947475179858175,
     "quadrant": "小盘价值",
     "manager_changes": 0.0,
-    "manager_tenure": 4.944558521560575
+    "manager_tenure": 4.947296372347707
   },
   "014207": {
-    "date": "2026-11-18",
+    "date": "2026-11-19",
     "calmar": 0.05676805300909335,
     "quadrant": "大盘成长",
     "manager_changes": 0.0,
-    "manager_tenure": 4.887063655030801
+    "manager_tenure": 4.889801505817933
   },
   "014317": {
-    "date": "2026-11-18",
+    "date": "2026-11-19",
     "calmar": 0.35396564705806166,
     "quadrant": "小盘成长",
     "manager_changes": 1.0,
-    "manager_tenure": 0.5776865160848734
+    "manager_tenure": 0.5804243668720055
   },
   "014325": {
-    "date": "2026-11-18",
+    "date": "2026-11-19",
     "calmar": 0.05913338903104832,
     "quadrant": "大盘成长",
     "manager_changes": 0.0,
-    "manager_tenure": 4.884325804243669
+    "manager_tenure": 4.887063655030801
   },
   "014329": {
-    "date": "2026-11-18",
+    "date": "2026-11-19",
     "calmar": 0.12765176405156445,
     "quadrant": "中盘价值",
     "manager_changes": 0.0,
-    "manager_tenure": 3.6413415468856947
+    "manager_tenure": 3.6440793976728267
   },
   "014339": {
-    "date": "2026-11-18",
+    "date": "2026-11-19",
     "calmar": 0.2783584400885877,
     "quadrant": "小盘价值",
     "manager_changes": 0.0,
-    "manager_tenure": 4.887063655030801
+    "manager_tenure": 4.889801505817933
   },
   "014727": {
-    "date": "2026-11-18",
+    "date": "2026-11-19",
     "calmar": 0.4177526294332233,
     "quadrant": "大盘成长",
     "manager_changes": 0.0,
-    "manager_tenure": 4.774811772758385
+    "manager_tenure": 4.777549623545517
   },
   "014771": {
-    "date": "2026-11-18",
+    "date": "2026-11-19",
     "calmar": 0.6150568739795147,
     "quadrant": "大盘价值",
     "manager_changes": 0.0,
-    "manager_tenure": 3.5263518138261465
+    "manager_tenure": 3.5290896646132786
   },
   "014772": {
-    "date": "2026-11-18",
+    "date": "2026-11-19",
     "calmar": 0.5303897345452683,
     "quadrant": "大盘价值",
     "manager_changes": 0.0,
-    "manager_tenure": 3.5263518138261465
+    "manager_tenure": 3.5290896646132786
   },
   "014792": {
-    "date": "2026-11-18",
+    "date": "2026-11-19",
     "calmar": 0.07166641567646993,
     "quadrant": "小盘成长",
     "manager_changes": 1.0,
-    "manager_tenure": 1.0130047912388775
+    "manager_tenure": 1.0157426420260096
   },
   "015245": {
-    "date": "2026-11-18",
+    "date": "2026-11-19",
     "calmar": 0.6324890029654893,
     "quadrant": "小盘价值",
     "manager_changes": 0.0,
-    "manager_tenure": 4.350444900752909
+    "manager_tenure": 4.353182751540041
   },
   "015368": {
-    "date": "2026-11-18",
+    "date": "2026-11-19",
     "calmar": 0.6871873204874541,
     "quadrant": "大盘成长",
     "manager_changes": 0.0,
-    "manager_tenure": 3.7207392197125255
+    "manager_tenure": 3.7234770704996576
   },
   "015564": {
-    "date": "2026-11-18",
+    "date": "2026-11-19",
     "calmar": 0.4909597781567309,
     "quadrant": "小盘价值",
     "manager_changes": 0.0,
-    "manager_tenure": 4.142368240930869
+    "manager_tenure": 4.145106091718001
   },
   "016464": {
-    "date": "2026-11-18",
+    "date": "2026-11-19",
     "calmar": 0.1084647535924476,
     "quadrant": "小盘成长",
     "manager_changes": 0.0,
-    "manager_tenure": 4.1971252566735116
+    "manager_tenure": 4.199863107460644
   },
   "016626": {
-    "date": "2026-11-18",
+    "date": "2026-11-19",
     "calmar": 0.2442896715090669,
     "quadrant": "大盘成长",
     "manager_changes": 0.0,
-    "manager_tenure": 3.9288158795345653
+    "manager_tenure": 3.9315537303216974
   },
   "016840": {
-    "date": "2026-11-18",
+    "date": "2026-11-19",
     "calmar": 0.29732914221574447,
     "quadrant": "小盘成长",
     "manager_changes": 0.0,
-    "manager_tenure": 3.8329911019849416
+    "manager_tenure": 3.8357289527720737
   },
   "017043": {
-    "date": "2026-11-18",
+    "date": "2026-11-19",
     "calmar": 0.7015876601256531,
     "quadrant": "小盘价值",
     "manager_changes": 0.0,
-    "manager_tenure": 3.9342915811088295
+    "manager_tenure": 3.9370294318959616
   },
   "017086": {
-    "date": "2026-11-18",
+    "date": "2026-11-19",
     "calmar": 0.48998288037057336,
     "quadrant": "中盘成长",
     "manager_changes": 0.0,
-    "manager_tenure": 3.704312114989733
+    "manager_tenure": 3.707049965776865
   },
   "017303": {
-    "date": "2026-11-18",
+    "date": "2026-11-19",
     "calmar": 0.16494929089814178,
     "quadrant": "小盘成长",
     "manager_changes": 0.0,
-    "manager_tenure": 3.561943874058864
+    "manager_tenure": 3.564681724845996
   },
   "017667": {
-    "date": "2026-11-18",
+    "date": "2026-11-19",
     "calmar": 0.12257405167575168,
     "quadrant": "小盘价值",
     "manager_changes": 0.0,
-    "manager_tenure": 3.6440793976728267
+    "manager_tenure": 3.646817248459959
   },
   "017826": {
-    "date": "2026-11-18",
+    "date": "2026-11-19",
     "calmar": 0.27394207151132016,
     "quadrant": "小盘价值",
     "manager_changes": 0.0,
-    "manager_tenure": 3.67419575633128
+    "manager_tenure": 3.676933607118412
   },
   "017876": {
-    "date": "2026-11-18",
+    "date": "2026-11-19",
     "calmar": 0.24344481299643259,
     "quadrant": "小盘成长",
     "manager_changes": 0.0,
-    "manager_tenure": 3.67419575633128
+    "manager_tenure": 3.676933607118412
   },
   "017881": {
-    "date": "2026-11-18",
+    "date": "2026-11-19",
     "calmar": 0.3721451594987052,
     "quadrant": "小盘价值",
     "manager_changes": 0.0,
-    "manager_tenure": 3.1457905544147846
+    "manager_tenure": 3.1485284052019167
   },
   "017987": {
-    "date": "2026-11-18",
+    "date": "2026-11-19",
     "calmar": 0.25203229190917614,
     "quadrant": "大盘成长",
     "manager_changes": 1.0,
-    "manager_tenure": 1.4099931553730323
+    "manager_tenure": 1.4127310061601643
   },
   "017998": {
-    "date": "2026-11-18",
+    "date": "2026-11-19",
     "calmar": 0.5652835575779259,
     "quadrant": "中盘价值",
     "manager_changes": 1.0,
-    "manager_tenure": 0.810403832991102
+    "manager_tenure": 0.813141683778234
   },
   "018124": {
-    "date": "2026-11-18",
+    "date": "2026-11-19",
     "calmar": 0.5295465353844021,
     "quadrant": "大盘成长",
     "manager_changes": 0.0,
-    "manager_tenure": 3.542778918548939
+    "manager_tenure": 3.5455167693360714
   },
   "018130": {
-    "date": "2026-11-18",
+    "date": "2026-11-19",
     "calmar": 0.4061411780484714,
     "quadrant": "小盘成长",
     "manager_changes": 0.0,
-    "manager_tenure": 3.6358658453114305
+    "manager_tenure": 3.6386036960985626
   },
   "018381": {
-    "date": "2026-11-18",
+    "date": "2026-11-19",
     "calmar": 0.6697387581209355,
     "quadrant": "大盘价值",
     "manager_changes": 0.0,
-    "manager_tenure": 3.0116358658453115
+    "manager_tenure": 3.0143737166324436
   },
   "018409": {
-    "date": "2026-11-18",
+    "date": "2026-11-19",
     "calmar": 0.47908912659217173,
     "quadrant": "大盘价值",
     "manager_changes": 0.0,
-    "manager_tenure": 3.4442162902121836
+    "manager_tenure": 3.4469541409993156
   },
   "018446": {
-    "date": "2026-11-18",
+    "date": "2026-11-19",
     "calmar": 0.13739231989016998,
     "quadrant": "小盘成长",
     "manager_changes": 0.0,
-    "manager_tenure": 3.433264887063655
+    "manager_tenure": 3.436002737850787
   },
   "018504": {
-    "date": "2026-11-18",
+    "date": "2026-11-19",
     "calmar": 0.9025133986575814,
     "quadrant": "大盘价值",
     "manager_changes": 0.0,
-    "manager_tenure": 3.2224503764544834
+    "manager_tenure": 3.2251882272416155
   },
   "019457": {
-    "date": "2026-11-18",
+    "date": "2026-11-19",
     "calmar": 0.48938945091406977,
     "quadrant": "中盘成长",
     "manager_changes": 0.0,
-    "manager_tenure": 3.0691307323750854
+    "manager_tenure": 3.0718685831622174
   },
   "019888": {
-    "date": "2026-11-18",
+    "date": "2026-11-19",
     "calmar": 0.8682085251046924,
     "quadrant": "小盘价值",
     "manager_changes": 0.0,
-    "manager_tenure": 3.0116358658453115
+    "manager_tenure": 3.0143737166324436
   },
   "040025": {
-    "date": "2026-11-18",
-    "calmar": 0.1470585271455793,
+    "date": "2026-11-19",
+    "calmar": 0.14424865465068018,
     "quadrant": "大盘成长",
     "manager_changes": 1.0,
-    "manager_tenure": 1.5359342915811087
+    "manager_tenure": 1.538672142368241
   },
   "080005": {
-    "date": "2026-11-18",
-    "calmar": 0.3601978197372898,
+    "date": "2026-11-19",
+    "calmar": 0.33629128468682995,
     "quadrant": "小盘价值",
     "manager_changes": 1.0,
-    "manager_tenure": 1.267624914442163
+    "manager_tenure": 1.270362765229295
   },
   "090007": {
-    "date": "2026-11-18",
-    "calmar": 0.39067324823037164,
+    "date": "2026-11-19",
+    "calmar": 0.38139488690172596,
     "quadrant": "小盘价值",
     "manager_changes": 0.0,
-    "manager_tenure": 6.655715263518139
+    "manager_tenure": 6.658453114305271
   },
   "090013": {
-    "date": "2026-11-18",
-    "calmar": 0.44439583642655006,
+    "date": "2026-11-19",
+    "calmar": 0.43811526878964624,
     "quadrant": "小盘价值",
     "manager_changes": 0.0,
-    "manager_tenure": 6.847364818617385
+    "manager_tenure": 6.850102669404517
   },
   "090019": {
-    "date": "2026-11-18",
-    "calmar": 0.30618062648817906,
+    "date": "2026-11-19",
+    "calmar": 0.3008605891886516,
     "quadrant": "小盘价值",
     "manager_changes": 0.0,
-    "manager_tenure": 8.394250513347023
+    "manager_tenure": 8.396988364134154
   },
   "110005": {
-    "date": "2026-11-18",
-    "calmar": 0.14935712501550844,
+    "date": "2026-11-19",
+    "calmar": 0.1488335566392628,
     "quadrant": "大盘成长",
     "manager_changes": 0.0,
-    "manager_tenure": 5.47296372347707
+    "manager_tenure": 5.475701574264202
   },
   "121010": {
-    "date": "2026-11-18",
-    "calmar": 0.3022042914844239,
+    "date": "2026-11-19",
+    "calmar": 0.2888266065204239,
     "quadrant": "小盘价值",
     "manager_changes": 0.0,
-    "manager_tenure": 6.335386721423682
+    "manager_tenure": 6.338124572210814
   },
   "160215": {
-    "date": "2026-11-18",
-    "calmar": 0.12569633521102444,
+    "date": "2026-11-19",
+    "calmar": 0.12165284798540899,
     "quadrant": "小盘成长",
     "manager_changes": 1.0,
-    "manager_tenure": 0.6132785763175906
+    "manager_tenure": 0.6160164271047228
   },
   "161222": {
-    "date": "2026-11-18",
-    "calmar": 0.1807791536157346,
+    "date": "2026-11-19",
+    "calmar": 0.1700906553169306,
     "quadrant": "小盘价值",
     "manager_changes": 0.0,
-    "manager_tenure": 9.919233401779604
+    "manager_tenure": 9.921971252566735
   },
   "161810": {
-    "date": "2026-11-18",
-    "calmar": 0.17686438378963923,
+    "date": "2026-11-19",
+    "calmar": 0.17201147854712928,
     "quadrant": "大盘价值",
     "manager_changes": 1.0,
-    "manager_tenure": 0.8569472963723477
+    "manager_tenure": 0.8596851471594799
   },
   "161912": {
-    "date": "2026-11-18",
-    "calmar": 0.1970436612356136,
+    "date": "2026-11-19",
+    "calmar": 0.19027763110375825,
     "quadrant": "小盘成长",
     "manager_changes": 0.0,
-    "manager_tenure": 7.663244353182751
+    "manager_tenure": 7.665982203969883
   },
   "166002": {
-    "date": "2026-11-18",
-    "calmar": 0.13918882690012047,
+    "date": "2026-11-19",
+    "calmar": 0.13360682160110285,
     "quadrant": "小盘成长",
     "manager_changes": 0.0,
-    "manager_tenure": 5.0951403148528405
+    "manager_tenure": 5.0978781656399725
   },
   "167002": {
-    "date": "2026-11-18",
-    "calmar": 0.15727383009858126,
+    "date": "2026-11-19",
+    "calmar": 0.1554069264705194,
     "quadrant": "大盘成长",
     "manager_changes": 1.0,
-    "manager_tenure": 2.8993839835728954
+    "manager_tenure": 2.9021218343600275
   },
   "210009": {
-    "date": "2026-11-18",
-    "calmar": 0.11995644583011691,
+    "date": "2026-11-19",
+    "calmar": 0.11269479272545052,
     "quadrant": "中盘成长",
     "manager_changes": 0.0,
-    "manager_tenure": 7.646817248459959
+    "manager_tenure": 7.649555099247091
   },
   "240004": {
-    "date": "2026-11-18",
-    "calmar": 0.08514906681608554,
+    "date": "2026-11-19",
+    "calmar": 0.07987335778178338,
     "quadrant": "中盘价值",
     "manager_changes": 0.0,
-    "manager_tenure": 18.666666666666668
+    "manager_tenure": 18.6694045174538
   },
   "240022": {
-    "date": "2026-11-18",
-    "calmar": 0.09791079428835954,
+    "date": "2026-11-19",
+    "calmar": 0.09348485426101916,
     "quadrant": "中盘价值",
     "manager_changes": 1.0,
-    "manager_tenure": 1.2101300479123889
+    "manager_tenure": 1.212867898699521
   },
   "260117": {
-    "date": "2026-11-18",
-    "calmar": 0.18558524860789483,
+    "date": "2026-11-19",
+    "calmar": 0.164393592896277,
     "quadrant": "大盘价值",
     "manager_changes": 0.0,
-    "manager_tenure": 4.65160848733744
+    "manager_tenure": 4.654346338124572
   },
   "470009": {
-    "date": "2026-11-18",
-    "calmar": 0.10132462626521609,
+    "date": "2026-11-19",
+    "calmar": 0.09749170454993737,
     "quadrant": "大盘成长",
     "manager_changes": 0.0,
-    "manager_tenure": 10.688569472963723
+    "manager_tenure": 10.691307323750856
   },
   "519007": {
-    "date": "2026-11-18",
-    "calmar": 0.2924762798597045,
+    "date": "2026-11-19",
+    "calmar": 0.2907248218533571,
     "quadrant": "小盘价值",
     "manager_changes": 1.0,
-    "manager_tenure": 2.9869952087611225
+    "manager_tenure": 2.9897330595482545
   },
   "519029": {
-    "date": "2026-11-18",
-    "calmar": 0.13831325579668355,
+    "date": "2026-11-19",
+    "calmar": 0.13467319934445515,
     "quadrant": "大盘成长",
     "manager_changes": 0.0,
-    "manager_tenure": 6.433949349760438
+    "manager_tenure": 6.436687200547571
   },
   "519185": {
-    "date": "2026-11-18",
-    "calmar": 0.4757638018803442,
+    "date": "2026-11-19",
+    "calmar": 0.4581471771925561,
     "quadrant": "小盘价值",
     "manager_changes": 0.0,
-    "manager_tenure": 6.0013689253935665
+    "manager_tenure": 6.0041067761806985
   },
   "519191": {
-    "date": "2026-11-18",
-    "calmar": 0.5053071558933137,
+    "date": "2026-11-19",
+    "calmar": 0.4849997045676648,
     "quadrant": "小盘价值",
     "manager_changes": 0.0,
-    "manager_tenure": 6.0013689253935665
+    "manager_tenure": 6.0041067761806985
   },
   "519195": {
-    "date": "2026-11-18",
-    "calmar": 0.2396777252587847,
+    "date": "2026-11-19",
+    "calmar": 0.23255768736680152,
     "quadrant": "小盘成长",
     "manager_changes": 0.0,
-    "manager_tenure": 11.285420944558522
+    "manager_tenure": 11.288158795345653
   },
   "519196": {
-    "date": "2026-11-18",
-    "calmar": 0.2931617694865151,
+    "date": "2026-11-19",
+    "calmar": 0.28514247485313843,
     "quadrant": "小盘成长",
     "manager_changes": 0.0,
-    "manager_tenure": 10.811772758384668
+    "manager_tenure": 10.8145106091718
   },
   "519212": {
-    "date": "2026-11-18",
-    "calmar": 0.6423951191715521,
+    "date": "2026-11-19",
+    "calmar": 0.6169812381543471,
     "quadrant": "小盘价值",
     "manager_changes": 0.0,
-    "manager_tenure": 6.0013689253935665
+    "manager_tenure": 6.0041067761806985
   },
   "519756": {
-    "date": "2026-11-18",
-    "calmar": 0.07210251909692582,
+    "date": "2026-11-19",
+    "calmar": 0.06598568088152863,
     "quadrant": "小盘价值",
     "manager_changes": 0.0,
-    "manager_tenure": 11.441478439425051
+    "manager_tenure": 11.444216290212184
   },
   "540007": {
-    "date": "2026-11-18",
-    "calmar": 0.12410986828432737,
+    "date": "2026-11-19",
+    "calmar": 0.11557474260239912,
     "quadrant": "小盘价值",
     "manager_changes": 0.0,
-    "manager_tenure": 3.3648186173853527
+    "manager_tenure": 3.3675564681724848
   },
   "580001": {
-    "date": "2026-11-18",
-    "calmar": 0.1109230630249289,
+    "date": "2026-11-19",
+    "calmar": 0.11092899197097683,
     "quadrant": "大盘成长",
     "manager_changes": 0.0,
-    "manager_tenure": 3.260780287474333
+    "manager_tenure": 3.263518138261465
   },
   "630002": {
-    "date": "2026-11-18",
-    "calmar": 0.22847775364004363,
+    "date": "2026-11-19",
+    "calmar": 0.2219918624675165,
     "quadrant": "大盘成长",
     "manager_changes": 1.0,
-    "manager_tenure": 1.6865160848733745
+    "manager_tenure": 1.6892539356605065
   },
   "630008": {
-    "date": "2026-11-18",
-    "calmar": 0.07966619763184597,
+    "date": "2026-11-19",
+    "calmar": 0.07347048222249547,
     "quadrant": "大盘成长",
     "manager_changes": 0.0,
-    "manager_tenure": 3.868583162217659
+    "manager_tenure": 3.871321013004791
   },
   "673110": {
-    "date": "2026-11-18",
-    "calmar": 0.10308453729562704,
+    "date": "2026-11-19",
+    "calmar": 0.09377117813576885,
     "quadrant": "小盘成长",
     "manager_changes": 1.0,
-    "manager_tenure": 2.5544147843942504
+    "manager_tenure": 2.5571526351813825
   },
   "952004": {
-    "date": "2026-11-18",
-    "calmar": 0.17155409356924622,
+    "date": "2026-11-19",
+    "calmar": 0.16795439575934565,
     "quadrant": "大盘成长",
     "manager_changes": 0.0,
-    "manager_tenure": 3.586584531143053
+    "manager_tenure": 3.589322381930185
   },
   "018916": {
     "date": "2026-11-15",
@@ -1428,17 +1428,24 @@
     "manager_tenure": 3.167693360711841
   },
   "007303": {
-    "date": "2026-11-18",
+    "date": "2026-11-19",
     "calmar": 0.48203006164269036,
     "quadrant": "小盘价值",
     "manager_changes": 0.0,
-    "manager_tenure": 3.0034223134839153
+    "manager_tenure": 3.0061601642710474
   },
   "011698": {
-    "date": "2026-11-18",
-    "calmar": 0.2073335522355946,
+    "date": "2026-11-19",
+    "calmar": 0.19769754349433824,
     "quadrant": "小盘成长",
     "manager_changes": 1.0,
-    "manager_tenure": 1.891854893908282
+    "manager_tenure": 1.894592744695414
+  },
+  "017973": {
+    "date": "2026-11-19",
+    "calmar": 0.07005504429387154,
+    "quadrant": "小盘成长",
+    "manager_changes": 0.0,
+    "manager_tenure": 3.649555099247091
   }
 }
