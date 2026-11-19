@@ -127,7 +127,8 @@ def main():
 
     time_txt = f"{m.get('date', '')} {m.get('time', '')}".strip()
     label = "补发·" if mode == "--catch-up" else ""
-    title = f"{label}{idx_txt('上证', i1)} {idx_txt('沪深300', i2)}"
+    pred_txt = f" · {p.get('dir')} {p.get('conf')}%" if p.get("dir") else ""
+    title = f"{label}{idx_txt('上证', i1)} {idx_txt('沪深300', i2)}{pred_txt}"
 
     rows = "".join(
         f"<tr><td style='padding:3px 6px'>{f['tier']}</td>"
