@@ -21,6 +21,16 @@ def pct(v):
     return f"{v:+.2f}%"
 
 
+def idx_txt(name, d):
+    """标题用：上证 3577.62 跌0.28%"""
+    price = d.get("price")
+    chg = d.get("chg")
+    if chg is None:
+        return f"{name} {price if price is not None else '–'}"
+    word = "涨" if chg > 0 else ("跌" if chg < 0 else "平")
+    return f"{name} {price if price is not None else '–'} {word}{abs(chg):.2f}%"
+
+
 def today_str():
     return day_str()
 
@@ -113,9 +123,9 @@ def main():
                    key=lambda f: -(f.get("score") or 0))[:5]
 
     time_txt = f"{m.get('date', '')} {m.get('time', '')}".strip()
-    label = "补发 · " if mode == "--catch-up" else ""
-    title = (f"{label}基金看板 {m.get('date', '')} 上证{pct(i1.get('chg'))} "
-             f"沪深300{pct(i2.get('chg'))} · {p.get('dir', '')}")
+    label = "补发·" if mode == "--catch-up" else ""
+    title = (f"{label}基金看板 {m.get('date', '')[5:]} "
+             f"{idx_txt('上证', i1)} {idx_txt('沪深300', i2)}")
 
     rows = "".join(
         f"<tr><td style='padding:3px 6px'>{f['tier']}</td>"
