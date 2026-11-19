@@ -31,6 +31,11 @@ def day_str(offset=0):
             + timedelta(days=offset)).strftime("%Y-%m-%d")
 
 
+def bj_hour():
+    from datetime import datetime, timedelta, timezone
+    return datetime.now(timezone(timedelta(hours=8))).hour
+
+
 def mark_notified(day):
     """推送成功后才回写标记，失败时保留 pendingNotifyDate 以便补发重试。"""
     if not day:
@@ -87,6 +92,9 @@ def main():
                 return 0
             if not snap_day or snap_day < day_str(-1):
                 print(f"快照日期 {snap_day or '无'} 过旧，补发跳过")
+                return 0
+            if not 8 <= bj_hour() < 22:
+                print(f"当前 {bj_hour()} 点，非补发时段（08–22），跳过")
                 return 0
 
         data = read_payload()
