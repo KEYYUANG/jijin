@@ -136,6 +136,27 @@ def main():
     advice_txt = " / ".join(f"{k} {v}" for k, v in cnt.most_common(5))
     reasons = "；".join(p.get("reasons") or [])
 
+    strong = sorted([f for f in funds
+                     if (f.get("advice") or {}).get("bucket") == "分批买入"],
+                    key=lambda f: -(f.get("score") or 0))
+    srows = "".join(
+        f"<tr><td style='padding:3px 6px'>{f['tier']}</td>"
+        f"<td style='padding:3px 6px'>{f['name']}</td>"
+        f"<td style='padding:3px 6px'>{f['code']}</td>"
+        f"<td style='padding:3px 6px;text-align:right'>{pct(f.get('chg'))}</td>"
+        f"<td style='padding:3px 6px;text-align:right'>{f.get('score')}</td></tr>"
+        for f in strong)
+    if strong:
+        strong_html = (
+            f"<table style='border-collapse:collapse;font-size:12px;width:100%'>"
+            f"<tr style='color:#888'><th style='padding:3px 6px;text-align:left'>级</th>"
+            f"<th style='padding:3px 6px;text-align:left'>基金</th>"
+            f"<th style='padding:3px 6px;text-align:left'>代码</th>"
+            f"<th style='padding:3px 6px;text-align:right'>当日</th>"
+            f"<th style='padding:3px 6px;text-align:right'>评分</th></tr>{srows}</table>")
+    else:
+        strong_html = "<div style='color:#888'>今日无强烈买入信号（需区间低位 + 当日偏强）</div>"
+
     content = f"""
 <div style="font-size:13px;line-height:1.7">
   <div><b>快照</b> {time_txt}</div>
@@ -146,6 +167,10 @@ def main():
   <div><b>方向预测</b> {p.get('dir', '–')}（置信 {p.get('conf', '–')}%）{('：' + reasons) if reasons else ''}</div>
   <div><b>建议分布</b> {advice_txt}</div>
   <hr style="border:none;border-top:1px solid #eee;margin:8px 0">
+  <div><b>强烈买入（分批买入）{len(strong)} 只</b></div>
+  {strong_html}
+  <hr style="border:none;border-top:1px solid #eee;margin:8px 0">
+  <div><b>S/A 评分前 5</b></div>
   <table style="border-collapse:collapse;font-size:12px;width:100%">{rows}</table>
   <div style="margin-top:8px"><a href="{PAGE}">打开看板</a></div>
   <div style="color:#888;font-size:11px;margin-top:6px">规则打分的启发式结果，不构成投资建议。</div>
