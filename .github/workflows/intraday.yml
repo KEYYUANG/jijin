@@ -1,14 +1,15 @@
 name: intraday
 
-# 因 GitHub 定时任务经常延迟数小时甚至不触发，改为"密集定时 + 时间窗守卫"：
-# cron 每 10 分钟一次（北京 13:00–15:50），每次运行先校验北京时间，
-# 只有落在 13:55–15:05 才真正抓快照，其余 5 秒内退出，几乎不消耗资源。
-# 快照写入 state/intraday.json；14:25–14:55 之间的第一次运行标记推送（PushPlus），
-# 并在 14:0x / 14:1x / 14:3x 各触发一次看板重建；18:00 的 daily 用收盘价修正（15:00 槽位）。
+# 因 GitHub 定时任务在该账号上实测每天只有 2–3 次机会且延迟可达数小时：
+# 参考同账号 oil-monitor 的做法，用“低频 cron + 宽时间窗守卫”。
+# cron 每小时一次（北京 11:23–16:23，避开整点），每次运行先校验北京时间，
+# 只有落在 13:25–15:05 才真正抓快照，其余 5 秒内退出，几乎不消耗资源。
+# 快照写入 state/intraday.json；13:30–14:30 之间第一次运行派发一次推送（PushPlus），
+# 且只在推送成功后回写 notifiedDate；15:00 后的快照留给 18:00 的 daily 补发。
 
 on:
   schedule:
-    - cron: "*/10 5-7 * * 1-5"
+    - cron: "23 3-8 * * 1-5"
   workflow_dispatch:
 
 permissions:
@@ -35,11 +36,11 @@ jobs:
           fi
           bj=$(TZ=Asia/Shanghai date +%H%M)
           n=$((10#$bj))
-          if [ "$n" -ge 1355 ] && [ "$n" -le 1505 ]; then
+          if [ "$n" -ge 1325 ] && [ "$n" -le 1505 ]; then
             echo "北京时间 $bj，在窗口内"
             echo "go=1" >> "$GITHUB_OUTPUT"
           else
-            echo "北京时间 $bj，不在 13:55–15:05 窗口，跳过"
+            echo "北京时间 $bj，不在 13:25–15:05 窗口，跳过"
             echo "go=0" >> "$GITHUB_OUTPUT"
           fi
 
@@ -104,7 +105,10 @@ jobs:
           hm = snap.get("time") or ""
           notify = "1" if snap.get("notifyRun") else "0"
           mm = int(hm[3:5]) if len(hm) == 5 else -1
-          build = notify == "1" or (hm[:2] == "14" and (mm < 10 or 15 <= mm < 25 or 30 <= mm < 40))
+          hh = hm[:2]
+          build = (notify == "1"
+                   or (hh == "13" and 30 <= mm < 40)
+                   or (hh == "14" and (mm < 10 or 15 <= mm < 25 or 30 <= mm < 40)))
           if not build:
               print(f"快照 {hm} 不是构建时点，只记录不重建")
               raise SystemExit(0)
