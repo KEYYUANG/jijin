@@ -22,8 +22,31 @@ def pct(v):
 
 
 def today_str():
+    return day_str()
+
+
+def day_str(offset=0):
     from datetime import datetime, timedelta, timezone
-    return datetime.now(timezone(timedelta(hours=8))).strftime("%Y-%m-%d")
+    return (datetime.now(timezone(timedelta(hours=8)))
+            + timedelta(days=offset)).strftime("%Y-%m-%d")
+
+
+def mark_notified(day):
+    """推送成功后才回写标记，失败时保留 pendingNotifyDate 以便补发重试。"""
+    if not day:
+        return
+    path = os.path.join("state", "intraday.json")
+    try:
+        with open(path, encoding="utf-8") as f:
+            snap = json.load(f)
+    except Exception:  # noqa: BLE001
+        return
+    if snap.get("date") != day:
+        return
+    snap["notifiedDate"] = day
+    snap["pendingNotifyDate"] = None
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(snap, f, ensure_ascii=False)
 
 
 def read_payload():
@@ -55,13 +78,15 @@ def main():
                        f"<a href='{PAGE}'>打开看板</a></div>")
             return send(token, title, content)
 
+        snap_day = ""
         if mode == "--catch-up":
             snap = read_snapshot()
-            if snap.get("notifiedDate") == snap.get("date") == today_str():
-                print("今日已推送，补发跳过")
+            snap_day = snap.get("date") or ""
+            if snap_day and snap.get("notifiedDate") == snap_day:
+                print(f"{snap_day} 已推送，补发跳过")
                 return 0
-            if snap.get("date") != today_str():
-                print("快照非今日，补发跳过")
+            if not snap_day or snap_day < day_str(-1):
+                print(f"快照日期 {snap_day or '无'} 过旧，补发跳过")
                 return 0
 
         data = read_payload()
@@ -109,7 +134,10 @@ def main():
   <div style="color:#888;font-size:11px;margin-top:6px">规则打分的启发式结果，不构成投资建议。</div>
 </div>"""
 
-    return send(token, title, content)
+    rc = send(token, title, content)
+    if rc == 0:
+        mark_notified(snap_day if mode == "--catch-up" else m.get("date"))
+    return rc
 
 
 def send(token, title, content):
