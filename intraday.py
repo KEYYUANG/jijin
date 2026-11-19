@@ -258,12 +258,16 @@ def main():
     })
     payload["slots"] = slots
 
-    # 14:25–14:55 之间只标记一次推送，避免密集定时重复推送
+    # 13:30–14:30 之间只派发一次推送；notifiedDate 由推送成功后回写，
+    # 推送失败时 pendingNotifyDate 仍在，可等 18:00 那轮补发
     notified = old.get("notifiedDate") if old.get("date") == today else None
+    pending = old.get("pendingNotifyDate") if old.get("date") == today else None
     payload["notifiedDate"] = notified
+    payload["pendingNotifyDate"] = pending
     payload["notifyRun"] = False
-    if not args.close and notified != today and "14:25" <= payload["time"] < "14:55":
-        payload["notifiedDate"] = today
+    if (not args.close and notified != today and pending != today
+            and "13:30" <= payload["time"] < "14:30"):
+        payload["pendingNotifyDate"] = today
         payload["notifyRun"] = True
 
     os.makedirs(STATE, exist_ok=True)
