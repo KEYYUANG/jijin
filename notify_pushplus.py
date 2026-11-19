@@ -13,6 +13,9 @@ import requests
 
 URL = "http://www.pushplus.plus/send"
 PAGE = "https://keyyuang.github.io/jijin/"
+# “推荐买入”包含的三档建议，按强度从强到弱排序
+BUY_BUCKETS = ("分批买入", "回调分批", "小仓试买")
+BUY_RANK = {b: i for i, b in enumerate(BUY_BUCKETS)}
 
 
 def pct(v):
@@ -137,13 +140,15 @@ def main():
     reasons = "；".join(p.get("reasons") or [])
 
     strong = sorted([f for f in funds
-                     if (f.get("advice") or {}).get("bucket") == "分批买入"],
-                    key=lambda f: -(f.get("score") or 0))
+                     if (f.get("advice") or {}).get("bucket") in BUY_BUCKETS],
+                    key=lambda f: (BUY_RANK.get((f.get("advice") or {}).get("bucket"), 9),
+                                   -(f.get("score") or 0)))
     srows = "".join(
         f"<tr><td style='padding:3px 6px'>{f['tier']}</td>"
         f"<td style='padding:3px 6px'>{f['name']}</td>"
         f"<td style='padding:3px 6px'>{f['code']}</td>"
         f"<td style='padding:3px 6px;text-align:right'>{pct(f.get('chg'))}</td>"
+        f"<td style='padding:3px 6px'>{((f.get('advice') or {}).get('bucket') or '–')}</td>"
         f"<td style='padding:3px 6px;text-align:right'>{f.get('score')}</td></tr>"
         for f in strong)
     if strong:
@@ -153,9 +158,11 @@ def main():
             f"<th style='padding:3px 6px;text-align:left'>基金</th>"
             f"<th style='padding:3px 6px;text-align:left'>代码</th>"
             f"<th style='padding:3px 6px;text-align:right'>当日</th>"
+            f"<th style='padding:3px 6px;text-align:left'>建议</th>"
             f"<th style='padding:3px 6px;text-align:right'>评分</th></tr>{srows}</table>")
     else:
-        strong_html = "<div style='color:#888'>今日无强烈买入信号（需区间低位 + 当日偏强）</div>"
+        strong_html = ("<div style='color:#888'>今日无买入信号"
+                       "（需区间低位/中低位 + 当日偏强或震荡）</div>")
 
     content = f"""
 <div style="font-size:13px;line-height:1.7">
@@ -167,7 +174,7 @@ def main():
   <div><b>方向预测</b> {p.get('dir', '–')}（置信 {p.get('conf', '–')}%）{('：' + reasons) if reasons else ''}</div>
   <div><b>建议分布</b> {advice_txt}</div>
   <hr style="border:none;border-top:1px solid #eee;margin:8px 0">
-  <div><b>强烈买入（分批买入）{len(strong)} 只</b></div>
+  <div><b>推荐买入 {len(strong)} 只</b>（分批买入 / 回调分批 / 小仓试买，按强度排序）</div>
   {strong_html}
   <hr style="border:none;border-top:1px solid #eee;margin:8px 0">
   <div><b>S/A 评分前 5</b></div>
