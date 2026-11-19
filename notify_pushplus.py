@@ -124,8 +124,7 @@ def main():
 
     time_txt = f"{m.get('date', '')} {m.get('time', '')}".strip()
     label = "补发·" if mode == "--catch-up" else ""
-    title = (f"{label}基金看板 {m.get('date', '')[5:]} "
-             f"{idx_txt('上证', i1)} {idx_txt('沪深300', i2)}")
+    title = f"{label}{idx_txt('上证', i1)} {idx_txt('沪深300', i2)}"
 
     rows = "".join(
         f"<tr><td style='padding:3px 6px'>{f['tier']}</td>"
