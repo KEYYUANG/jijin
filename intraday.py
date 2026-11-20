@@ -212,8 +212,8 @@ def main():
                           ("index2", "1.000300", "沪深300")):
         trends[key], days[key] = index_trend(secid)
     trend_day = days.get("index") or days.get("index2") or ""
-    if trend_day and trend_day != today:
-        print(f"      分时日期 {trend_day} 非今日 {today}，疑似休市，不覆盖快照")
+    if trend_day != today:
+        print(f"      分时日期 {trend_day or '无'} 非今日 {today}，疑似休市，不覆盖快照")
         return
 
     funds, breadth = valuation_snapshot(set(codes))
