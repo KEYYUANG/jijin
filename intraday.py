@@ -258,7 +258,7 @@ def main():
     })
     payload["slots"] = slots
 
-    # 13:30–14:30 之间只派发一次推送；notifiedDate 由推送成功后回写，
+    # 13:30–14:50 之间只派发一次推送；notifiedDate 由推送成功后回写，
     # 推送失败时 pendingNotifyDate 仍在，可等 18:00 那轮补发
     notified = old.get("notifiedDate") if old.get("date") == today else None
     pending = old.get("pendingNotifyDate") if old.get("date") == today else None
@@ -266,7 +266,7 @@ def main():
     payload["pendingNotifyDate"] = pending
     payload["notifyRun"] = False
     if (not args.close and notified != today and pending != today
-            and "13:30" <= payload["time"] < "14:30"):
+            and "13:30" <= payload["time"] < "14:50"):
         payload["pendingNotifyDate"] = today
         payload["notifyRun"] = True
 
