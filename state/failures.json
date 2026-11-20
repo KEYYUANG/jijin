@@ -333,5 +333,10 @@
     "reason": "KeyError: \"None of [Index(['date', 'nav'], dtype='str')] are in the [c",
     "last_try": "2026-11-18",
     "attempts": 1
+  },
+  "029850": {
+    "reason": "KeyError: \"None of [Index(['date', 'nav'], dtype='str')] are in the [c",
+    "last_try": "2026-11-20",
+    "attempts": 1
   }
 }

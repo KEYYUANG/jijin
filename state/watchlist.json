@@ -2267,5 +2267,23 @@
     "entry_manager_tenure": 0.6844626967830253,
     "entry_aum_chg": -0.12380000000000001,
     "last_check": "entered"
+  },
+  "005689": {
+    "fund_code": "005689",
+    "fund_name": "中银医疗保健混合A",
+    "status": "watching",
+    "trigger_reason": "manager_changes_2",
+    "trigger_flags": "",
+    "enter_date": "2026-11-20",
+    "review_deadline": "2027-05-20",
+    "periods": 0,
+    "last_review": "2026-11-20",
+    "entry_calmar": 0.030163310263161158,
+    "entry_calmar_source": "entry_value",
+    "entry_quadrant": "小盘成长",
+    "entry_manager_changes": 2.0,
+    "entry_manager_tenure": 0.6735112936344969,
+    "entry_aum_chg": 0.040999999999999995,
+    "last_check": "entered"
   }
 }
