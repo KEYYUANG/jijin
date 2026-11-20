@@ -109,6 +109,10 @@ def main():
             if not 8 <= bj_hour() < 22:
                 print(f"当前 {bj_hour()} 点，非补发时段（08–22），跳过")
                 return 0
+            hm = snap.get("time") or ""
+            if hm and hm < "13:00":
+                print(f"快照时间 {hm} 早于 13:00，非盘后数据，补发跳过")
+                return 0
 
         data = read_payload()
     except Exception as exc:  # noqa: BLE001
