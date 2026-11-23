@@ -338,5 +338,30 @@
     "reason": "KeyError: \"None of [Index(['date', 'nav'], dtype='str')] are in the [c",
     "last_try": "2026-11-20",
     "attempts": 1
+  },
+  "019379": {
+    "reason": "净值序列不足(161)",
+    "last_try": "2026-11-23",
+    "attempts": 1
+  },
+  "028451": {
+    "reason": "KeyError: \"None of [Index(['date', 'nav'], dtype='str')] are in the [c",
+    "last_try": "2026-11-23",
+    "attempts": 1
+  },
+  "029152": {
+    "reason": "KeyError: \"None of [Index(['date', 'nav'], dtype='str')] are in the [c",
+    "last_try": "2026-11-23",
+    "attempts": 1
+  },
+  "029642": {
+    "reason": "KeyError: \"None of [Index(['date', 'nav'], dtype='str')] are in the [c",
+    "last_try": "2026-11-23",
+    "attempts": 1
+  },
+  "029825": {
+    "reason": "KeyError: \"None of [Index(['date', 'nav'], dtype='str')] are in the [c",
+    "last_try": "2026-11-23",
+    "attempts": 1
   }
 }
