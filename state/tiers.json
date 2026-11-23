@@ -152,7 +152,7 @@
   "000242": {
     "tier": "D",
     "pending": null,
-    "force_refresh": true,
+    "force_refresh": false,
     "updated": "2026-11-23"
   },
   "000251": {
@@ -1722,15 +1722,15 @@
     "updated": "2026-11-23"
   },
   "001723": {
-    "tier": "D",
-    "pending": "C",
-    "force_refresh": false,
+    "tier": "C",
+    "pending": null,
+    "force_refresh": true,
     "updated": "2026-11-23"
   },
   "001725": {
-    "tier": "D",
-    "pending": "C",
-    "force_refresh": false,
+    "tier": "C",
+    "pending": null,
+    "force_refresh": true,
     "updated": "2026-11-23"
   },
   "001728": {
@@ -1850,7 +1850,7 @@
   "001832": {
     "tier": "C",
     "pending": null,
-    "force_refresh": true,
+    "force_refresh": false,
     "updated": "2026-11-23"
   },
   "001835": {
@@ -8238,9 +8238,9 @@
     "updated": "2026-11-23"
   },
   "016464": {
-    "tier": "C",
-    "pending": "B",
-    "force_refresh": false,
+    "tier": "B",
+    "pending": null,
+    "force_refresh": true,
     "updated": "2026-11-23"
   },
   "016466": {
@@ -10094,7 +10094,7 @@
   "260117": {
     "tier": "C",
     "pending": null,
-    "force_refresh": true,
+    "force_refresh": false,
     "updated": "2026-11-23"
   },
   "270001": {
@@ -10908,7 +10908,7 @@
     "updated": "2026-11-23"
   },
   "519029": {
-    "tier": "B",
+    "tier": "C",
     "pending": null,
     "force_refresh": true,
     "updated": "2026-11-23"
